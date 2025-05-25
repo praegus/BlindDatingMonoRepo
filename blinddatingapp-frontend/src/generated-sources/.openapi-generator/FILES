@@ -1,0 +1,12 @@
+apis/ProfilesApi.ts
+apis/index.ts
+index.ts
+models/Characteristics.ts
+models/ErrorResponse.ts
+models/FieldError.ts
+models/Gender.ts
+models/HairColor.ts
+models/MusicGenre.ts
+models/Profile.ts
+models/index.ts
+runtime.ts

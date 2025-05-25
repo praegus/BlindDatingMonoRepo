@@ -1,0 +1,222 @@
+openapi: 3.0.1
+info:
+  title: Profile Service API
+  description: 'Profile Service api definitie'
+  version: 1.0.0
+paths:
+  /profiles:
+    get:
+      tags:
+        - profiles
+      operationId: getAllProfiles
+      description: Haal alle bestaande profielen op
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Profile'
+    post:
+      tags:
+        - profiles
+      operationId: createProfile
+      description: Maak een nieuw profiel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Profile'
+      responses:
+        "201":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+        409:
+          $ref: '#/components/responses/ConflictResponse'
+  /profiles/{username}:
+    get:
+      tags:
+        - profiles
+      operationId: getSingleProfile
+      description: Haal een enkel profiel op
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+    put:
+      tags:
+        - profiles
+      operationId: updateProfile
+      description: pas een bestaand profiel aan
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Profile'
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+    delete:
+      tags:
+        - profiles
+      operationId: deleteProfile
+      description: verwijder een profiel
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: OK
+
+components:
+  responses:
+    NotFoundResponse:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    ConflictResponse:
+      description: Resource already exists
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          description: a URI identifier that categorizes the error
+        title:
+          type: string
+          description: a brief, human-readable message about the error
+        status:
+          type: integer
+          description: the HTTP response code (optional)
+        detail:
+          type: string
+          description: a human-readable explanation of the error
+        instance:
+          type: string
+          description: a URI that identifies the specific occurrence of the error
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldError'
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+          description: the field that the error is thrown on
+        error:
+          type: string
+          description: the error message
+    Profile:
+      type: object
+      required:
+        - username
+      properties:
+        username:
+          type: string
+          minLength: 1
+          maxLength: 20
+          pattern: "^[a-zA-Z0-9]*$"
+        firstname:
+          type: string
+          maxLength: 20
+        lastname:
+          type: string
+          maxLength: 20
+        additionalInfo:
+          type: string
+          maxLength: 20
+        personalInformation:
+          $ref: '#/components/schemas/Characteristics'
+        dislikes:
+          $ref: '#/components/schemas/Characteristics'
+        preferences:
+          $ref: '#/components/schemas/Characteristics'
+
+    Characteristics:
+      type: object
+      properties:
+        gender:
+          $ref: '#/components/schemas/Gender'
+        favoriteColor:
+          type: string
+        pets:
+          type: boolean
+        hairColor:
+          $ref: '#/components/schemas/HairColor'
+        tattoos:
+          type: boolean
+        sports:
+          type: string
+        musicGenres:
+          type: array
+          items:
+            $ref: '#/components/schemas/MusicGenre'
+
+    Gender:
+      type: string
+      enum: [ MAN, WOMAN, X ]
+
+    HairColor:
+      type: string
+      enum: [ BLOND, BROWN, BLACK, RED, NO, GRAY, PINK ]
+
+    MusicGenre:
+      type: string
+      enum:
+        - ROCK
+        - METAL
+        - DEATHMETAL
+        - TRASHMETAL
+        - BALLROOM
+        - CLASSICAL
+        - COUNTRY
+        - DANCE
+        - ELECTRONIC
+        - FUNK
+        - HIP_HOP
+        - JAZZ
+        - LATIN
+        - POP
+        - RB
+        - REGGAE
+        - UNKNOWN
+        - WORLD

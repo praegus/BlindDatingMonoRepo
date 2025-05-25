@@ -1,0 +1,316 @@
+openapi: 3.0.1
+info:
+  description: Profile Service api definitie
+  title: Profile Service API
+  version: 1.0.0
+servers:
+- url: /
+paths:
+  /profiles:
+    get:
+      description: Haal alle bestaande profielen op
+      operationId: getAllProfiles
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Profile'
+                type: array
+          description: OK
+      tags:
+      - profiles
+      x-accepts:
+      - application/json
+    post:
+      description: Maak een nieuw profiel
+      operationId: createProfile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Profile'
+        required: true
+      responses:
+        "201":
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: OK
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Resource already exists
+      tags:
+      - profiles
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+      - text/plain
+  /profiles/{username}:
+    delete:
+      description: verwijder een profiel
+      operationId: deleteProfile
+      parameters:
+      - explode: false
+        in: path
+        name: username
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: OK
+      tags:
+      - profiles
+      x-accepts:
+      - application/json
+    get:
+      description: Haal een enkel profiel op
+      operationId: getSingleProfile
+      parameters:
+      - explode: false
+        in: path
+        name: username
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+          description: OK
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Resource not found
+      tags:
+      - profiles
+      x-accepts:
+      - application/json
+    put:
+      description: pas een bestaand profiel aan
+      operationId: updateProfile
+      parameters:
+      - explode: false
+        in: path
+        name: username
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Profile'
+        required: true
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: OK
+      tags:
+      - profiles
+      x-content-type: application/json
+      x-accepts:
+      - text/plain
+components:
+  responses:
+    NotFoundResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+      description: Resource not found
+    ConflictResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+      description: Resource already exists
+  schemas:
+    ErrorResponse:
+      example:
+        instance: instance
+        detail: detail
+        type: type
+        title: title
+        errors:
+        - field: field
+          error: error
+        - field: field
+          error: error
+        status: 0
+      properties:
+        type:
+          description: a URI identifier that categorizes the error
+          type: string
+        title:
+          description: "a brief, human-readable message about the error"
+          type: string
+        status:
+          description: the HTTP response code (optional)
+          type: integer
+        detail:
+          description: a human-readable explanation of the error
+          type: string
+        instance:
+          description: a URI that identifies the specific occurrence of the error
+          type: string
+        errors:
+          items:
+            $ref: '#/components/schemas/FieldError'
+          type: array
+      type: object
+    FieldError:
+      example:
+        field: field
+        error: error
+      properties:
+        field:
+          description: the field that the error is thrown on
+          type: string
+        error:
+          description: the error message
+          type: string
+      type: object
+    Profile:
+      example:
+        firstname: firstname
+        preferences:
+          pets: true
+          gender: MAN
+          sports: sports
+          tattoos: true
+          favoriteColor: favoriteColor
+          hairColor: BLOND
+          musicGenres:
+          - ROCK
+          - ROCK
+        personalInformation:
+          pets: true
+          gender: MAN
+          sports: sports
+          tattoos: true
+          favoriteColor: favoriteColor
+          hairColor: BLOND
+          musicGenres:
+          - ROCK
+          - ROCK
+        additionalInfo: additionalInfo
+        dislikes:
+          pets: true
+          gender: MAN
+          sports: sports
+          tattoos: true
+          favoriteColor: favoriteColor
+          hairColor: BLOND
+          musicGenres:
+          - ROCK
+          - ROCK
+        username: username
+        lastname: lastname
+      properties:
+        username:
+          maxLength: 20
+          minLength: 1
+          pattern: "^[a-zA-Z0-9]*$"
+          type: string
+        firstname:
+          maxLength: 20
+          type: string
+        lastname:
+          maxLength: 20
+          type: string
+        additionalInfo:
+          maxLength: 20
+          type: string
+        personalInformation:
+          $ref: '#/components/schemas/Characteristics'
+        dislikes:
+          $ref: '#/components/schemas/Characteristics'
+        preferences:
+          $ref: '#/components/schemas/Characteristics'
+      required:
+      - username
+      type: object
+    Characteristics:
+      example:
+        pets: true
+        gender: MAN
+        sports: sports
+        tattoos: true
+        favoriteColor: favoriteColor
+        hairColor: BLOND
+        musicGenres:
+        - ROCK
+        - ROCK
+      properties:
+        gender:
+          $ref: '#/components/schemas/Gender'
+        favoriteColor:
+          type: string
+        pets:
+          type: boolean
+        hairColor:
+          $ref: '#/components/schemas/HairColor'
+        tattoos:
+          type: boolean
+        sports:
+          type: string
+        musicGenres:
+          items:
+            $ref: '#/components/schemas/MusicGenre'
+          type: array
+      type: object
+    Gender:
+      enum:
+      - MAN
+      - WOMAN
+      - X
+      type: string
+    HairColor:
+      enum:
+      - BLOND
+      - BROWN
+      - BLACK
+      - RED
+      - "false"
+      - GRAY
+      - PINK
+      type: string
+    MusicGenre:
+      enum:
+      - ROCK
+      - METAL
+      - DEATHMETAL
+      - TRASHMETAL
+      - BALLROOM
+      - CLASSICAL
+      - COUNTRY
+      - DANCE
+      - ELECTRONIC
+      - FUNK
+      - HIP_HOP
+      - JAZZ
+      - LATIN
+      - POP
+      - RB
+      - REGGAE
+      - UNKNOWN
+      - WORLD
+      type: string
+

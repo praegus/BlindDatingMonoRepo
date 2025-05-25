@@ -1,0 +1,21 @@
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+  jackson:
+    default-property-inclusion: non_null
+    serialization.FAIL_ON_EMPTY_BEANS: false
+server:
+  port: 9081
+  error:
+    include-message: always
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    path: /
+    url: /profiles.yaml
+    supportedSubmitMethods: []
+
+logging:
+  pattern:
+    console: '%d{dd-MM-yyyy HH:mm:ss} %magenta([%thread]) %highlight(%-5level) %logger.%M - %msg%n'

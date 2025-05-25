@@ -1,0 +1,19 @@
+openapi: 3.0.1
+info:
+  title: Matching Service API
+  description: 'Matching Service api definitie'
+  version: 1.0.0
+paths:
+  /matching:
+    post:
+      tags:
+        - matching
+      operationId: createMatches
+      description: Maak nieuwe matches
+      responses:
+        "201":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string

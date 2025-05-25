@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_21" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/matching-service">
+      <sourceFolder url="file://$MODULE_DIR$/matching-service/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/matching-service/src/main/java/io/praegus/bda/matchingservice" isTestSource="false" packagePrefix="io.praegus.bda.profileservice" />
+      <sourceFolder url="file://$MODULE_DIR$/matching-service/src/main/resources" type="java-resource" />
+    </content>
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
