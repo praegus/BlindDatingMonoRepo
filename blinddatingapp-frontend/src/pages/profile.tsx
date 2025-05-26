@@ -3,6 +3,7 @@ import EditProfile from '../components/EditProfile';
 import { useState, useEffect } from 'react'
 import NavBar from '../components/NavBar';
 import MatchNotifier from '../components/MatchNotifier';
+import DateList from '../components/DateList';
 import { ErrorResponse, Configuration, ProfilesApi, Profile } from '@/generated-sources';
 import { ErrorUtil } from '@/utils';
 import { useRouter } from 'next/router';
@@ -44,6 +45,7 @@ export default function Profile() {
     <div>
       <NavBar data={data?.username} />
       <MatchNotifier data={data?.username} />
+      <DateList data={data?.dates} />
       {data ?
         <div>
           <div className="w-full flex">

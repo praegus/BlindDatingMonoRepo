@@ -4,6 +4,7 @@ import io.praegus.bda.profileservice.Conflict409Exception;
 import io.praegus.bda.profileservice.NotFoundException;
 import io.praegus.bda.profileservice.adapter.data.*;
 import org.openapitools.model.*;
+import org.openapitools.model.Address;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -143,6 +144,26 @@ public class ProfileService {
                 .sports(profileEntity.getDislikes().getSports())
                 .build());
 
+        builder.dates(profileEntity.getDates().stream().map(d -> {
+            var address = new Address(d.getAddressStreet(), d.getAddressStreetNumber(), d.getAddressPostalCode(), d.getAddressCity());
+            return new RomanticDate(address, d.getDateTime().toOffsetDateTime(), d.getItemToBring());
+        }).toList());
+
         return builder.build();
+    }
+
+    public void addDateToProfile(String username, Date date) {
+        var profile = profileRepository.findById(username).orElseThrow();
+        var newDateEntity = DateEntity.builder()
+                .addressPostalCode(date.location().postalCode())
+                .addressStreet(date.location().street())
+                .addressStreetNumber(date.location().streetNumber())
+                .addressCity(date.location().city())
+                .dateTime(date.time())
+                .itemToBring(date.objectToBring())
+                .build();
+        profile.getDates().add(newDateEntity);
+
+        profileRepository.save(profile);
     }
 }

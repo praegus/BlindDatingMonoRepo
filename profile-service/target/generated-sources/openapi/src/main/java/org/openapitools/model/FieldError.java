@@ -19,7 +19,7 @@ import jakarta.annotation.Generated;
  */
 @lombok.Builder @lombok.AllArgsConstructor
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-05-25T09:09:14.850999+02:00[Europe/Budapest]", comments = "Generator version: 7.8.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-05-26T19:57:03.642532200+02:00[Europe/Budapest]", comments = "Generator version: 7.8.0")
 public class FieldError {
 
   private String field;

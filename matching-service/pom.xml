@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>io.praegus.bda</groupId>
-    <artifactId>matchingservice</artifactId>
+    <artifactId>matching-service</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <name>matching-service</name>

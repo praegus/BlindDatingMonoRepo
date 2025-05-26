@@ -7,6 +7,7 @@
         <option value="$PROJECT_DIR$/profile-service/pom.xml" />
         <option value="$PROJECT_DIR$/matching-service/pom.xml" />
         <option value="$PROJECT_DIR$/websocket-service/pom.xml" />
+        <option value="$PROJECT_DIR$/date-service/pom.xml" />
       </list>
     </option>
   </component>

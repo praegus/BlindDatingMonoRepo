@@ -4,7 +4,11 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.openapitools.model.Characteristics;
+import org.openapitools.model.RomanticDate;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
@@ -20,7 +24,7 @@ import jakarta.annotation.Generated;
  */
 @lombok.Builder @lombok.AllArgsConstructor
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-05-25T09:09:14.850999+02:00[Europe/Budapest]", comments = "Generator version: 7.8.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-05-26T19:57:03.642532200+02:00[Europe/Budapest]", comments = "Generator version: 7.8.0")
 public class Profile {
 
   private String username;
@@ -36,6 +40,9 @@ public class Profile {
   private Characteristics dislikes;
 
   private Characteristics preferences;
+
+  @Valid
+  private List<@Valid RomanticDate> dates = new ArrayList<>();
 
   public Profile() {
     super();
@@ -188,6 +195,34 @@ public class Profile {
     this.preferences = preferences;
   }
 
+  public Profile dates(List<@Valid RomanticDate> dates) {
+    this.dates = dates;
+    return this;
+  }
+
+  public Profile addDatesItem(RomanticDate datesItem) {
+    if (this.dates == null) {
+      this.dates = new ArrayList<>();
+    }
+    this.dates.add(datesItem);
+    return this;
+  }
+
+  /**
+   * Get dates
+   * @return dates
+   */
+  @Valid 
+  @Schema(name = "dates", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("dates")
+  public List<@Valid RomanticDate> getDates() {
+    return dates;
+  }
+
+  public void setDates(List<@Valid RomanticDate> dates) {
+    this.dates = dates;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -203,12 +238,13 @@ public class Profile {
         Objects.equals(this.additionalInfo, profile.additionalInfo) &&
         Objects.equals(this.personalInformation, profile.personalInformation) &&
         Objects.equals(this.dislikes, profile.dislikes) &&
-        Objects.equals(this.preferences, profile.preferences);
+        Objects.equals(this.preferences, profile.preferences) &&
+        Objects.equals(this.dates, profile.dates);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(username, firstname, lastname, additionalInfo, personalInformation, dislikes, preferences);
+    return Objects.hash(username, firstname, lastname, additionalInfo, personalInformation, dislikes, preferences, dates);
   }
 
   @Override
@@ -222,6 +258,7 @@ public class Profile {
     sb.append("    personalInformation: ").append(toIndentedString(personalInformation)).append("\n");
     sb.append("    dislikes: ").append(toIndentedString(dislikes)).append("\n");
     sb.append("    preferences: ").append(toIndentedString(preferences)).append("\n");
+    sb.append("    dates: ").append(toIndentedString(dates)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -170,6 +170,10 @@ components:
           $ref: '#/components/schemas/Characteristics'
         preferences:
           $ref: '#/components/schemas/Characteristics'
+        dates:
+          type: array
+          items:
+            $ref: '#/components/schemas/RomanticDate'
 
     Characteristics:
       type: object
@@ -220,3 +224,26 @@ components:
         - REGGAE
         - UNKNOWN
         - WORLD
+
+    RomanticDate:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/Address'
+        time:
+          type: string
+          format: date-time
+        itemToBring:
+          type: string
+
+    Address:
+      type: object
+      properties:
+        street:
+          type: string
+        streetNumber:
+          type: string
+        postalCode:
+          type: string
+        city:
+          type: string

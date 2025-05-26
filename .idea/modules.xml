@@ -3,7 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/BlindDatingMonoRepo.iml" filepath="$PROJECT_DIR$/.idea/BlindDatingMonoRepo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/matching-service/matchingservice.iml" filepath="$PROJECT_DIR$/matching-service/matchingservice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/date-service/date-service.iml" filepath="$PROJECT_DIR$/date-service/date-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/matching-service/matching-service.iml" filepath="$PROJECT_DIR$/matching-service/matching-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/profile-service.iml" filepath="$PROJECT_DIR$/profile-service.iml" />
     </modules>
   </component>

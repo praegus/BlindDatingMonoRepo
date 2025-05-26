@@ -19,16 +19,16 @@ services:
 #      broker:
 #        condition: service_healthy
 #
-  profile:
-    build:
-      context: profile-service
-      dockerfile: Dockerfile
-    ports:
-      - "9080:9080"
-    restart: always
-    depends_on:
-      postgres:
-        condition: service_healthy
+#  profile:
+#    build:
+#      context: profile-service
+#      dockerfile: Dockerfile
+#    ports:
+#      - "9080:9080"
+#    restart: always
+#    depends_on:
+#      postgres:
+#        condition: service_healthy
 
 # SUPPORTIVE TOOLS BELOW
 

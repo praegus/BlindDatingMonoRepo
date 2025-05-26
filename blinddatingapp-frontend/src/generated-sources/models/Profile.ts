@@ -19,6 +19,12 @@ import {
     CharacteristicsFromJSONTyped,
     CharacteristicsToJSON,
 } from './Characteristics';
+import type { RomanticDate } from './RomanticDate';
+import {
+    RomanticDateFromJSON,
+    RomanticDateFromJSONTyped,
+    RomanticDateToJSON,
+} from './RomanticDate';
 
 /**
  * 
@@ -68,6 +74,12 @@ export interface Profile {
      * @memberof Profile
      */
     preferences?: Characteristics;
+    /**
+     * 
+     * @type {Array<RomanticDate>}
+     * @memberof Profile
+     */
+    dates?: Array<RomanticDate>;
 }
 
 /**
@@ -95,6 +107,7 @@ export function ProfileFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'personalInformation': json['personalInformation'] == null ? undefined : CharacteristicsFromJSON(json['personalInformation']),
         'dislikes': json['dislikes'] == null ? undefined : CharacteristicsFromJSON(json['dislikes']),
         'preferences': json['preferences'] == null ? undefined : CharacteristicsFromJSON(json['preferences']),
+        'dates': json['dates'] == null ? undefined : ((json['dates'] as Array<any>).map(RomanticDateFromJSON)),
     };
 }
 
@@ -111,6 +124,7 @@ export function ProfileToJSON(value?: Profile | null): any {
         'personalInformation': CharacteristicsToJSON(value['personalInformation']),
         'dislikes': CharacteristicsToJSON(value['dislikes']),
         'preferences': CharacteristicsToJSON(value['preferences']),
+        'dates': value['dates'] == null ? undefined : ((value['dates'] as Array<any>).map(RomanticDateToJSON)),
     };
 }
 

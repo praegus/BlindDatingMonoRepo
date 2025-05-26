@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table (name = "profile")
 @Builder
@@ -38,6 +41,6 @@ public class ProfileEntity {
     @JoinColumn(name = "dislikesId", referencedColumnName = "id")
     private DislikesEntity dislikes;
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<DateEntity> dates = new ArrayList<>();
 }
-
-

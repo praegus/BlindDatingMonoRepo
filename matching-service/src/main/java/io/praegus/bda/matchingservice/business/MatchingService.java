@@ -2,6 +2,7 @@ package io.praegus.bda.matchingservice.business;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import io.praegus.bda.matchingservice.adapter.kafka.KafkaProducer;
 import io.praegus.bda.matchingservice.adapter.profile.ProfileServiceAdapter;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +25,11 @@ public class MatchingService {
     private final ProfileServiceAdapter profileServiceAdapter;
     private final KafkaProducer kafkaProducer;
     private final MatchingScoreService matchingScoreService;
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper()
+            .findAndRegisterModules()
+            .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
-    @Scheduled(fixedRate = 1, timeUnit = TimeUnit.MINUTES)
+    @Scheduled(fixedRate = 10, timeUnit = TimeUnit.SECONDS)
     public void attemptMatching() {
         createMatches();
     }
@@ -36,7 +39,6 @@ public class MatchingService {
 
         if (profiles.size() < 2) {
             logger.info("Not enough profiles to create matches. Found {} profiles", profiles.size());
-            kafkaProducer.sendMessage("{\"personA\":\"Fin\",\"personB\":\"Sandra\"}");
             return;
         }
 
@@ -60,6 +62,7 @@ public class MatchingService {
             profilesToCheckAgainst.remove(profile);
             profilesToCheckAgainst.forEach(profileToCheckAgainst -> {
                 var matchingScore = matchingScoreService.determineMatchingScore(profile, profileToCheckAgainst);
+                logger.info("username {} and username {} matched for {}", profile.getUsername(), profileToCheckAgainst.getUsername(), matchingScore);
                 if (matchingScore >= 70) {
                     matches.add(new Match(profile.getUsername(), profileToCheckAgainst.getUsername()));
                 }

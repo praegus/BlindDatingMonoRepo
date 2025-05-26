@@ -6,14 +6,16 @@ import { useRouter } from 'next/router';
 export default function MatchNotifier({ data }: any) {
 
   const [message, setMessage] = useState('');
-  const [name, setName] = useState('');
+  const [match, setMatch] = useState('');
+  const [username, setUsername] = useState('');
   const stompClientRef = useRef(null);
   const router = useRouter();
 
   useEffect(() => {
-    var profileName =
-      Array.isArray(router.query.name) ? router.query.name[0] :
-        router.query.name!;
+    setUsername(Array.isArray(router.query.name) ? router.query.name[0] :router.query.name!);
+    if (username == undefined || username == '') {
+      return;
+    }
     const socket = new SockJS('http://localhost:9082/ws');
     const stompClient = new Client({
       webSocketFactory: () => socket,
@@ -25,11 +27,20 @@ export default function MatchNotifier({ data }: any) {
       heartbeatOutgoing: 4000,
       onConnect: () => {
         console.log('Connected to WebSocket');
-        stompClient.subscribe('/topic/matchings', (response) => {
+        console.log('schaap2', username)
+        stompClient.subscribe(`/topic/matchings/${username}`, (response) => {
           console.log('Received message:', response.body);
           var json = JSON.parse(response.body);
-          var yourMatch = json.personA === profileName ? json.personB : json.personA;
+          setMatch(response.body)
+          var yourMatch = json.personA === username ? json.personB : json.personA;
           setMessage('You have been matched with ' + yourMatch);
+        });
+        stompClient.subscribe(`/topic/approved/${username}`, (response) => {
+          console.log('Date approved:', response.body);
+          var json = JSON.parse(response.body);
+          setMatch('')
+          var yourMatch = json.personA === username ? json.personB : json.personA;
+          setMessage(yourMatch + ' has accepted your date! Details will follow in your profile soon');
         });
       },
       onWebSocketError: (error) => {
@@ -43,18 +54,26 @@ export default function MatchNotifier({ data }: any) {
 
     stompClient.activate();
     stompClientRef.current = stompClient;
-  }, [router.isReady]);
+  }, [router.isReady, username]);
+
+  const sendMessage = () => {
+      const stompClient = stompClientRef.current;
+      if (stompClient && stompClient.connected) {
+          console.log('Sending message:', match, username);
+          stompClient.publish({
+              destination: `/app/accept/${username}`,
+              body: match,
+          });
+      } else {
+          console.error('Stomp client is not connected');
+      }
+  };
 
   return (
     <div>
       <h3>Matches:</h3>
-      { message ? 
-      <div>
-      <p>{message}</p>
-      <button>Date</button>
-      </div>
-      : ''
-      }
+      { message ? <p>{message}</p> : '' }
+      { match !== '' ? <button onClick={sendMessage}>Date!</button> : ''}
     </div>
   );
 };

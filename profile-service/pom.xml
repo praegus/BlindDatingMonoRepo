@@ -45,6 +45,13 @@
             <artifactId>spring-data-jpa</artifactId>
         </dependency>
 
+        <!-- tag::kafka[] -->
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
+        <!-- end::kafka[] -->
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

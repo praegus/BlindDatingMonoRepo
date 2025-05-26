@@ -13,6 +13,7 @@
   "dependencies": {
     "@openapitools/openapi-generator-cli": "^2.13.4",
     "@stomp/stompjs": "^7.1.1",
+    "moment": "^2.30.1",
     "next": "14.2.16",
     "react": "^18",
     "react-dom": "^18",
