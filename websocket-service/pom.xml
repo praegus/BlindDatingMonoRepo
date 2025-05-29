@@ -83,6 +83,23 @@
                     <mainClass>com.baeldung.spring.kafka.KafkaApplication</mainClass>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.4.5</version>
+                <configuration>
+                    <to>
+                        <image>localhost:5000/blinddating/websocket-service</image>
+                    </to>
+                    <container>
+                        <ports>
+                            <port>9082</port>
+                        </ports>
+                        <mainClass>io.praegus.bda.websocketservice.WebsocketServiceApplication</mainClass>
+                    </container>
+                    <allowInsecureRegistries>true</allowInsecureRegistries>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 

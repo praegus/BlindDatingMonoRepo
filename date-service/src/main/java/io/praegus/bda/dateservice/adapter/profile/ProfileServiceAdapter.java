@@ -1,14 +1,12 @@
-package io.praegus.bda.matchingservice.adapter.profile;
+package io.praegus.bda.dateservice.adapter.profile;
 
 import org.openapitools.client.ApiClient;
 import org.openapitools.client.api.ProfilesApi;
 import org.openapitools.client.model.Profile;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
-import org.slf4j.Logger;
 
 @Repository
 public class ProfileServiceAdapter {
@@ -24,7 +22,7 @@ public class ProfileServiceAdapter {
         profilesApi = new ProfilesApi(defaultClient);
     }
 
-    public List<Profile> findAllProfiles() {
-        return profilesApi.getAllProfiles();
+    public Profile findProfile(String username) {
+        return profilesApi.getSingleProfile(username);
     }
 }

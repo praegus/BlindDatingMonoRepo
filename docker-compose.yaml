@@ -1,36 +1,79 @@
 services:
 # APPLICATIONS
-#  frontend:
-#    build:
-#      context: .
-#      dockerfile: blinddatingapp-frontend/Dockerfile
-#    ports:
-#      - "9080:8080"
-#    restart: always
-#
-#  matching:
-#    build:
-#      context: .
-#      dockerfile: matching-service/Dockerfile
-#    ports:
-#      - "9081:9081"
-#    restart: always
-#    depends_on:
-#      broker:
-#        condition: service_healthy
-#
-#  profile:
-#    build:
-#      context: profile-service
-#      dockerfile: Dockerfile
-#    ports:
-#      - "9080:9080"
-#    restart: always
-#    depends_on:
-#      postgres:
-#        condition: service_healthy
+  frontend:
+    image: localhost:5000/blinddating/blinddatingapp-frontend
+    container_name: blinddatingapp-frontend
+    ports:
+      - "3000:3000"
+    restart: always
+
+  date:
+    image: localhost:5000/blinddating/date-service
+    container_name: date-service
+    networks:
+      - local-kafka
+    ports:
+      - "9083:9083"
+    environment:
+      spring.kafka.bootstrap-servers: broker:9093
+      endpoints.profileservice: http://profile:9080
+    restart: always
+    depends_on:
+      broker:
+        condition: service_started
+
+  websocket:
+    image: localhost:5000/blinddating/websocket-service
+    container_name: websocket-service
+    networks:
+      - local-kafka
+    ports:
+      - "9082:9082"
+    environment:
+      spring.kafka.bootstrap-servers: broker:9093
+    restart: always
+    depends_on:
+      broker:
+        condition: service_started
+
+  matching:
+    image: localhost:5000/blinddating/matching-service
+    container_name: matching-service
+    networks:
+      - local-kafka
+    ports:
+      - "9081:9081"
+    environment:
+      spring.kafka.bootstrap-servers: broker:9093
+      endpoints.profileservice: http://profile:9080
+    restart: always
+    depends_on:
+      broker:
+        condition: service_started
+
+  profile:
+    image: localhost:5000/blinddating/profile-service
+    container_name: profile-service
+    ports:
+      - "9080:9080"
+    environment:
+      spring.kafka.bootstrap-servers: broker:9093
+      spring.datasource.url: jdbc:postgresql://postgres:5432/postgres?useSSL=false
+    restart: always
+    networks:
+      - local-kafka
+      - postgres
+    depends_on:
+      postgres:
+        condition: service_started
 
 # SUPPORTIVE TOOLS BELOW
+
+  registry:
+    image: registry:2.7
+    container_name: registry
+    ports:
+      - "5000:5000"
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.0.1
@@ -84,6 +127,8 @@ services:
     ports:
       - 5432:5432
     restart: always
+    networks:
+      - postgres
     shm_size: 128mb
     environment:
       POSTGRES_USER: postgres
@@ -93,6 +138,8 @@ services:
     image: dpage/pgadmin4
     container_name: pgadmin4_container
     restart: always
+    networks:
+      - postgres
     ports:
       - "8888:80"
     environment:
@@ -103,4 +150,6 @@ services:
 
 networks:
   local-kafka:
+    driver: bridge
+  postgres:
     driver: bridge

@@ -8,7 +8,7 @@ export default function MatchNotifier({ data }: any) {
   const [message, setMessage] = useState('');
   const [match, setMatch] = useState('');
   const [username, setUsername] = useState('');
-  const stompClientRef = useRef(null);
+  const stompClientRef = useRef({});
   const router = useRouter();
 
   useEffect(() => {
@@ -57,7 +57,7 @@ export default function MatchNotifier({ data }: any) {
   }, [router.isReady, username]);
 
   const sendMessage = () => {
-      const stompClient = stompClientRef.current;
+      const stompClient = stompClientRef.current as Client;
       if (stompClient && stompClient.connected) {
           console.log('Sending message:', match, username);
           stompClient.publish({

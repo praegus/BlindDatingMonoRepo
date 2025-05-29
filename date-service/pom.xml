@@ -102,6 +102,23 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.4.5</version>
+                <configuration>
+                    <to>
+                        <image>localhost:5000/blinddating/date-service</image>
+                    </to>
+                    <container>
+                        <ports>
+                            <port>9083</port>
+                        </ports>
+                        <mainClass>io.praegus.bda.dateservice.DateServiceApplication</mainClass>
+                    </container>
+                    <allowInsecureRegistries>true</allowInsecureRegistries>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
                 <version>7.8.0</version>
