@@ -1,14 +1,14 @@
 services:
 # APPLICATIONS
   frontend:
-    image: localhost:5000/blinddating/blinddatingapp-frontend
+    image: docker.io/finkingma/blinddatingapp-frontend
     container_name: blinddatingapp-frontend
     ports:
       - "3000:3000"
     restart: always
 
   date:
-    image: localhost:5000/blinddating/date-service
+    image: docker.io/finkingma/date-service
     container_name: date-service
     networks:
       - local-kafka
@@ -23,7 +23,7 @@ services:
         condition: service_started
 
   websocket:
-    image: localhost:5000/blinddating/websocket-service
+    image: docker.io/finkingma/websocket-service
     container_name: websocket-service
     networks:
       - local-kafka
@@ -37,7 +37,7 @@ services:
         condition: service_started
 
   matching:
-    image: localhost:5000/blinddating/matching-service
+    image: docker.io/finkingma/matching-service
     container_name: matching-service
     networks:
       - local-kafka
@@ -52,7 +52,7 @@ services:
         condition: service_started
 
   profile:
-    image: localhost:5000/blinddating/profile-service
+    image: docker.io/finkingma/profile-service
     container_name: profile-service
     ports:
       - "9080:9080"
@@ -68,12 +68,6 @@ services:
         condition: service_started
 
 # SUPPORTIVE TOOLS BELOW
-
-  registry:
-    image: registry:2.7
-    container_name: registry
-    ports:
-      - "5000:5000"
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.0.1

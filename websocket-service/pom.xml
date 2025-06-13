@@ -89,7 +89,7 @@
                 <version>3.4.5</version>
                 <configuration>
                     <to>
-                        <image>localhost:5000/blinddating/websocket-service</image>
+                        <image>docker.io/finkingma/websocket-service:latest</image>
                     </to>
                     <container>
                         <ports>

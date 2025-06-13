@@ -6,6 +6,6 @@ cd ../profile-service
 CALL mvn clean compile jib:build
 cd ../websocket-service
 CALL mvn clean compile jib:build
-cd ../blinddatingapp-frontend
-CALL docker build -f blinddatingapp-frontend/Dockerfile -t localhost:5000/blinddating/blinddatingapp-frontend .
-CALL docker push localhost:5000/blinddating/blinddatingapp-frontend
+cd ..
+CALL docker build -f blinddatingapp-frontend/Dockerfile -t docker.io/finkingma/blinddatingapp-frontend:latest .
+CALL docker push docker.io/finkingma/blinddatingapp-frontend:latest
