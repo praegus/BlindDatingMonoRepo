@@ -6,6 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
+    "postinstall": "npm run generate-openapi",
+    "generate-openapi": "openapi-generator-cli generate -i ../specs/profiles.yaml -g typescript-angular -o src/app/generated-sources/openapi",
     "test": "ng test"
   },
   "private": true,
@@ -24,6 +26,7 @@
     "@angular/build": "^20.0.2",
     "@angular/cli": "^20.0.2",
     "@angular/compiler-cli": "^20.0.0",
+    "@openapitools/openapi-generator-cli": "^2.20.2",
     "@types/jasmine": "~5.1.0",
     "jasmine-core": "~5.7.0",
     "karma": "~6.4.0",
