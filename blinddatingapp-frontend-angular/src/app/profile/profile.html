@@ -1,0 +1,23 @@
+<div>
+  <h1>Welcome {{ profileData?.username }}</h1>
+  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+    <label for="firstname">First name: </label>
+    <input type="text" formControlName="firstname">
+    <br />
+    <label for="lastname">Last name: </label>
+    <input type="text" formControlName="lastname">
+    <br />
+    <label for="additionalInfo">Additional info: </label>
+    <input type="text" formControlName="additionalInfo">
+    <br />
+    <button type="submit" [disabled]="!profileForm.valid">Save</button>
+  </form>
+
+  <p>personalInformation: {{ profileData?.personalInformation }}</p>
+
+  <p>dislikes: {{ profileData?.dislikes }}</p>
+
+  <p>preferences: {{ profileData?.preferences }}</p>
+
+  <p>dates: {{ profileData?.dates }}</p>
+</div>
