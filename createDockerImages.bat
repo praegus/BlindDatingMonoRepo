@@ -9,3 +9,5 @@ CALL mvn clean compile jib:build
 cd ..
 CALL docker build -f blinddatingapp-frontend/Dockerfile -t docker.io/finkingma/blinddatingapp-frontend:latest .
 CALL docker push docker.io/finkingma/blinddatingapp-frontend:latest
+CALL docker build -f blinddatingapp-frontend-angular/Dockerfile -t docker.io/finkingma/blinddatingapp-frontend-angular:latest .
+CALL docker push docker.io/finkingma/blinddatingapp-frontend-angular:latest
