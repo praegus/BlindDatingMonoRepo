@@ -4,10 +4,13 @@ import { ProfilesService, Profile as ProfileModel, Gender, HairColor, MusicGenre
 import { FormGroup, FormControl, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CommonModule } from '@angular/common';
+import { Characteristics } from "../characteristics/characteristics";
 
 @Component({
   selector: 'app-profile',
-  imports: [ReactiveFormsModule],
+  standalone: true,
+  imports: [ReactiveFormsModule, CommonModule, Characteristics],
   templateUrl: './profile.html',
   styleUrl: './profile.css'
 })
@@ -62,17 +65,6 @@ export class Profile implements OnInit, OnDestroy {
   onSubmit() {
     var profile = this.profileForm.value as ProfileModel;
     profile.username = this.profileData!.username;
-    profile.personalInformation!.gender = Gender.Man
-    profile.personalInformation!.hairColor = HairColor.Blond
-    profile.personalInformation!.musicGenres = [MusicGenre.Classical]
-
-    profile.preferences!.gender = Gender.Woman
-    profile.preferences!.hairColor = HairColor.Blond
-    profile.preferences!.musicGenres = [MusicGenre.Classical]
-
-    profile.dislikes!.gender = Gender.Man
-    profile.dislikes!.hairColor = HairColor.Black
-    profile.dislikes!.musicGenres = [MusicGenre.Classical]
 
     this.subscription = this.profilesService.updateProfile(this.profileData!.username, profile).subscribe({
       complete: () => {

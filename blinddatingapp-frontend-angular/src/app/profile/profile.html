@@ -10,14 +10,14 @@
     <label for="additionalInfo">Additional info: </label>
     <input type="text" formControlName="additionalInfo">
     <br />
+    <app-characteristics [formGroup]="profileForm.controls.personalInformation" [title]="'Personal Information'"></app-characteristics>
+
+    <app-characteristics [formGroup]="profileForm.controls.preferences" [title]="'Preferences'"></app-characteristics>
+
+    <app-characteristics [formGroup]="profileForm.controls.dislikes" [title]="'Dislikes'"></app-characteristics>
+    
     <button type="submit" [disabled]="!profileForm.valid">Save</button>
   </form>
 
-  <p>personalInformation: {{ profileData?.personalInformation }}</p>
-
-  <p>dislikes: {{ profileData?.dislikes }}</p>
-
-  <p>preferences: {{ profileData?.preferences }}</p>
-
-  <p>dates: {{ profileData?.dates }}</p>
+  <p *ngIf="(profileData?.dates ?? []).length > 0">dates: {{ profileData?.dates }}</p>
 </div>

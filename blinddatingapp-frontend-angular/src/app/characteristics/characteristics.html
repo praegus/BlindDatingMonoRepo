@@ -1,0 +1,30 @@
+<div [formGroup]="formGroup">
+  <h3>{{ title }}</h3>
+  <label *ngFor="let gender of genders">
+    <input type="radio" formControlName="gender" [value]="gender"> {{ gender }}
+  </label>
+  <br />
+  <label for="favoriteColor">Favorite color: </label>
+  <input type="text" formControlName="favoriteColor">
+  <br />
+  <label for="pets">Pets: </label>
+  <input type="radio" formControlName="pets" [value]="true"> Yes
+  <input type="radio" formControlName="pets" [value]="false"> No
+  <br />
+  <label for="hairColor">Hair color: </label>
+  <select formControlName="hairColor">
+    <option *ngFor="let hairColor of hairColors" [value]="hairColor">{{ hairColor }}</option>
+  </select>
+  <br />
+  <label for="tattoos">Tattoos: </label>
+  <input type="radio" formControlName="tattoos" [value]="true"> Yes
+  <input type="radio" formControlName="tattoos" [value]="false"> No
+  <br />
+  <label for="sports">Sports: </label>
+  <input type="text" formControlName="sports">
+  <br />
+  <label>Music genre:</label>
+  <select formControlName="musicGenres">
+    <option *ngFor="let musicGenre of musicGenres" [value]="musicGenre">{{ musicGenre }}</option>
+  </select>
+</div>
