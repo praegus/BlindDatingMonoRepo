@@ -1,4 +1,4 @@
-package io.praegus.bda.dateservice.business;
+package io.praegus.bda.locationservice.business;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

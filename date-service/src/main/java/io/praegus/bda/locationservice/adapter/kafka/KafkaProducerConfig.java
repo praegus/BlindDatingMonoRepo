@@ -1,4 +1,4 @@
-package io.praegus.bda.dateservice.adapter.kafka;
+package io.praegus.bda.locationservice.adapter.kafka;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;

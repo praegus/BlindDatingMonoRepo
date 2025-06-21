@@ -1,4 +1,4 @@
-package io.praegus.bda.dateservice.business;
+package io.praegus.bda.locationservice.business;
 
 public record Match(String personA, String personB) {
 }

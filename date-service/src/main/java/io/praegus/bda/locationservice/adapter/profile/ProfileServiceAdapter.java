@@ -1,4 +1,4 @@
-package io.praegus.bda.dateservice.adapter.profile;
+package io.praegus.bda.locationservice.adapter.profile;
 
 import org.openapitools.client.ApiClient;
 import org.openapitools.client.api.ProfilesApi;

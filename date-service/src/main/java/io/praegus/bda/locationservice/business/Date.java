@@ -1,4 +1,4 @@
-package io.praegus.bda.dateservice.business;
+package io.praegus.bda.locationservice.business;
 
 import java.time.ZonedDateTime;
 

@@ -1,7 +1,7 @@
-package io.praegus.bda.dateservice.business;
+package io.praegus.bda.locationservice.business;
 
-import io.praegus.bda.dateservice.adapter.kafka.KafkaProducer;
-import io.praegus.bda.dateservice.adapter.profile.ProfileServiceAdapter;
+import io.praegus.bda.locationservice.adapter.kafka.KafkaProducer;
+import io.praegus.bda.locationservice.adapter.profile.ProfileServiceAdapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

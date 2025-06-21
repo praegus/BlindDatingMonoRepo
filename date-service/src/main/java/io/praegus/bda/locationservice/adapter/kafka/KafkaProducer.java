@@ -1,9 +1,9 @@
-package io.praegus.bda.dateservice.adapter.kafka;
+package io.praegus.bda.locationservice.adapter.kafka;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import io.praegus.bda.dateservice.business.Date;
+import io.praegus.bda.locationservice.business.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;

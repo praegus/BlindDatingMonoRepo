@@ -1,4 +1,4 @@
-package io.praegus.bda.dateservice;
+package io.praegus.bda.locationservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
