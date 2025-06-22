@@ -30,6 +30,9 @@ springdoc:
     url: /profiles.yaml
     supportedSubmitMethods: []
 
+endpoints:
+  locationservice: http://localhost:9084
+
 logging:
   pattern:
     console: '%d{dd-MM-yyyy HH:mm:ss} %magenta([%thread]) %highlight(%-5level) %logger.%M - %msg%n'

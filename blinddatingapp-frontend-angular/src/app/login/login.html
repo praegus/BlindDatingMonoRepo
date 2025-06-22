@@ -1,0 +1,9 @@
+<div>
+  <h1>Welcome to the BlindDatingApp</h1>  
+  <form [formGroup]="profileForm" (ngSubmit)="onSubmit($event)">
+    <label for="name">Name: </label>
+    <input type="text" formControlName="name">
+    <button type="submit" [disabled]="!profileForm.valid" name="login">Login</button>
+    <button type="submit" [disabled]="!profileForm.valid" name="create">Create</button>
+  </form>
+</div>

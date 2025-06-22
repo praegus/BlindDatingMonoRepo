@@ -1,0 +1,18 @@
+<div [formGroup]="formGroup">
+  <h3>Address</h3>
+  <label for="street">Street: </label>
+  <input type="text" formControlName="street">
+  <br />
+  <label for="streetNumber">StreetNumber: </label>
+  <input type="text" formControlName="streetNumber">
+  <br />
+  <label for="city">City: </label>
+  <input type="text" formControlName="city">
+  <br />
+  <label for="postalCode">PostalCode: </label>
+  <input type="text" formControlName="postalCode">
+  <br />
+  <span>
+    {{ valid ? '✓ Address is verified' : '✗ Address is not valid'}}
+  </span>
+</div>

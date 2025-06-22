@@ -1,0 +1,25 @@
+<div>
+  <h1>Welcome {{ profileData?.username }}</h1>
+  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+    <label for="firstname">First name: </label>
+    <input type="text" formControlName="firstname">
+    <br />
+    <label for="lastname">Last name: </label>
+    <input type="text" formControlName="lastname">
+    <br />
+    <label for="additionalInfo">Additional info: </label>
+    <input type="text" formControlName="additionalInfo">
+    <br />
+    <app-address [formGroup]="profileForm.controls.address" [valid]="profileData?.address?.valid!"></app-address>
+
+    <app-characteristics [formGroup]="profileForm.controls.personalInformation" [title]="'Personal Information'"></app-characteristics>
+
+    <app-characteristics [formGroup]="profileForm.controls.preferences" [title]="'Preferences'"></app-characteristics>
+
+    <app-characteristics [formGroup]="profileForm.controls.dislikes" [title]="'Dislikes'"></app-characteristics>
+    
+    <button type="submit" [disabled]="!profileForm.valid">Save</button>
+  </form>
+
+  <p *ngIf="(profileData?.dates ?? []).length > 0">dates: {{ profileData?.dates }}</p>
+</div>

@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>io.praegus.bda</groupId>
-    <artifactId>dateservice</artifactId>
+    <artifactId>date-service</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <name>date-service</name>
@@ -113,7 +113,7 @@
                         <ports>
                             <port>9083</port>
                         </ports>
-                        <mainClass>io.praegus.bda.dateservice.DateServiceApplication</mainClass>
+                        <mainClass>io.praegus.bda.locationservice.DateServiceApplication</mainClass>
                     </container>
                     <allowInsecureRegistries>true</allowInsecureRegistries>
                 </configuration>
