@@ -25,6 +25,29 @@ paths:
                 $ref: '#/components/schemas/Address'
         "404":
           $ref: '#/components/responses/NotFoundResponse'
+  /date-location:
+    post:
+      tags:
+        - dateLocations
+      operationId: generateDateLocation
+      description: haal restaurant locatie op op basis van twee locaties
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Address'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Address'
+        "404":
+          $ref: '#/components/responses/NotFoundResponse'
 
 components:
   responses:
