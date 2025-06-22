@@ -6,11 +6,12 @@ import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonModule } from '@angular/common';
 import { Characteristics } from "../characteristics/characteristics";
+import { Address } from "../address/address";
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, Characteristics],
+  imports: [ReactiveFormsModule, CommonModule, Characteristics, Address],
   templateUrl: './profile.html',
   styleUrl: './profile.css'
 })
@@ -25,6 +26,12 @@ export class Profile implements OnInit, OnDestroy {
     firstname: new FormControl(''),
     lastname: new FormControl(''),
     additionalInfo: new FormControl(''),
+    address: new FormGroup({
+      city: new FormControl(''),
+      street: new FormControl(''),
+      streetNumber: new FormControl(''),
+      postalCode: new FormControl(''),
+    }),
     personalInformation: new FormGroup({
       gender: new FormControl(''),
       favoriteColor: new FormControl(''),

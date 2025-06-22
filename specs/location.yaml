@@ -8,8 +8,8 @@ paths:
     post:
       tags:
         - locations
-      operationId: checkLocation
-      description: Haal locatie op basis van adres op
+      operationId: retrieveLocation
+      description: haal coordinates op van locatie
       requestBody:
         required: true
         content:
@@ -20,9 +20,9 @@ paths:
         "200":
           description: OK
           content:
-            text/plain:
+            application/json:
               schema:
-                type: string
+                $ref: '#/components/schemas/Address'
         "404":
           $ref: '#/components/responses/NotFoundResponse'
 
@@ -84,3 +84,9 @@ components:
           type: string
         city:
           type: string
+        valid:
+          type: boolean
+        longitude:
+          type: number
+        latitude:
+          type: number

@@ -1,5 +1,6 @@
 package io.praegus.bda.locationservice.adapter.apipostcode;
 
+import org.openapitools.model.Address;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -9,6 +10,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 
 @Repository
@@ -16,9 +18,18 @@ public class ApiPostCodeClient {
 
     RestTemplate restTemplate = new RestTemplate();
 
-    public boolean isAddressValid(String zipCode, String houseNumber) {
-        var response = getAddressResponse(zipCode, houseNumber);
-        return response.getStatusCode().value() == 200;
+    public Address retrieveLocation(Address address) {
+        var response = getAddressResponse(address.getPostalCode(), address.getStreetNumber());
+
+        if (response.getStatusCode().value() != 200) {
+            address.setValid(false);
+            return address;
+        }
+
+        address.setLongitude(new BigDecimal(String.valueOf(response.getBody().longitude())));
+        address.setLatitude(new BigDecimal(String.valueOf(response.getBody().latitude())));
+        address.setValid(true);
+        return address;
     }
 
     private ResponseEntity<AddressResponse> getAddressResponse(String zipCode, String houseNumber) {

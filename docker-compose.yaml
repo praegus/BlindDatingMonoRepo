@@ -66,6 +66,7 @@ services:
     environment:
       spring.kafka.bootstrap-servers: broker:9093
       spring.datasource.url: jdbc:postgresql://postgres:5432/postgres?useSSL=false
+      endpoints.locationservice: http://location:9084
     restart: always
     networks:
       - local-kafka
@@ -73,6 +74,15 @@ services:
     depends_on:
       postgres:
         condition: service_started
+
+  location:
+    image: docker.io/finkingma/location-service
+    container_name: location-service
+    ports:
+      - "9084:9084"
+    restart: always
+    networks:
+      - local-kafka
 
 # SUPPORTIVE TOOLS BELOW
 

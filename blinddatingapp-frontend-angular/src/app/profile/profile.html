@@ -10,6 +10,8 @@
     <label for="additionalInfo">Additional info: </label>
     <input type="text" formControlName="additionalInfo">
     <br />
+    <app-address [formGroup]="profileForm.controls.address" [valid]="profileData?.address?.valid!"></app-address>
+
     <app-characteristics [formGroup]="profileForm.controls.personalInformation" [title]="'Personal Information'"></app-characteristics>
 
     <app-characteristics [formGroup]="profileForm.controls.preferences" [title]="'Preferences'"></app-characteristics>

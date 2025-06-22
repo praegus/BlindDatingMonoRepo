@@ -30,6 +30,10 @@ public class ProfileEntity {
     private String additionalInfo;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "addressId", referencedColumnName = "id")
+    private AddressEntity address;
+
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "personalInformationId", referencedColumnName = "id")
     private PersonalInformationEntity personalInformation;
 

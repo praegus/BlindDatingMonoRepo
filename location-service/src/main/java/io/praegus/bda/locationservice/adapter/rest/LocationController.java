@@ -16,8 +16,8 @@ public class LocationController implements LocationApi {
     private final LocationService locationService;
 
     @Override
-    public ResponseEntity<String> checkLocation(Address address) {
-        var isAddressValid = locationService.isAddressValid(address.getPostalCode(), address.getStreetNumber());
-        return isAddressValid? ResponseEntity.ok("correct address") : ResponseEntity.notFound().build();
+    public ResponseEntity<Address> retrieveLocation(Address address) {
+        var retrievedAddress = locationService.retrieveLocation(address);
+        return retrievedAddress.getValid() ? ResponseEntity.ok(retrievedAddress) : ResponseEntity.notFound().build();
     }
 }

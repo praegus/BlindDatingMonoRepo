@@ -164,6 +164,8 @@ components:
         additionalInfo:
           type: string
           maxLength: 20
+        address:
+          $ref: '#/components/schemas/Address'
         personalInformation:
           $ref: '#/components/schemas/Characteristics'
         dislikes:
@@ -247,3 +249,9 @@ components:
           type: string
         city:
           type: string
+        valid:
+          type: boolean
+        longitude:
+          type: number
+        latitude:
+          type: number
