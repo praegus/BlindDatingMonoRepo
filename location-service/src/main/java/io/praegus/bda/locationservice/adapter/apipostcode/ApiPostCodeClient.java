@@ -13,6 +13,9 @@ import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
 import java.util.Collections;
 
+/**
+ * liever straks dit vervangen door https://postcode.tech/ te gebruiken, maar ik krijg geen verificatie mail en kan geen apikey krijgen hierdoor.
+ */
 @Repository
 public class ApiPostCodeClient {
 

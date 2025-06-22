@@ -1,4 +1,4 @@
-package io.praegus.bda.locationservice.adapter.apipostcode;
+package io.praegus.bda.locationservice.adapter.overpass;
 
 import org.openapitools.model.Address;
 import org.springframework.http.HttpEntity;

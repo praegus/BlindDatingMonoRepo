@@ -1,8 +1,7 @@
 package io.praegus.bda.locationservice.business;
 
 import io.praegus.bda.locationservice.adapter.apipostcode.ApiPostCodeClient;
-import io.praegus.bda.locationservice.adapter.apipostcode.GeoUtils;
-import io.praegus.bda.locationservice.adapter.apipostcode.OverPassClient;
+import io.praegus.bda.locationservice.adapter.overpass.OverPassClient;
 import lombok.RequiredArgsConstructor;
 import org.openapitools.model.Address;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package io.praegus.bda.locationservice.adapter.apipostcode;
+package io.praegus.bda.locationservice.adapter.overpass;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

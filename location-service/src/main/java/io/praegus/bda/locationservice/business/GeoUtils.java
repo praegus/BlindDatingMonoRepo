@@ -1,4 +1,4 @@
-package io.praegus.bda.locationservice.adapter.apipostcode;
+package io.praegus.bda.locationservice.business;
 
 import org.openapitools.model.Address;
 

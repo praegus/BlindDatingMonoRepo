@@ -14,6 +14,7 @@ server:
 
 endpoints:
   profileservice: http://localhost:9080
+  locationservice: http://localhost:9084
 
 logging:
   pattern:

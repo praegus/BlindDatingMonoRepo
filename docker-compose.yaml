@@ -24,6 +24,7 @@ services:
     environment:
       spring.kafka.bootstrap-servers: broker:9093
       endpoints.profileservice: http://profile:9080
+      endpoints.locationservice: http://profile:9084
     restart: always
     depends_on:
       broker:
