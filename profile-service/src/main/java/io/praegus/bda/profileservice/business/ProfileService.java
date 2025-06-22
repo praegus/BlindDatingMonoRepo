@@ -197,10 +197,10 @@ public class ProfileService {
     public void addDateToProfile(String username, Date date) {
         var profile = profileRepository.findById(username).orElseThrow();
         var newDateEntity = DateEntity.builder()
-                .addressPostalCode(date.location().postalCode())
-                .addressStreet(date.location().street())
-                .addressStreetNumber(date.location().streetNumber())
-                .addressCity(date.location().city())
+                .addressPostalCode(date.location().getPostalCode())
+                .addressStreet(date.location().getStreet())
+                .addressStreetNumber(date.location().getStreetNumber())
+                .addressCity(date.location().getCity())
                 .dateTime(date.time())
                 .itemToBring(date.objectToBring())
                 .build();
