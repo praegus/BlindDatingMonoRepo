@@ -1,5 +1,6 @@
 package io.praegus.bda.locationservice.adapter.overpass;
 
+import io.praegus.bda.locationservice.business.GeoUtils;
 import org.openapitools.model.Address;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -32,16 +34,22 @@ public class OverPassClient {
                         .street(e.tags.get("addr:street"))
                         .streetNumber(e.tags.get("addr:housenumber"))
                         .postalCode(e.tags.get("addr:postcode"))
+                        .latitude(BigDecimal.valueOf(e.lat))
+                        .longitude(BigDecimal.valueOf(e.lon))
                         .build())
                 .filter(a -> a.getCity() != null)
                 .filter(a -> a.getStreet() != null)
                 .filter(a -> a.getStreetNumber() != null)
                 .filter(a -> a.getPostalCode() != null)
+                .filter(a -> a.getLongitude() != null)
+                .filter(a -> a.getLatitude() != null)
                 .toList();
         if (addresses.isEmpty()) {
             return Optional.empty();
         }
 
-        return Optional.of(addresses.get(0));
+        return Optional.of(addresses.stream()
+                        .min(Comparator.comparingDouble(a -> GeoUtils.calculateDistance(a.getLatitude().doubleValue(), a.getLongitude().doubleValue(), lattitude.doubleValue(), longitude.doubleValue())))
+                        .orElse(null));
     }
 }
