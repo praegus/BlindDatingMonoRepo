@@ -7,11 +7,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonModule } from '@angular/common';
 import { Characteristics } from "../characteristics/characteristics";
 import { Address } from "../address/address";
+import { WebsocketService } from '../match-notifier/websocket.service';
+import { MatchNotifier } from '../match-notifier/match-notifier';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, Characteristics, Address],
+  imports: [ReactiveFormsModule, CommonModule, Characteristics, Address, MatchNotifier],
   templateUrl: './profile.html',
   styleUrl: './profile.css'
 })
@@ -65,7 +67,6 @@ export class Profile implements OnInit, OnDestroy {
     this.route.data.subscribe(data => {
       this.profileData = data['profileData'] as ProfileModel;
       this.profileForm.patchValue(this.profileData)
-      console.log('schaap', this.profileData)
     });
   }
 

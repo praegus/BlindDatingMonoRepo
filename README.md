@@ -6,7 +6,7 @@
 Now run the command `docker compose up` for the rest of the services.
 
 ### 2. Opening the application
-- Navigate to http://localhost:3000 to open the frontend
+- Navigate to http://localhost:8080 to open the frontend
 - Navigate to http://localhost:7777 to open the kafka ui
 - Navigate to http://localhost:8888 to open the pgadmin ui (user-name@domain-name.com/strong-password, see https://stackoverflow.com/questions/25540711/docker-postgres-pgadmin-local-connection for how to connect)
 

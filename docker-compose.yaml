@@ -4,13 +4,6 @@ services:
     image: docker.io/finkingma/blinddatingapp-frontend
     container_name: blinddatingapp-frontend
     ports:
-      - "3000:3000"
-    restart: always
-
-  frontend-angular:
-    image: docker.io/finkingma/blinddatingapp-frontend-angular
-    container_name: blinddatingapp-frontend-angular
-    ports:
       - "8080:80"
     restart: always
 

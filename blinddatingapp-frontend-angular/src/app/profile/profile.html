@@ -12,14 +12,24 @@
     <br />
     <app-address [formGroup]="profileForm.controls.address" [valid]="profileData?.address?.valid!"></app-address>
 
-    <app-characteristics [formGroup]="profileForm.controls.personalInformation" [title]="'Personal Information'"></app-characteristics>
+    <app-characteristics [formGroup]="profileForm.controls.personalInformation"
+      [title]="'Personal Information'"></app-characteristics>
 
     <app-characteristics [formGroup]="profileForm.controls.preferences" [title]="'Preferences'"></app-characteristics>
 
     <app-characteristics [formGroup]="profileForm.controls.dislikes" [title]="'Dislikes'"></app-characteristics>
-    
+
     <button type="submit" [disabled]="!profileForm.valid">Save</button>
+
+    <app-match-notifier [username]="profileData!.username"></app-match-notifier>
   </form>
 
-  <p *ngIf="(profileData?.dates ?? []).length > 0">dates: {{ profileData?.dates }}</p>
+  <h3>Dates</h3>
+  <ul>
+    <li *ngFor="let date of profileData?.dates">
+      📍 {{ date.address?.street }} {{ date.address?.streetNumber }}, {{ date.address?.city }}<br>
+      🕒 {{ date.time | date:'fullDate' }} at {{ date.time | date:'shortTime' }}<br>
+      🎁 Bring: {{ date.itemToBring || 'something special' }}
+    </li>
+  </ul>
 </div>
