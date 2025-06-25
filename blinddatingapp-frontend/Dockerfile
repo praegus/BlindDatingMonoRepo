@@ -7,11 +7,11 @@ RUN mkdir ../specs
 COPY specs/ ../specs
 
 # Copy package.json and install dependencies
-COPY blinddatingapp-frontend-angular/package.json blinddatingapp-frontend-angular/package-lock.json ./
+COPY blinddatingapp-frontend/package.json blinddatingapp-frontend/package-lock.json ./
 RUN npm install
 
 # Copy the entire project and build
-COPY blinddatingapp-frontend-angular/ .
+COPY blinddatingapp-frontend/ .
 RUN npm run build --configuration=production
 
 # Use Nginx for serving the built Angular app
@@ -21,7 +21,7 @@ FROM nginx:latest AS server
 COPY --from=builder /app/dist/blinddatingapp/browser /usr/share/nginx/html
 
 # Copy custom Nginx config (optional)
-COPY blinddatingapp-frontend-angular/nginx.conf /etc/nginx/conf.d/default.conf
+COPY blinddatingapp-frontend/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expose port 80 and start Nginx
 EXPOSE 80

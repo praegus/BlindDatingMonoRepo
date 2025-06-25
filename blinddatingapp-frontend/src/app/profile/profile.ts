@@ -74,6 +74,18 @@ export class Profile implements OnInit, OnDestroy {
     var profile = this.profileForm.value as ProfileModel;
     profile.username = this.profileData!.username;
 
+    if (this.profileForm.value.personalInformation?.musicGenres) {
+      profile.personalInformation!.musicGenres = this.parseGenres(this.profileForm.value.personalInformation?.musicGenres);
+    }
+
+    if (this.profileForm.value.preferences?.musicGenres) {
+      profile.preferences!.musicGenres = this.parseGenres(this.profileForm.value.preferences?.musicGenres);
+    }
+
+    if (this.profileForm.value.dislikes?.musicGenres) {
+      profile.dislikes!.musicGenres = this.parseGenres(this.profileForm.value.dislikes?.musicGenres);
+    }
+
     this.subscription = this.profilesService.updateProfile(this.profileData!.username, profile).subscribe({
       complete: () => {
         window.location.reload();
@@ -83,6 +95,14 @@ export class Profile implements OnInit, OnDestroy {
         this.snackBar.open('Something unexpected occurred, please try again.', 'Close', { duration: 3000 });
       }
     });
+  }
+
+  parseGenres(values: string[]): MusicGenre[] {
+    if (!Array.isArray(values)) {
+      console.warn('Expected array but got:', values);
+      return [values as MusicGenre];
+    }
+    return values.map(value => (value as MusicGenre));
   }
 
   ngOnDestroy() {
