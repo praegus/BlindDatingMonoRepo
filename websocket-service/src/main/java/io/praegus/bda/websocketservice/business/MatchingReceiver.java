@@ -1,12 +1,10 @@
 package io.praegus.bda.websocketservice.business;
 
 import com.example.Match;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import io.praegus.bda.websocketservice.adapter.kafka.KafkaProducer;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -79,10 +77,5 @@ public class MatchingReceiver {
     private Match fromKey(String matchKey) {
         var parts = matchKey.split(":");
         return new Match(parts[0], parts[1]);
-    }
-
-    @KafkaListener(topics = "dates", groupId = "ws")
-    public void listenForDates(String message) {
-        logger.info("Received date in group foo: " + message);
     }
 }
