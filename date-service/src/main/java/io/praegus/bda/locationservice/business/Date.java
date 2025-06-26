@@ -4,5 +4,5 @@ import org.openapitools.client.model.Address;
 
 import java.time.ZonedDateTime;
 
-public record Date(String personA, String personB, Address location, ZonedDateTime time, String objectToBring) {
-}
+//public record Date(String personA, String personB, Address location, ZonedDateTime time, String objectToBring) {
+//}

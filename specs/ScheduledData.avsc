@@ -1,0 +1,33 @@
+{
+  "type": "record",
+  "name": "ScheduledDate",
+  "namespace": "com.example.matching",
+  "fields": [
+    { "name": "personA", "type": "string" },
+    { "name": "personB", "type": "string" },
+    {
+      "name": "location",
+      "type": {
+        "type": "record",
+        "name": "Address",
+        "fields": [
+          { "name": "street", "type": "string" },
+          { "name": "streetNumber", "type": "string" },
+          { "name": "postalCode", "type": "string" },
+          { "name": "city", "type": "string" },
+          { "name": "valid", "type": ["null", "boolean"], "default": null },
+          { "name": "longitude", "type": ["null", "double"], "default": null },
+          { "name": "latitude", "type": ["null", "double"], "default": null }
+        ]
+      }
+    },
+    {
+      "name": "time",
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-millis"
+      }
+    },
+    { "name": "objectToBring", "type": "string" }
+  ]
+}

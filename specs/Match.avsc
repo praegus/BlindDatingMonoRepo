@@ -1,0 +1,9 @@
+{
+  "type": "record",
+  "name": "Match",
+  "namespace": "com.example",
+  "fields": [
+    { "name": "personA", "type": "string" },
+    { "name": "personB", "type": "string" }
+  ]
+}

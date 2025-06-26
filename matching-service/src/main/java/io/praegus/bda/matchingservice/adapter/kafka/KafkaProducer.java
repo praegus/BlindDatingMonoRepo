@@ -1,28 +1,26 @@
 package io.praegus.bda.matchingservice.adapter.kafka;
 
+import com.example.Match;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Repository;
-
-import java.util.concurrent.CompletableFuture;
 
 @Repository
 public class KafkaProducer {
 
     @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
+    private KafkaTemplate<String, Match> kafkaTemplate;
 
-    public void sendMessage(String message) {
-        CompletableFuture<SendResult<String, String>> future = kafkaTemplate.send("matchings", message);
-        future.whenComplete((result, ex) -> {
-            if (ex == null) {
-                System.out.println("Sent message=[" + message +
-                        "] with offset=[" + result.getRecordMetadata().offset() + "]");
-            } else {
-                System.out.println("Unable to send message=[" +
-                        message + "] due to : " + ex.getMessage());
-            }
-        });
+    public void sendMessage(Match match) {
+        kafkaTemplate.send("matchings", match)
+                .whenComplete((result, ex) -> {
+                    if (ex == null) {
+                        System.out.println("Sent message=[" + match +
+                                "] with offset=[" + result.getRecordMetadata().offset() + "]");
+                    } else {
+                        System.out.println("Unable to send message=[" +
+                                match + "] due to : " + ex.getMessage());
+                    }
+                });
     }
 }
