@@ -1,8 +1,6 @@
 package io.praegus.bda.websocketservice.business;
 
 import com.example.Match;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import io.praegus.bda.websocketservice.adapter.kafka.KafkaProducer;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -22,9 +20,6 @@ public class MatchingReceiver {
 
     Logger logger = LoggerFactory.getLogger(MatchingReceiver.class);
     private final SimpMessagingTemplate messagingTemplate;
-    private final ObjectMapper objectMapper = new ObjectMapper()
-            .findAndRegisterModules()
-            .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
     private final KafkaProducer kafkaProducer;
 
     private final Map<String, String> matchStatuses = new HashMap<>();
