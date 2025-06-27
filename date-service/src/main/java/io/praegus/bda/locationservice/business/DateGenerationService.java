@@ -1,10 +1,12 @@
 package io.praegus.bda.locationservice.business;
 
+import com.example.Match;
+import com.example.matching.Address;
+import com.example.matching.ScheduledDate;
 import io.praegus.bda.locationservice.adapter.kafka.KafkaProducer;
 import io.praegus.bda.locationservice.adapter.location.LocationServiceAdapter;
 import io.praegus.bda.locationservice.adapter.profile.ProfileServiceAdapter;
 import lombok.RequiredArgsConstructor;
-import org.openapitools.client.model.Address;
 import org.openapitools.client.model.Profile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,8 +26,8 @@ public class DateGenerationService {
     private final KafkaProducer kafkaProducer;
 
     public void generateDate(Match match) {
-        var profileA = profileServiceAdapter.findProfile(match.personA());
-        var profileB = profileServiceAdapter.findProfile(match.personB());
+        var profileA = profileServiceAdapter.findProfile(match.getPersonA().toString());
+        var profileB = profileServiceAdapter.findProfile(match.getPersonB().toString());
 
         var favoriteColorA = getFavoriteColor(profileA);
         var favoriteColorB = getFavoriteColor(profileB);
@@ -33,7 +35,7 @@ public class DateGenerationService {
         var objectColor = favoriteColorA != null ? favoriteColorA : favoriteColorB != null ? favoriteColorB : "Geel";
 
         var dateAddress = getDateAddress(profileA, profileB);
-        var date = new Date(match.personA(), match.personB(), dateAddress, ZonedDateTime.now().plusDays(5), "Sok (" + objectColor + ")");
+        var date = new ScheduledDate(match.getPersonA().toString(), match.getPersonB().toString(), dateAddress, ZonedDateTime.now().plusDays(5).toInstant(), "Sok (" + objectColor + ")");
         kafkaProducer.produceDate(date);
     }
 
@@ -48,12 +50,20 @@ public class DateGenerationService {
             return defaultAddress();
         }
         try {
-            return locationServiceAdapter.generateDateLocation(List.of(profileA.getAddress(), profileB.getAddress()));
+            var locationAddress = locationServiceAdapter.generateDateLocation(List.of(profileA.getAddress(), profileB.getAddress()));
+            var address = new Address();
+            address.setCity(locationAddress.getCity());
+            address.setStreet(locationAddress.getStreet());
+            address.setStreetNumber(locationAddress.getStreetNumber());
+            address.setPostalCode(locationAddress.getPostalCode());
+            address.setValid(locationAddress.getValid());
+            address.setLatitude(locationAddress.getLatitude() != null ? locationAddress.getLatitude().doubleValue() : null);
+            address.setLongitude(locationAddress.getLongitude() != null ? locationAddress.getLongitude().doubleValue() : null);
+            return address;
         } catch (Exception e) {
             logger.error(e.toString());
             return defaultAddress();
         }
-
     }
 
     private static Address defaultAddress() {

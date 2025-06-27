@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import SockJS from 'sockjs-client';
-import { Client, IMessage } from '@stomp/stompjs';
+import { Client } from '@stomp/stompjs';
 import { Subject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
@@ -22,8 +22,8 @@ export class WebsocketService {
         console.log('Connected to WebSocket');
         this.stompClient.subscribe(`/topic/matchings/${username}`, (response: any) => {
           console.log('Received message:', response.body);
-          var json = JSON.parse(response.body);
-          var yourMatch = json.personA === username ? json.personB : json.personA;
+          var parts = response.body.split(":")
+          var yourMatch = parts[0] === username ? parts[1] : parts[0];
           this.messageSubject.next({
             type: 'match',
             matchWith: yourMatch,
@@ -32,8 +32,8 @@ export class WebsocketService {
         });
         this.stompClient.subscribe(`/topic/approved/${username}`, (response: any) => {
           console.log('Date approved:', response.body);
-          var json = JSON.parse(response.body);
-          var yourMatch = json.personA === username ? json.personB : json.personA;
+          var parts = response.body.split(":")
+          var yourMatch = parts[0] === username ? parts[1] : parts[0];
           this.messageSubject.next({
             type: 'approved',
             approvedBy: yourMatch,

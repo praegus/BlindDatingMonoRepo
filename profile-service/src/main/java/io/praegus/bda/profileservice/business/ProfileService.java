@@ -1,5 +1,6 @@
 package io.praegus.bda.profileservice.business;
 
+import com.example.matching.ScheduledDate;
 import io.micrometer.common.util.StringUtils;
 import io.praegus.bda.profileservice.Conflict409Exception;
 import io.praegus.bda.profileservice.NotFoundException;
@@ -10,6 +11,7 @@ import org.openapitools.model.Address;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -194,15 +196,15 @@ public class ProfileService {
         return builder.build();
     }
 
-    public void addDateToProfile(String username, Date date) {
+    public void addDateToProfile(String username, ScheduledDate date) {
         var profile = profileRepository.findById(username).orElseThrow();
         var newDateEntity = DateEntity.builder()
-                .addressPostalCode(date.location().getPostalCode())
-                .addressStreet(date.location().getStreet())
-                .addressStreetNumber(date.location().getStreetNumber())
-                .addressCity(date.location().getCity())
-                .dateTime(date.time())
-                .itemToBring(date.objectToBring())
+                .addressPostalCode(date.getLocation().getPostalCode().toString())
+                .addressStreet(date.getLocation().getStreet().toString())
+                .addressStreetNumber(date.getLocation().getStreetNumber().toString())
+                .addressCity(date.getLocation().getCity().toString())
+                .dateTime(date.getTime().atZone(ZoneId.of("Europe/Amsterdam")))
+                .itemToBring(date.getObjectToBring().toString())
                 .build();
         profile.getDates().add(newDateEntity);
 

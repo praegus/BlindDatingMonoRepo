@@ -1,8 +1,6 @@
 package io.praegus.bda.matchingservice.business;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import com.example.Match;
 import io.praegus.bda.matchingservice.adapter.kafka.KafkaProducer;
 import io.praegus.bda.matchingservice.adapter.profile.ProfileServiceAdapter;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +23,6 @@ public class MatchingService {
     private final ProfileServiceAdapter profileServiceAdapter;
     private final KafkaProducer kafkaProducer;
     private final MatchingScoreService matchingScoreService;
-    private final ObjectMapper objectMapper = new ObjectMapper()
-            .findAndRegisterModules()
-            .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
     @Scheduled(fixedRate = 10, timeUnit = TimeUnit.SECONDS)
     public void attemptMatching() {
@@ -46,13 +41,7 @@ public class MatchingService {
 
         logger.info("Found {} matches", matches.size());
 
-        matches.forEach(match -> {
-            try {
-                kafkaProducer.sendMessage(objectMapper.writeValueAsString(match));
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        matches.forEach(kafkaProducer::sendMessage);
     }
 
     private List<Match> findMatches(List<Profile> profiles) {
