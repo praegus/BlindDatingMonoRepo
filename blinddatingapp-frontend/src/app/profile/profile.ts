@@ -105,6 +105,10 @@ export class Profile implements OnInit, OnDestroy {
     return values.map(value => (value as MusicGenre));
   }
 
+  dateTimeMs(dateTime : string | undefined): number {
+    return Number(dateTime) * 1000
+  }
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }

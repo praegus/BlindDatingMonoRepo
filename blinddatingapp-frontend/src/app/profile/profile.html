@@ -28,7 +28,7 @@
   <ul>
     <li *ngFor="let date of profileData?.dates">
       📍 {{ date.address?.street }} {{ date.address?.streetNumber }}, {{ date.address?.city }}<br>
-      🕒 {{ date.time | date:'fullDate' }} at {{ date.time | date:'shortTime' }}<br>
+      🕒 {{ dateTimeMs(date.time) | date:'fullDate' }} at {{ dateTimeMs(date.time) | date:'shortTime' }}<br>
       🎁 Bring: {{ date.itemToBring || 'something special' }}
     </li>
   </ul>
