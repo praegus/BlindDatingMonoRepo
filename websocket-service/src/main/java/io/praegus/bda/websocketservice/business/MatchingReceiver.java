@@ -5,11 +5,13 @@ import io.praegus.bda.websocketservice.adapter.kafka.KafkaProducer;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +25,12 @@ public class MatchingReceiver {
     private final KafkaProducer kafkaProducer;
 
     private final Map<String, String> matchStatuses = new HashMap<>();
+
+    @DeleteMapping("/clear-match-statuses")
+    public ResponseEntity<String> clearAllMatchStatuses() {
+        matchStatuses.clear();
+        return ResponseEntity.ok("All match statuses cleared");
+    }
 
     @MessageMapping("/accept/{username}")
     public void receiveAcknowledgement(@DestinationVariable String username, String message) {
