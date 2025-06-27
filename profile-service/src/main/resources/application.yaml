@@ -2,6 +2,11 @@ spring:
   kafka:
     bootstrap-servers: localhost:9092
     group-id: profile
+    properties:
+      schema.registry.url: http://localhost:8081
+      specific.avro.reader: true
+    consumer:
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres?useSSL=false
     username: postgres
