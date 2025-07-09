@@ -3,7 +3,7 @@
 
   <mat-radio-group formControlName="gender" class="full-width">
     <label>Gender:</label>
-    <mat-radio-button *ngFor="let gender of genders" [value]="gender">{{ gender }}</mat-radio-button>
+    <mat-radio-button *ngFor="let gender of genders" [value]="gender" [attr.data-testid]="title.replace(' ','-').toLowerCase() + '-gender-option-' + gender">{{ gender }}</mat-radio-button>
   </mat-radio-group>
 
   <mat-form-field appearance="fill" class="full-width">
