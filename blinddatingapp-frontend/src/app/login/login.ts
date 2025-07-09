@@ -1,13 +1,17 @@
 import { Component, OnDestroy } from '@angular/core';
-import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormControl, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { ProfilesService } from '../generated-sources/openapi';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, CommonModule],
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
@@ -17,7 +21,7 @@ export class Login implements OnDestroy {
   private subscription: Subscription = new Subscription();
 
   profileForm = new FormGroup({
-    name: new FormControl(''),
+    name: new FormControl('', [Validators.required, Validators.pattern('^[A-Za-z]+$')]),
   });
 
   onSubmit(event: any) {

@@ -1,0 +1,10 @@
+.full-width {
+  width: 100%;
+}
+
+.profile-card,
+.dates-card {
+  margin: 1.5rem auto;
+  max-width: 600px;
+  padding: 1rem;
+}

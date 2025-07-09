@@ -1,35 +1,49 @@
-<div>
-  <h1>Welcome {{ profileData?.username }}</h1>
-  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
-    <label for="firstname">First name: </label>
-    <input type="text" formControlName="firstname">
-    <br />
-    <label for="lastname">Last name: </label>
-    <input type="text" formControlName="lastname">
-    <br />
-    <label for="additionalInfo">Additional info: </label>
-    <input type="text" formControlName="additionalInfo">
-    <br />
-    <app-address [formGroup]="profileForm.controls.address" [valid]="profileData?.address?.valid!"></app-address>
+<mat-card class="profile-card">
+  <mat-card-title>Welcome {{ profileData?.username }}</mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
 
-    <app-characteristics [formGroup]="profileForm.controls.personalInformation"
-      [title]="'Personal Information'"></app-characteristics>
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>First name</mat-label>
+        <input matInput formControlName="firstname">
+      </mat-form-field>
 
-    <app-characteristics [formGroup]="profileForm.controls.preferences" [title]="'Preferences'"></app-characteristics>
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Last name</mat-label>
+        <input matInput formControlName="lastname">
+      </mat-form-field>
 
-    <app-characteristics [formGroup]="profileForm.controls.dislikes" [title]="'Dislikes'"></app-characteristics>
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Additional info</mat-label>
+        <input matInput formControlName="additionalInfo">
+      </mat-form-field>
 
-    <button type="submit" [disabled]="!profileForm.valid">Save</button>
+      <app-address [formGroup]="profileForm.controls.address" [valid]="profileData?.address?.valid!"></app-address>
 
-    <app-match-notifier [username]="profileData!.username"></app-match-notifier>
-  </form>
+      <mat-divider></mat-divider>
+      <app-characteristics [formGroup]="profileForm.controls.personalInformation" [title]="'Personal Information'"></app-characteristics>
+      <app-characteristics [formGroup]="profileForm.controls.preferences" [title]="'Preferences'"></app-characteristics>
+      <app-characteristics [formGroup]="profileForm.controls.dislikes" [title]="'Dislikes'"></app-characteristics>
 
-  <h3>Dates</h3>
-  <ul>
-    <li *ngFor="let date of profileData?.dates">
-      📍 {{ date.address?.street }} {{ date.address?.streetNumber }}, {{ date.address?.city }}<br>
-      🕒 {{ dateTimeMs(date.time) | date:'fullDate' }} at {{ dateTimeMs(date.time) | date:'shortTime' }}<br>
-      🎁 Bring: {{ date.itemToBring || 'something special' }}
-    </li>
-  </ul>
-</div>
+      <mat-divider></mat-divider>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!profileForm.valid">Save</button>
+
+      <app-match-notifier [username]="profileData!.username"></app-match-notifier>
+    </form>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="dates-card">
+  <mat-card-title>Dates</mat-card-title>
+  <mat-card-content>
+    <mat-list>
+      <mat-list-item *ngFor="let date of profileData?.dates">
+        <div>
+          📍 {{ date.address?.street }} {{ date.address?.streetNumber }}, {{ date.address?.city }}<br>
+          🕒 {{ dateTimeMs(date.time) | date:'fullDate' }} at {{ dateTimeMs(date.time) | date:'shortTime' }}<br>
+          🎁 Bring: {{ date.itemToBring || 'something special' }}
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>

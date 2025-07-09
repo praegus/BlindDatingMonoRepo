@@ -7,13 +7,18 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonModule } from '@angular/common';
 import { Characteristics } from "../characteristics/characteristics";
 import { Address } from "../address/address";
-import { WebsocketService } from '../match-notifier/websocket.service';
 import { MatchNotifier } from '../match-notifier/match-notifier';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider'
+import { MatListModule } from '@angular/material/list';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, Characteristics, Address, MatchNotifier],
+  imports: [ReactiveFormsModule, CommonModule, Characteristics, Address, MatchNotifier, MatFormFieldModule, MatInputModule, MatButtonModule, MatCardModule, MatDividerModule, MatListModule],
   templateUrl: './profile.html',
   styleUrl: './profile.css'
 })
