@@ -22,7 +22,7 @@ services:
     restart: always
     depends_on:
       broker:
-        condition: service_started
+        condition: service_healthy
 
   websocket:
     image: docker.io/finkingma/websocket-service
@@ -37,7 +37,7 @@ services:
     restart: always
     depends_on:
       broker:
-        condition: service_started
+        condition: service_healthy
 
   matching:
     image: docker.io/finkingma/matching-service
@@ -53,7 +53,7 @@ services:
     restart: always
     depends_on:
       broker:
-        condition: service_started
+        condition: service_healthy
 
   profile:
     image: docker.io/finkingma/profile-service
@@ -72,6 +72,8 @@ services:
     depends_on:
       postgres:
         condition: service_started
+      broker:
+        condition: service_healthy
 
   location:
     image: docker.io/finkingma/location-service
@@ -92,6 +94,11 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "zookeeper", "2181" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   broker:
     image: confluentinc/cp-kafka:7.0.1
@@ -102,7 +109,8 @@ services:
       - "9092:9092"
       - "9093:9093"
     depends_on:
-      - zookeeper
+      zookeeper:
+        condition: service_healthy
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
@@ -113,6 +121,11 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT_INTERNAL://broker:29092,PLAINTEXT_L://localhost:9092,PLAINTEXT_C://broker:9093
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT_INTERNAL:PLAINTEXT,PLAINTEXT_L:PLAINTEXT,PLAINTEXT_C:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
+    healthcheck:
+      test: [ "CMD", "kafka-topics", "--bootstrap-server", "broker:9092", "--list" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
 
   schema-registry:
     image: confluentinc/cp-schema-registry:7.0.1
