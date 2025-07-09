@@ -22,7 +22,7 @@ services:
     restart: always
     depends_on:
       broker:
-        condition: service_started
+        condition: service_healthy
 
   websocket:
     image: docker.io/finkingma/websocket-service
@@ -37,7 +37,7 @@ services:
     restart: always
     depends_on:
       broker:
-        condition: service_started
+        condition: service_healthy
 
   matching:
     image: docker.io/finkingma/matching-service
@@ -53,7 +53,7 @@ services:
     restart: always
     depends_on:
       broker:
-        condition: service_started
+        condition: service_healthy
 
   profile:
     image: docker.io/finkingma/profile-service
@@ -113,6 +113,11 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT_INTERNAL://broker:29092,PLAINTEXT_L://localhost:9092,PLAINTEXT_C://broker:9093
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT_INTERNAL:PLAINTEXT,PLAINTEXT_L:PLAINTEXT,PLAINTEXT_C:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
+    healthcheck:
+      test: [ "CMD", "kafka-topics", "--bootstrap-server", "broker:9092", "--list" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
 
   schema-registry:
     image: confluentinc/cp-schema-registry:7.0.1
