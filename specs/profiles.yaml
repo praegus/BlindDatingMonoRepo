@@ -39,6 +39,16 @@ paths:
                 type: string
         409:
           $ref: '#/components/responses/ConflictResponse'
+
+    delete:
+      tags:
+        - profiles
+      operationId: deleteProfiles
+      description: Verwijder alle profielen
+      responses:
+        "200":
+          description: OK
+
   /profiles/{username}:
     get:
       tags:

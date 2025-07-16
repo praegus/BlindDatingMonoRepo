@@ -210,4 +210,8 @@ public class ProfileService {
 
         profileRepository.save(profile);
     }
+
+    public void deleteAllProfiles() {
+        profileRepository.deleteAll();
+    }
 }
