@@ -1,60 +1,44 @@
-import { test, expect } from '@playwright/test';
-import { ProfilePage } from './page-objects/profile-page';
+import { test, expect } from './fixtures/test-fixture';
 
 
-
-test('Create profile', async ({ page, request }) => {
-    const response = await request.delete('http://localhost:9080/profiles/Jannick')
+test('Create profile', async ({ page, request, profilePage, preferencesPage }) => {
+    const response = await request.delete('http://localhost:9080/profiles')
     expect(response.ok()).toBeTruthy(); // Checks if the status code is in the 2xx range
-    expect(response.status()).toBe(204); // Or 200, depending on the API
+    expect(response.status()).toBe(200); // Or 200, depending on the API
 
-    const profilePage = new ProfilePage(page);
-    profilePage.goto();
+    await profilePage.goto();
 
     // await expect(profilePage.createButton).toBeDisabled();
-    profilePage.createNewProfile('Jannick');
+    await profilePage.createNewProfile('Jannick');
 
-    await page.getByRole('textbox', { name: 'First name' }).fill('Tennisert');
-    await page.getByRole('textbox', { name: 'Last name' }).fill('');
-    await page.getByRole('textbox', { name: 'Additional info' }).fill('Power by Playwright');
-    await page.getByRole('textbox', { name: 'Street' }).first().fill('Craaienhof');
-    await page.getByRole('textbox', { name: 'Street Number' }).fill('9');
-    await page.getByRole('textbox', { name: 'City' }).fill('Kesteren');
-    await page.getByRole('textbox', { name: 'Postal Code' }).fill('4041BP');
-    await page.getByTestId('personal-information-gender-option-MAN').click();
-    await page.getByTestId('preferences-gender-option-WOMAN').click();
-    await Promise.all([
-        page.getByRole('button', { name: 'Save' }).click(),
-        page.waitForNavigation(),
-    ]);
-    expect(page.getByText('Address is verified')).toBeVisible({ timeout: 5000 });
-    await page.waitForTimeout(5000);
+    await preferencesPage.fillProfileDetails(
+        'Jannick',
+        'Craaienhof',
+        '9',    
+        '4041BP',
+        'MAN',
+        'WOMAN'
+    );
+
 });
 
-test('Create second profile', async ({ page, request }) => {
+test('Create second profile', async ({ page, request, profilePage, preferencesPage }) => {
     const response = await request.delete('http://localhost:9080/profiles/Iga')
     expect(response.ok()).toBeTruthy(); // Checks if the status code is in the 2xx range
     expect(response.status()).toBe(204); // Or 200, depending on the API
     
-    const profilePage = new ProfilePage(page);
-    profilePage.goto();
+    
+    await profilePage.goto();
 
     // await expect(profilePage.createButton).toBeDisabled();
-    profilePage.createNewProfile('Iga');
-
-    await page.getByRole('textbox', { name: 'First name' }).fill('Iga');
-    await page.getByRole('textbox', { name: 'Last name' }).fill('Tenniser');
-    await page.getByRole('textbox', { name: 'Additional info' }).fill('Power by Playwright');
-    await page.getByRole('textbox', { name: 'Street' }).first().fill('Craaienhof');
-    await page.getByRole('textbox', { name: 'Street Number' }).fill('9');
-    await page.getByRole('textbox', { name: 'City' }).fill('Kesteren');
-    await page.getByRole('textbox', { name: 'Postal Code' }).fill('4041BP');
-    await page.getByTestId('personal-information-gender-option-WOMAN').click();
-    await page.getByTestId('preferences-gender-option-MAN').click();
-    await Promise.all([
-        page.getByRole('button', { name: 'Save' }).click(),
-        page.waitForNavigation(),
-    ]);
-    expect(page.getByText('Address is verified')).toBeVisible({ timeout: 5000 });
-    await page.waitForTimeout(5000);
+    await profilePage.createNewProfile('Iga');
+    
+    await preferencesPage.fillProfileDetails(
+        'Iga',
+        'Craaienhof',
+        '19',    
+        '3811HM',
+        'WOMAN',
+        'MAN'
+    );
 });
