@@ -14,11 +14,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider'
 import { MatListModule } from '@angular/material/list';
+import { DateList } from '../dates/date-list';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, Characteristics, Address, MatchNotifier, MatFormFieldModule, MatInputModule, MatButtonModule, MatCardModule, MatDividerModule, MatListModule],
+  imports: [ReactiveFormsModule, CommonModule, Characteristics, Address, DateList, MatchNotifier, MatFormFieldModule, MatInputModule, MatButtonModule, MatCardModule, MatDividerModule, MatListModule],
   templateUrl: './profile.html',
   styleUrl: './profile.css'
 })
@@ -108,10 +109,6 @@ export class Profile implements OnInit, OnDestroy {
       return [values as MusicGenre];
     }
     return values.map(value => (value as MusicGenre));
-  }
-
-  dateTimeMs(dateTime : string | undefined): number {
-    return Number(dateTime) * 1000
   }
 
   ngOnDestroy() {

@@ -1,0 +1,29 @@
+<mat-card class="dates-card" appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>💘 Your Dates</mat-card-title>
+  </mat-card-header>
+
+  <mat-divider></mat-divider>
+
+  <mat-card-content>
+    <ng-container *ngIf="dates.length > 0; else noDates">
+      <div class="date-card-list">
+        <mat-card *ngFor="let date of dates" class="date-card">
+          <mat-card-content>
+            <p><strong>📍</strong> {{ date.address?.street }} {{ date.address?.streetNumber }}, {{ date.address?.city }}</p>
+            <p><strong>🕒</strong> {{ dateTimeMs(date.time) | date:'fullDate' }} at {{ dateTimeMs(date.time) | date:'shortTime' }}</p>
+            <p><strong>🎁</strong> Bring: {{ date.itemToBring || 'something special' }}</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </ng-container>
+
+    <ng-template #noDates>
+      <div class="no-dates">
+        <mat-icon color="warn">event_busy</mat-icon>
+        No dates planned yet...
+      </div>
+    </ng-template>
+  </mat-card-content>
+</mat-card>
+
