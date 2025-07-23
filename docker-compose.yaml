@@ -10,49 +10,43 @@ services:
   date:
     image: docker.io/finkingma/date-service
     container_name: date-service
-    networks:
-      - local-kafka
     ports:
       - "9083:9083"
     environment:
-      spring.kafka.bootstrap-servers: broker:9093
-      spring.kafka.properties.schema.registry.url: http://schema-registry:8081
+      spring.kafka.bootstrap-servers: kafka:9092
+      spring.kafka.properties.schema.registry.url: http://schema-registry:8081/apis/ccompat/v7
       endpoints.profileservice: http://profile:9080
       endpoints.locationservice: http://location:9084
     restart: always
     depends_on:
-      broker:
+      kafka:
         condition: service_healthy
 
   websocket:
     image: docker.io/finkingma/websocket-service
     container_name: websocket-service
-    networks:
-      - local-kafka
     ports:
       - "9082:9082"
     environment:
-      spring.kafka.bootstrap-servers: broker:9093
-      spring.kafka.properties.schema.registry.url: http://schema-registry:8081
+      spring.kafka.bootstrap-servers: kafka:9092
+      spring.kafka.properties.schema.registry.url: http://schema-registry:8081/apis/ccompat/v7
     restart: always
     depends_on:
-      broker:
+      kafka:
         condition: service_healthy
 
   matching:
     image: docker.io/finkingma/matching-service
     container_name: matching-service
-    networks:
-      - local-kafka
     ports:
       - "9081:9081"
     environment:
-      spring.kafka.bootstrap-servers: broker:9093
-      spring.kafka.properties.schema.registry.url: http://schema-registry:8081
+      spring.kafka.bootstrap-servers: kafka:9092
+      spring.kafka.properties.schema.registry.url: http://schema-registry:8081/apis/ccompat/v7
       endpoints.profileservice: http://profile:9080
     restart: always
     depends_on:
-      broker:
+      kafka:
         condition: service_healthy
 
   profile:
@@ -61,18 +55,15 @@ services:
     ports:
       - "9080:9080"
     environment:
-      spring.kafka.bootstrap-servers: broker:9093
-      spring.kafka.properties.schema.registry.url: http://schema-registry:8081
+      spring.kafka.bootstrap-servers: kafka:9092
+      spring.kafka.properties.schema.registry.url: http://schema-registry:8081/apis/ccompat/v7
       spring.datasource.url: jdbc:postgresql://postgres:5432/postgres?useSSL=false
       endpoints.locationservice: http://location:9084
     restart: always
-    networks:
-      - local-kafka
-      - postgres
     depends_on:
       postgres:
         condition: service_started
-      broker:
+      kafka:
         condition: service_healthy
 
   location:
@@ -81,88 +72,63 @@ services:
     ports:
       - "9084:9084"
     restart: always
-    networks:
-      - local-kafka
 
 # SUPPORTIVE TOOLS BELOW
-
-  zookeeper:
-    image: confluentinc/cp-zookeeper:7.0.1
-    container_name: zookeeper
-    networks:
-      - local-kafka
+  kafka:
+    image: bitnami/kafka:latest
+    container_name: kafka
+    ports:
+      - "9092:9092"
     environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
+      KAFKA_CFG_NODE_ID: 1
+      KAFKA_KRAFT_CLUSTER_ID: kraft-cluster
+      KAFKA_CFG_PROCESS_ROLES: broker,controller
+      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: 1@localhost:9093
+      KAFKA_CFG_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
+      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_CFG_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      ALLOW_PLAINTEXT_LISTENER: yes
     healthcheck:
-      test: [ "CMD", "nc", "-z", "zookeeper", "2181" ]
+      test: [ "CMD-SHELL", "kafka-topics.sh --bootstrap-server localhost:9092 --list || exit 1" ]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  broker:
-    image: confluentinc/cp-kafka:7.0.1
-    container_name: broker
-    networks:
-      - local-kafka
-    ports:
-      - "9092:9092"
-      - "9093:9093"
-    depends_on:
-      zookeeper:
-        condition: service_healthy
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-      KAFKA_LISTENERS: PLAINTEXT_INTERNAL://0.0.0.0:29092,PLAINTEXT_C://0.0.0.0:9093,PLAINTEXT_L://0.0.0.0:9092
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT_INTERNAL://broker:29092,PLAINTEXT_L://localhost:9092,PLAINTEXT_C://broker:9093
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT_INTERNAL:PLAINTEXT,PLAINTEXT_L:PLAINTEXT,PLAINTEXT_C:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
-    healthcheck:
-      test: [ "CMD", "kafka-topics", "--bootstrap-server", "broker:9092", "--list" ]
-      interval: 10s
-      timeout: 10s
-      retries: 5
-
   schema-registry:
-    image: confluentinc/cp-schema-registry:7.0.1
+    image: apicurio/apicurio-registry:latest
     container_name: schema-registry
-    networks:
-      - local-kafka
-    depends_on:
-      - broker
     ports:
       - "8081:8081"
     environment:
-      SCHEMA_REGISTRY_HOST_NAME: schema-registry
-      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://broker:29092
+      REGISTRY_LOG_LEVEL: INFO
+      REGISTRY_UI_FEATURES_READONLY: false
+      REGISTRY_STORAGE: mem
+      QUARKUS_HTTP_PORT: 8081
+      REGISTRY_COMPATIBILITY_CONFLUENT: true
+      REGISTRY_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+    depends_on:
+      kafka:
+        condition: service_healthy
 
   kafka-ui:
-    image: provectuslabs/kafka-ui
+    image: provectuslabs/kafka-ui:latest
     container_name: kafka-ui
-    networks:
-      - local-kafka
-    depends_on:
-      - broker
     ports:
       - "7777:8080"
-    restart: always
+    depends_on:
+      kafka:
+        condition: service_healthy
     environment:
-      - KAFKA_CLUSTERS_0_NAME=broker
-      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=broker:9093
-      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
-      - KAFKA_CLUSTERS_0_SCHEMAREGISTRY=http://schema-registry:8081
+      KAFKA_CLUSTERS_0_NAME: LocalKafka
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+      KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://schema-registry:8081/apis/ccompat/v7
 
   postgres:
     image: postgres
     ports:
       - 5432:5432
     restart: always
-    networks:
-      - postgres
     shm_size: 128mb
     environment:
       POSTGRES_USER: postgres
@@ -172,8 +138,6 @@ services:
     image: dpage/pgadmin4
     container_name: pgadmin4_container
     restart: always
-    networks:
-      - postgres
     ports:
       - "8888:80"
     environment:
@@ -181,9 +145,3 @@ services:
       PGADMIN_DEFAULT_PASSWORD: strong-password
     volumes:
       - C:\pgadmin-data:/var/lib/pgadmin
-
-networks:
-  local-kafka:
-    driver: bridge
-  postgres:
-    driver: bridge

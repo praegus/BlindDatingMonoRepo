@@ -37,7 +37,7 @@ public class ProfileController implements ProfilesApi {
     public ResponseEntity<Void> deleteProfiles() {
         profileService.deleteAllProfiles();
         logger.info("all profiles deleted");
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @Override
