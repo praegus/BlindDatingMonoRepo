@@ -22,4 +22,11 @@ export class ProfilePage {
 
     }
 
+    async loginExistingProfile(profileName: string) {
+        await expect(this.page.getByRole('button', { name: 'Create' })).toBeDisabled();
+        await this.page.getByRole('textbox').fill(profileName);
+        await this.page.getByRole('button', { name: 'Login' }).click();
+        expect(this.page.getByText(`Welcome ${profileName}`)).toBeVisible();
+
+    }
 }
