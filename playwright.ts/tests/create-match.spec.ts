@@ -44,16 +44,38 @@ test('Create second profile', async ({ page, request, profilePage, preferencesPa
     );
 });
 
-test('Verify matching profiles', async ({ page, request, profilePage }) => {
+test('Verify matching profile message', async ({ page, request, profilePage }) => {
 
     const response = await request.get('http://localhost:9081')
     expect(response.ok()).toBeTruthy(); // Checks if the status code is in the 2xx range
     expect(response.status()).toBe(200); // Or 200, depending on the API
 
-    await profilePage.goto()
-
+    // first person accepts the match
+    await profilePage.goto();
     await profilePage.loginExistingProfile('Jannick');  
 
+    await expect.poll(async () => {
+        return await page.getByRole('button', { name: 'Accept!' }).isVisible();
+    }, {
+       timeout:  10000 
+    }).toBe(true);
     await expect(page.getByText('Match gevonden')).toBeEnabled();
-    
+});
+
+test('Both persons have accepted the match', async ({ page, request, profilePage }) => {
+
+    const response = await request.get('http://localhost:9081')
+    expect(response.ok()).toBeTruthy(); // Checks if the status code is in the 2xx range
+    expect(response.status()).toBe(200); // Or 200, depending on the API
+
+    // second person accepts the match
+    await profilePage.goto();
+    await profilePage.loginExistingProfile('Iga');
+
+    await expect.poll(async () => {
+        return await page.getByRole('button', { name: 'Accept!' }).isVisible();
+    }, {
+       timeout:  10000 
+    }).toBe(true);
+    await expect(page.getByText('Match gevonden')).toBeEnabled();
 });
