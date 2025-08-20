@@ -21,7 +21,8 @@ test('Create profiles to setup a date', async ({ page, request, profilePage, pre
         '9',    
         '4041BP',
         'MAN',
-        'WOMAN'
+        'WOMAN',
+        'Pimpel paars met een gouden randje'
     );
     
     await profilePage.goto();
@@ -34,7 +35,8 @@ test('Create profiles to setup a date', async ({ page, request, profilePage, pre
         '19',    
         '3811HM',
         'WOMAN',
-        'MAN'
+        'MAN',
+        'Pimpel paars met een gouden randje'
     );
 
     //WHEN beide profielen de match accepteren
@@ -76,5 +78,7 @@ test('Create profiles to setup a date', async ({ page, request, profilePage, pre
     await pageTwo.reload();
 
     await expect(pageOne.getByText('Dwarsweg 63, Overberg')).toBeVisible();
+    await expect(pageOne.getByText('Bring: Sok (Pimpel paars met een gouden randje)')).toBeVisible();
     await expect(pageTwo.getByText('Dwarsweg 63, Overberg')).toBeVisible();
+    await expect(pageTwo.getByText('Bring: Sok (Pimpel paars met een gouden randje)')).toBeVisible();
 });

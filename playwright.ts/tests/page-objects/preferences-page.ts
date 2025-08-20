@@ -9,7 +9,7 @@ export class PreferencesPage {
         this.page = page;
     }
 
-    async fillProfileDetails(firstName: string, street: string, streetNumber: string, postalCode: string, gender: string, preferredGender: string) {
+    async fillProfileDetails(firstName: string, street: string, streetNumber: string, postalCode: string, gender: string, preferredGender: string, color: string = '') {
         await this.page.getByRole('textbox', { name: 'First name' }).fill(firstName);
         await this.page.getByRole('textbox', { name: 'Last name' }).fill('');
         await this.page.getByRole('textbox', { name: 'Additional info' }).fill('Power by Playwright');
@@ -19,6 +19,8 @@ export class PreferencesPage {
         await this.page.getByRole('textbox', { name: 'Postal Code' }).fill(postalCode);
         await this.page.getByTestId(`personal-information-gender-option-${gender}`).click();
         await this.page.getByTestId(`preferences-gender-option-${preferredGender}`).click();
+        await this.page.getByRole('textbox', { name: 'Favorite Color'}).nth(0).fill(color);
+        await this.page.getByRole('textbox', { name: 'Favorite Color'}).nth(1).fill(color);
         await Promise.all([
             this.page.getByRole('button', { name: 'Save' }).click(),
             this.page.waitForNavigation(),
