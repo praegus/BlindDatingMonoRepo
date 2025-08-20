@@ -1,14 +1,15 @@
 import { test, expect } from './fixtures/test-fixture';
+import { ProfilePage } from './page-objects/profile-page';
 
 // test goals:
 // 1. Create a profile  
 // 2. Create a second profile with different details
 // 3. verify that profiles are matched successfully
 
-test('Create profile', async ({ page, request, profilePage, preferencesPage }) => {
-    const response = await request.delete('http://localhost:9080/profiles')
-    expect(response.ok()).toBeTruthy(); // Checks if the status code is in the 2xx range
-    expect(response.status()).toBe(204); // Or 200, depending on the API
+test('Create profiles to setup a date', async ({ page, request, profilePage, preferencesPage, context }) => {
+    //GIVEN dat er 2 profiles zijn die die "matchen".
+    await request.delete('http://localhost:9082/clear-match-statuses');
+    await request.delete('http://localhost:9080/profiles');
 
     await profilePage.goto();
 
@@ -22,13 +23,6 @@ test('Create profile', async ({ page, request, profilePage, preferencesPage }) =
         'MAN',
         'WOMAN'
     );
-
-});
-
-test('Create second profile', async ({ page, request, profilePage, preferencesPage }) => {
-    // const response = await request.delete('http://localhost:9080/profiles/Iga')
-    // expect(response.ok()).toBeTruthy(); // Checks if the status code is in the 2xx range
-    // expect(response.status()).toBe(204); // Or 200, depending on the API
     
     await profilePage.goto();
 
@@ -42,40 +36,45 @@ test('Create second profile', async ({ page, request, profilePage, preferencesPa
         'WOMAN',
         'MAN'
     );
-});
 
-test('Verify matching profile message', async ({ page, request, profilePage }) => {
+    //WHEN beide profielen de match accepteren
 
-    const response = await request.get('http://localhost:9081')
-    expect(response.ok()).toBeTruthy(); // Checks if the status code is in the 2xx range
-    expect(response.status()).toBe(200); // Or 200, depending on the API
 
-    // first person accepts the match
-    await profilePage.goto();
-    await profilePage.loginExistingProfile('Jannick');  
+    const pageOne = await context.newPage();
+    const pageTwo = await context.newPage();
 
-    await expect.poll(async () => {
-        return await page.getByRole('button', { name: 'Accept!' }).isVisible();
-    }, {
-       timeout:  10000 
-    }).toBe(true);
-    await expect(page.getByText('Match gevonden')).toBeEnabled();
-});
+    const profilePage1 = new ProfilePage(pageOne)
+    const profilePage2 = new ProfilePage(pageTwo)
 
-test('Both persons have accepted the match', async ({ page, request, profilePage }) => {
-
-    const response = await request.get('http://localhost:9081')
-    expect(response.ok()).toBeTruthy(); // Checks if the status code is in the 2xx range
-    expect(response.status()).toBe(200); // Or 200, depending on the API
-
-    // second person accepts the match
-    await profilePage.goto();
-    await profilePage.loginExistingProfile('Iga');
+    await profilePage1.goto();
+    await profilePage1.loginExistingProfile('Jannick'); 
+    
+    await profilePage2.goto();
+    await profilePage2.loginExistingProfile('Iga');
 
     await expect.poll(async () => {
-        return await page.getByRole('button', { name: 'Accept!' }).isVisible();
+        return await pageOne.getByRole('button', { name: 'Accept!' }).isEnabled();
     }, {
-       timeout:  10000 
+       timeout:  15000 
     }).toBe(true);
-    await expect(page.getByText('Match gevonden')).toBeEnabled();
+    await expect(pageOne.getByText('Match gevonden')).toBeVisible();
+    await pageOne.getByRole('button', { name: 'Accept!' }).click();
+
+    await expect.poll(async () => {
+        return await pageTwo.getByRole('button', { name: 'Accept!' }).isEnabled();
+    }, {
+       timeout:  15000 
+    }).toBe(true);
+    await expect(pageTwo.getByText('Match gevonden')).toBeVisible();
+    await pageTwo.getByRole('button', { name: 'Accept!' }).click();
+    await pageOne.waitForTimeout(1000);
+    //await pageTwo.waitForTimeout(1000);
+
+    //THEN hebben beide profielen een date gepland.
+
+    await pageOne.reload();
+    await pageTwo.reload();
+
+    await expect(pageOne.getByText('Dwarsweg 63, Overberg')).toBeVisible();
+    await expect(pageTwo.getByText('Dwarsweg 63, Overberg')).toBeVisible();
 });
