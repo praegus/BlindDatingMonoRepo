@@ -33,17 +33,4 @@
   </mat-card-content>
 </mat-card>
 
-<mat-card class="dates-card">
-  <mat-card-title>Dates</mat-card-title>
-  <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let date of profileData?.dates">
-        <div>
-          📍 {{ date.address?.street }} {{ date.address?.streetNumber }}, {{ date.address?.city }}<br>
-          🕒 {{ dateTimeMs(date.time) | date:'fullDate' }} at {{ dateTimeMs(date.time) | date:'shortTime' }}<br>
-          🎁 Bring: {{ date.itemToBring || 'something special' }}
-        </div>
-      </mat-list-item>
-    </mat-list>
-  </mat-card-content>
-</mat-card>
+<app-date-list [dates]="profileData?.dates!"></app-date-list>
