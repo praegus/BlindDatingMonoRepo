@@ -6,10 +6,11 @@ import { ProfilePage } from './page-objects/profile-page';
 // 2. Create a second profile with different details
 // 3. verify that profiles are matched successfully
 
-test('Create profiles to setup a date', async ({ page, request, profilePage, preferencesPage, context, profileClient}) => {
+test('Create profiles to setup a date', async ({ page, request, profilePage, preferencesPage, context, profileClient, webSocket}) => {
     //GIVEN dat er 2 profiles zijn die die "matchen".
-    await request.delete('http://localhost:9082/clear-match-statuses');
-    await request.delete('http://localhost:9080/profiles');
+    
+    await webSocket.clearMatchStatueses();
+    await profileClient.deleteAllProfiles();
 
     await profileClient.createProfile(
             'Jannick',
