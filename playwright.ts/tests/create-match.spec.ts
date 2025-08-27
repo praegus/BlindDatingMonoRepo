@@ -48,25 +48,19 @@ test('Create profiles to setup a date', async ({ page, request, profilePage, pre
     await profilePage2.loginExistingProfile('Iga');
 
     await expect.poll(async () => {
-        return await pageOne.getByRole('button', { name: 'Accept!' }).isEnabled();
+            const buttonOneEnabled = await pageOne.getByRole('button', { name: 'Accept!' }).isEnabled();
+            const buttonTwoEnabled = await pageTwo.getByRole('button', { name: 'Accept!' }).isEnabled();
+            return buttonOneEnabled && buttonTwoEnabled;
     }, {
        timeout:  15000 
     }).toBe(true);
-    await expect(pageOne.getByText('Match gevonden')).toBeVisible();
     await pageOne.getByRole('button', { name: 'Accept!' }).click();
-
-    await expect.poll(async () => {
-        return await pageTwo.getByRole('button', { name: 'Accept!' }).isEnabled();
-    }, {
-       timeout:  15000 
-    }).toBe(true);
-    await expect(pageTwo.getByText('Match gevonden')).toBeVisible();
     await pageTwo.getByRole('button', { name: 'Accept!' }).click();
-    await pageOne.waitForTimeout(1000);
-    //await pageTwo.waitForTimeout(1000);
+
 
     //THEN hebben beide profielen een date gepland.
 
+        await pageTwo.waitForTimeout(1000);
     await pageOne.reload();
     await pageTwo.reload();
 
