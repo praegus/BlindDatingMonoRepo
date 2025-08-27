@@ -6,30 +6,22 @@ import { ProfilePage } from './page-objects/profile-page';
 // 2. Create a second profile with different details
 // 3. verify that profiles are matched successfully
 
-test('Create profiles to setup a date', async ({ page, request, profilePage, preferencesPage, context }) => {
+test('Create profiles to setup a date', async ({ page, request, profilePage, preferencesPage, context, profileClient}) => {
     //GIVEN dat er 2 profiles zijn die die "matchen".
     await request.delete('http://localhost:9082/clear-match-statuses');
     await request.delete('http://localhost:9080/profiles');
 
-    await profilePage.goto();
-
-    await profilePage.createNewProfile('Jannick');
-
-    await preferencesPage.fillProfileDetails(
-        'Jannick',
-        'Craaienhof',
-        '9',    
-        '4041BP',
-        'MAN',
-        'WOMAN',
-        'Pimpel paars met een gouden randje'
+    await profileClient.createProfile(
+            'Jannick',
+            'Craaienhof',
+            '9',    
+            '4041BP',
+            'MAN',
+            'WOMAN',
+            'Pimpel paars met een gouden randje'
     );
-    
-    await profilePage.goto();
 
-    await profilePage.createNewProfile('Iga');
-    
-    await preferencesPage.fillProfileDetails(
+    await profileClient.createProfile(
         'Iga',
         'Kauwenplein',
         '19',    

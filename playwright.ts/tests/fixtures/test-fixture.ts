@@ -1,11 +1,13 @@
 import { test as base } from '@playwright/test';
 import { ProfilePage } from '../page-objects/profile-page';
 import { PreferencesPage } from '../page-objects/preferences-page';
+import { ProfileClient } from '../page-objects/profile-client';
 
 
 type TestFixtures = {
     profilePage: ProfilePage;
     preferencesPage: PreferencesPage;
+    profileClient: ProfileClient;
 }
 
 export const test = base.extend<TestFixtures>({
@@ -16,6 +18,10 @@ export const test = base.extend<TestFixtures>({
     preferencesPage: async ({ page }, use) => {
         const preferencesPage = new PreferencesPage(page);
         await use(preferencesPage);
+    },
+    profileClient: async ({ page }, use) => {
+        const profileClient = new ProfileClient(page);
+        await use(profileClient);
     }
 });
 
