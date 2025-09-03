@@ -1,30 +1,44 @@
-<div [formGroup]="formGroup">
+<div [formGroup]="formGroup" class="characteristics-container">
   <h3>{{ title }}</h3>
-  <label *ngFor="let gender of genders">
-    <input type="radio" formControlName="gender" [value]="gender"> {{ gender }}
-  </label>
-  <br />
-  <label for="favoriteColor">Favorite color: </label>
-  <input type="text" formControlName="favoriteColor">
-  <br />
-  <label for="pets">Pets: </label>
-  <input type="radio" formControlName="pets" [value]="true"> Yes
-  <input type="radio" formControlName="pets" [value]="false"> No
-  <br />
-  <label for="hairColor">Hair color: </label>
-  <select formControlName="hairColor">
-    <option *ngFor="let hairColor of hairColors" [value]="hairColor">{{ hairColor }}</option>
-  </select>
-  <br />
-  <label for="tattoos">Tattoos: </label>
-  <input type="radio" formControlName="tattoos" [value]="true"> Yes
-  <input type="radio" formControlName="tattoos" [value]="false"> No
-  <br />
-  <label for="sports">Sports: </label>
-  <input type="text" formControlName="sports">
-  <br />
-  <label>Music genre:</label>
-  <select formControlName="musicGenres">
-    <option *ngFor="let musicGenre of musicGenres" [value]="musicGenre">{{ musicGenre }}</option>
-  </select>
+
+  <mat-radio-group formControlName="gender" class="full-width">
+    <label>Gender:</label>
+    <mat-radio-button *ngFor="let gender of genders" [value]="gender" [attr.data-testid]="title.replace(' ','-').toLowerCase() + '-gender-option-' + gender">{{ gender }}</mat-radio-button>
+  </mat-radio-group>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Favorite Color</mat-label>
+    <input matInput formControlName="favoriteColor">
+  </mat-form-field>
+
+  <label>Pets:</label>
+  <mat-radio-group formControlName="pets" class="full-width">
+    <mat-radio-button [value]="true">Yes</mat-radio-button>
+    <mat-radio-button [value]="false">No</mat-radio-button>
+  </mat-radio-group>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Hair Color</mat-label>
+    <mat-select formControlName="hairColor">
+      <mat-option *ngFor="let hairColor of hairColors" [value]="hairColor">{{ hairColor }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <label>Tattoos:</label>
+  <mat-radio-group formControlName="tattoos" class="full-width">
+    <mat-radio-button [value]="true">Yes</mat-radio-button>
+    <mat-radio-button [value]="false">No</mat-radio-button>
+  </mat-radio-group>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Sports</mat-label>
+    <input matInput formControlName="sports">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Music Genre</mat-label>
+    <mat-select formControlName="musicGenres">
+      <mat-option *ngFor="let musicGenre of musicGenres" [value]="musicGenre">{{ musicGenre }}</mat-option>
+    </mat-select>
+  </mat-form-field>
 </div>

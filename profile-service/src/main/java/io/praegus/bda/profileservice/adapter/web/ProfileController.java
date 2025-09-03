@@ -8,7 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -22,14 +24,27 @@ public class ProfileController implements ProfilesApi {
     @Override
     public ResponseEntity<String> createProfile(Profile profile) {
         profileService.createProfile(profile);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(profile.getUsername())
+                .toUri();
         logger.info("new profile {} created", profile.getUsername());
-        return ResponseEntity.ok("Superduper!");
+
+        return ResponseEntity.created(location).body("Superduper!");
     }
 
     @Override
     public ResponseEntity<Void> deleteProfile(String username) {
         profileService.deleteProfile(username);
         logger.info("profile {} deleted", username);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteProfiles() {
+        profileService.deleteAllProfiles();
+        logger.info("all profiles deleted");
         return ResponseEntity.noContent().build();
     }
 

@@ -1,18 +1,32 @@
-<div [formGroup]="formGroup">
+<div [formGroup]="formGroup" class="address-container">
   <h3>Address</h3>
-  <label for="street">Street: </label>
-  <input type="text" formControlName="street">
-  <br />
-  <label for="streetNumber">StreetNumber: </label>
-  <input type="text" formControlName="streetNumber">
-  <br />
-  <label for="city">City: </label>
-  <input type="text" formControlName="city">
-  <br />
-  <label for="postalCode">PostalCode: </label>
-  <input type="text" formControlName="postalCode">
-  <br />
-  <span>
-    {{ valid ? '✓ Address is verified' : '✗ Address is not valid'}}
-  </span>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Street</mat-label>
+    <input matInput formControlName="street">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Street Number</mat-label>
+    <input matInput formControlName="streetNumber">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>City</mat-label>
+    <input matInput formControlName="city">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Postal Code</mat-label>
+    <input matInput formControlName="postalCode">
+  </mat-form-field>
+
+  <div class="address-validity">
+    <mat-icon [color]="valid ? 'primary' : 'warn'">
+      {{ valid ? 'check_circle' : 'cancel' }}
+    </mat-icon>
+    <span>
+      {{ valid ? 'Address is verified' : 'Address is not valid' }}
+    </span>
+  </div>
 </div>

@@ -41,6 +41,8 @@ public class ProfileService {
                 .preferences(PreferencesEntity.builder().build())
                 .dislikes(DislikesEntity.builder().build())
                 .build();
+        fillEntitySubFields(newProfile, profileModel);
+        verifyAddress(newProfile);
         profileRepository.save(newProfile);
     }
 
@@ -82,52 +84,60 @@ public class ProfileService {
             entity.setAdditionalInfo(profileModel.getAdditionalInfo());
 
             if (hasAddressChanged(entity.getAddress(), profileModel.getAddress())) {
-                var locationAddress = new org.openapitools.client.model.Address();
-                locationAddress.setCity(profileModel.getAddress().getCity());
-                locationAddress.setStreet(profileModel.getAddress().getStreet());
-                locationAddress.setStreetNumber(profileModel.getAddress().getStreetNumber());
-                locationAddress.setPostalCode(profileModel.getAddress().getPostalCode());
-
-                var retrievedAddress = locationServiceAdapter.retrieveLocation(locationAddress);
-                entity.getAddress().setValid(retrievedAddress.getValid());
-                entity.getAddress().setLongitude(retrievedAddress.getLongitude());
-                entity.getAddress().setLatitude(retrievedAddress.getLatitude());
+                verifyAddress(entity);
             }
 
-            entity.getAddress().setPostalCode(profileModel.getAddress().getPostalCode());
-            entity.getAddress().setStreet(profileModel.getAddress().getStreet());
-            entity.getAddress().setStreetNumber(profileModel.getAddress().getStreetNumber());
-            entity.getAddress().setCity(profileModel.getAddress().getCity());
-
-            entity.getPersonalInformation().setPets(profileModel.getPersonalInformation().getPets());
-            entity.getPersonalInformation().setGender(Optional.ofNullable(profileModel.getPersonalInformation().getGender()).map(Gender::getValue).orElse(""));
-            entity.getPersonalInformation().setSports(profileModel.getPersonalInformation().getSports());
-            entity.getPersonalInformation().setTattoos(profileModel.getPersonalInformation().getTattoos());
-            entity.getPersonalInformation().setFavoriteColor(profileModel.getPersonalInformation().getFavoriteColor());
-            entity.getPersonalInformation().setHairColor(Optional.ofNullable(profileModel.getPersonalInformation().getHairColor()).map(HairColor::getValue).orElse(""));
-            entity.getPersonalInformation().setMusicGenres(Optional.ofNullable(profileModel.getPersonalInformation().getMusicGenres()).map(g -> g.stream().map(String::valueOf).collect(Collectors.joining(","))).orElse(""));
-
-            entity.getPreferences().setPets(profileModel.getPreferences().getPets());
-            entity.getPreferences().setGender(Optional.ofNullable(profileModel.getPreferences().getGender()).map(Gender::getValue).orElse(""));
-            entity.getPreferences().setSports(profileModel.getPreferences().getSports());
-            entity.getPreferences().setTattoos(profileModel.getPreferences().getTattoos());
-            entity.getPreferences().setFavoriteColor(profileModel.getPreferences().getFavoriteColor());
-            entity.getPreferences().setHairColor(Optional.ofNullable(profileModel.getPreferences().getHairColor()).map(HairColor::getValue).orElse(""));
-            entity.getPreferences().setMusicGenres(Optional.ofNullable(profileModel.getPreferences().getMusicGenres()).map(g -> g.stream().map(String::valueOf).collect(Collectors.joining(","))).orElse(""));
-
-            entity.getDislikes().setPets(profileModel.getDislikes().getPets());
-            entity.getDislikes().setGender(Optional.ofNullable(profileModel.getDislikes().getGender()).map(Gender::getValue).orElse(""));
-            entity.getDislikes().setSports(profileModel.getDislikes().getSports());
-            entity.getDislikes().setTattoos(profileModel.getDislikes().getTattoos());
-            entity.getDislikes().setFavoriteColor(profileModel.getDislikes().getFavoriteColor());
-            entity.getDislikes().setHairColor(Optional.ofNullable(profileModel.getDislikes().getHairColor()).map(HairColor::getValue).orElse(""));
-            entity.getDislikes().setMusicGenres(Optional.ofNullable(profileModel.getDislikes().getMusicGenres()).map(g -> g.stream().map(String::valueOf).collect(Collectors.joining(","))).orElse(""));
+            fillEntitySubFields(entity, profileModel);
 
             return entity;
         }).orElseThrow(() -> new NotFoundException(username, "User"));
 
         profileRepository.save(updatedProfileEntity);
 
+    }
+
+    private void verifyAddress(ProfileEntity entity) {
+        var locationAddress = new org.openapitools.client.model.Address();
+        locationAddress.setCity(entity.getAddress().getCity());
+        locationAddress.setStreet(entity.getAddress().getStreet());
+        locationAddress.setStreetNumber(entity.getAddress().getStreetNumber());
+        locationAddress.setPostalCode(entity.getAddress().getPostalCode());
+
+        var retrievedAddress = locationServiceAdapter.retrieveLocation(locationAddress);
+        entity.getAddress().setValid(retrievedAddress.getValid());
+        entity.getAddress().setLongitude(retrievedAddress.getLongitude());
+        entity.getAddress().setLatitude(retrievedAddress.getLatitude());
+    }
+
+    private void fillEntitySubFields(ProfileEntity entity, Profile profileModel) {
+        entity.getAddress().setPostalCode(profileModel.getAddress().getPostalCode());
+        entity.getAddress().setStreet(profileModel.getAddress().getStreet());
+        entity.getAddress().setStreetNumber(profileModel.getAddress().getStreetNumber());
+        entity.getAddress().setCity(profileModel.getAddress().getCity());
+
+        entity.getPersonalInformation().setPets(profileModel.getPersonalInformation().getPets());
+        entity.getPersonalInformation().setGender(Optional.ofNullable(profileModel.getPersonalInformation().getGender()).map(Gender::getValue).orElse(""));
+        entity.getPersonalInformation().setSports(profileModel.getPersonalInformation().getSports());
+        entity.getPersonalInformation().setTattoos(profileModel.getPersonalInformation().getTattoos());
+        entity.getPersonalInformation().setFavoriteColor(profileModel.getPersonalInformation().getFavoriteColor());
+        entity.getPersonalInformation().setHairColor(Optional.ofNullable(profileModel.getPersonalInformation().getHairColor()).map(HairColor::getValue).orElse(""));
+        entity.getPersonalInformation().setMusicGenres(Optional.ofNullable(profileModel.getPersonalInformation().getMusicGenres()).map(g -> g.stream().map(String::valueOf).collect(Collectors.joining(","))).orElse(""));
+
+        entity.getPreferences().setPets(profileModel.getPreferences().getPets());
+        entity.getPreferences().setGender(Optional.ofNullable(profileModel.getPreferences().getGender()).map(Gender::getValue).orElse(""));
+        entity.getPreferences().setSports(profileModel.getPreferences().getSports());
+        entity.getPreferences().setTattoos(profileModel.getPreferences().getTattoos());
+        entity.getPreferences().setFavoriteColor(profileModel.getPreferences().getFavoriteColor());
+        entity.getPreferences().setHairColor(Optional.ofNullable(profileModel.getPreferences().getHairColor()).map(HairColor::getValue).orElse(""));
+        entity.getPreferences().setMusicGenres(Optional.ofNullable(profileModel.getPreferences().getMusicGenres()).map(g -> g.stream().map(String::valueOf).collect(Collectors.joining(","))).orElse(""));
+
+        entity.getDislikes().setPets(profileModel.getDislikes().getPets());
+        entity.getDislikes().setGender(Optional.ofNullable(profileModel.getDislikes().getGender()).map(Gender::getValue).orElse(""));
+        entity.getDislikes().setSports(profileModel.getDislikes().getSports());
+        entity.getDislikes().setTattoos(profileModel.getDislikes().getTattoos());
+        entity.getDislikes().setFavoriteColor(profileModel.getDislikes().getFavoriteColor());
+        entity.getDislikes().setHairColor(Optional.ofNullable(profileModel.getDislikes().getHairColor()).map(HairColor::getValue).orElse(""));
+        entity.getDislikes().setMusicGenres(Optional.ofNullable(profileModel.getDislikes().getMusicGenres()).map(g -> g.stream().map(String::valueOf).collect(Collectors.joining(","))).orElse(""));
     }
 
     private boolean hasAddressChanged(AddressEntity oldAddress, Address newAddress) {
@@ -209,5 +219,9 @@ public class ProfileService {
         profile.getDates().add(newDateEntity);
 
         profileRepository.save(profile);
+    }
+
+    public void deleteAllProfiles() {
+        profileRepository.deleteAll();
     }
 }
