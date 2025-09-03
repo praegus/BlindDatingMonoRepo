@@ -13,7 +13,7 @@ export class ProfileClient {
 
     async deleteAllProfiles() {
         const response = await this.page.request.delete('http://localhost:9080/profiles');
-        expect(response.status()).toBe(200);
+        expect(response.status()).toBe(204);
     }
 
     async createProfile(username: string, street: string, streetNumber: string, postalCode: string, gender: string, preferredGender: string, color: string = '') {
