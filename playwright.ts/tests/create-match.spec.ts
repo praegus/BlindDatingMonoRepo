@@ -19,7 +19,11 @@ test('Create profiles to setup a date', async ({ page, request, profilePage, pre
             '4041BP',
             'MAN',
             'WOMAN',
-            'Pimpel paars met een gouden randje'
+            'Pimpel paars met een gouden randje',
+            true,
+            'BLOND',
+            true,
+            'Voetbal',
     );
 
     await profileClient.createProfile(
@@ -29,7 +33,11 @@ test('Create profiles to setup a date', async ({ page, request, profilePage, pre
         '3811HM',
         'WOMAN',
         'MAN',
-        'Pimpel paars met een gouden randje'
+        'Pimpel paars met een gouden randje',
+        true,
+        'BLOND',
+        true,
+        'Voetbal',
     );
 
     //WHEN beide profielen de match accepteren
@@ -60,12 +68,12 @@ test('Create profiles to setup a date', async ({ page, request, profilePage, pre
 
     //THEN hebben beide profielen een date gepland.
 
-        await pageTwo.waitForTimeout(1000);
-    await pageOne.reload();
-    await pageTwo.reload();
-
-    await expect(pageOne.getByText('Dwarsweg 63, Overberg')).toBeVisible();
-    await expect(pageOne.getByText('Bring: Sok (Pimpel paars met een gouden randje)')).toBeVisible();
-    await expect(pageTwo.getByText('Dwarsweg 63, Overberg')).toBeVisible();
-    await expect(pageTwo.getByText('Bring: Sok (Pimpel paars met een gouden randje)')).toBeVisible();
+    await expect(async () => {
+        await pageOne.reload();
+        await pageTwo.reload();
+        await expect(pageOne.getByText('Dwarsweg 63, Overberg')).toBeVisible();
+        await expect(pageOne.getByText('Bring: Sok (Pimpel paars met een gouden randje)')).toBeVisible();
+        await expect(pageTwo.getByText('Dwarsweg 63, Overberg')).toBeVisible();
+        await expect(pageTwo.getByText('Bring: Sok (Pimpel paars met een gouden randje)')).toBeVisible();
+    }).toPass({ timeout: 10000 }); // retryt tot 15 seconden
 });

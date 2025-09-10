@@ -16,7 +16,8 @@ export class ProfileClient {
         expect(response.status()).toBe(204);
     }
 
-    async createProfile(username: string, street: string, streetNumber: string, postalCode: string, gender: string, preferredGender: string, color: string = '') {
+    async createProfile(username: string, street: string, streetNumber: string, postalCode: string, gender: string, preferredGender: string, color: string = '', pets: boolean = false, hairColor: string = '', tattoos: boolean = false, sports: string = '',
+    ) {
         const requestBody = {
             "username": username,
             "firstname": username,
@@ -30,10 +31,10 @@ export class ProfileClient {
             "personalInformation": {
                 "gender": gender,
                 "favoriteColor": color,
-                "pets": false,
-                "hairColor": null,
-                "tattoos": false,
-                "sports": null,
+                "pets": pets,
+                "hairColor": hairColor,
+                "tattoos": tattoos,
+                "sports": sports,
                 "musicGenres": null
             },
             "dislikes": {
@@ -48,10 +49,10 @@ export class ProfileClient {
             "preferences": {
                 "gender": preferredGender,
                 "favoriteColor": color,
-                "pets": false,
-                "hairColor": null,
-                "tattoos": false,
-                "sports": null,
+                "pets": pets,
+                "hairColor": hairColor,
+                "tattoos": tattoos,
+                "sports": sports,
                 "musicGenres": null
             },
         };
