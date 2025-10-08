@@ -110,34 +110,42 @@ public class ProfileService {
     }
 
     private void fillEntitySubFields(ProfileEntity entity, Profile profileModel) {
-        entity.getAddress().setPostalCode(profileModel.getAddress().getPostalCode());
-        entity.getAddress().setStreet(profileModel.getAddress().getStreet());
-        entity.getAddress().setStreetNumber(profileModel.getAddress().getStreetNumber());
-        entity.getAddress().setCity(profileModel.getAddress().getCity());
+        if (profileModel.getAddress() != null) {
+            entity.getAddress().setPostalCode(profileModel.getAddress().getPostalCode());
+            entity.getAddress().setStreet(profileModel.getAddress().getStreet());
+            entity.getAddress().setStreetNumber(profileModel.getAddress().getStreetNumber());
+            entity.getAddress().setCity(profileModel.getAddress().getCity());
+        }
 
-        entity.getPersonalInformation().setPets(profileModel.getPersonalInformation().getPets());
-        entity.getPersonalInformation().setGender(Optional.ofNullable(profileModel.getPersonalInformation().getGender()).map(Gender::getValue).orElse(""));
-        entity.getPersonalInformation().setSports(profileModel.getPersonalInformation().getSports());
-        entity.getPersonalInformation().setTattoos(profileModel.getPersonalInformation().getTattoos());
-        entity.getPersonalInformation().setFavoriteColor(profileModel.getPersonalInformation().getFavoriteColor());
-        entity.getPersonalInformation().setHairColor(Optional.ofNullable(profileModel.getPersonalInformation().getHairColor()).map(HairColor::getValue).orElse(""));
-        entity.getPersonalInformation().setMusicGenres(Optional.ofNullable(profileModel.getPersonalInformation().getMusicGenres()).map(g -> g.stream().map(String::valueOf).collect(Collectors.joining(","))).orElse(""));
+        if (profileModel.getPersonalInformation() != null) {
+            entity.getPersonalInformation().setPets(profileModel.getPersonalInformation().getPets());
+            entity.getPersonalInformation().setGender(Optional.ofNullable(profileModel.getPersonalInformation().getGender()).map(Gender::getValue).orElse(""));
+            entity.getPersonalInformation().setSports(profileModel.getPersonalInformation().getSports());
+            entity.getPersonalInformation().setTattoos(profileModel.getPersonalInformation().getTattoos());
+            entity.getPersonalInformation().setFavoriteColor(profileModel.getPersonalInformation().getFavoriteColor());
+            entity.getPersonalInformation().setHairColor(Optional.ofNullable(profileModel.getPersonalInformation().getHairColor()).map(HairColor::getValue).orElse(""));
+            entity.getPersonalInformation().setMusicGenres(Optional.ofNullable(profileModel.getPersonalInformation().getMusicGenres()).map(g -> g.stream().map(String::valueOf).collect(Collectors.joining(","))).orElse(""));
+        }
 
-        entity.getPreferences().setPets(profileModel.getPreferences().getPets());
-        entity.getPreferences().setGender(Optional.ofNullable(profileModel.getPreferences().getGender()).map(Gender::getValue).orElse(""));
-        entity.getPreferences().setSports(profileModel.getPreferences().getSports());
-        entity.getPreferences().setTattoos(profileModel.getPreferences().getTattoos());
-        entity.getPreferences().setFavoriteColor(profileModel.getPreferences().getFavoriteColor());
-        entity.getPreferences().setHairColor(Optional.ofNullable(profileModel.getPreferences().getHairColor()).map(HairColor::getValue).orElse(""));
-        entity.getPreferences().setMusicGenres(Optional.ofNullable(profileModel.getPreferences().getMusicGenres()).map(g -> g.stream().map(String::valueOf).collect(Collectors.joining(","))).orElse(""));
+        if (profileModel.getPreferences() != null) {
+            entity.getPreferences().setPets(profileModel.getPreferences().getPets());
+            entity.getPreferences().setGender(Optional.ofNullable(profileModel.getPreferences().getGender()).map(Gender::getValue).orElse(""));
+            entity.getPreferences().setSports(profileModel.getPreferences().getSports());
+            entity.getPreferences().setTattoos(profileModel.getPreferences().getTattoos());
+            entity.getPreferences().setFavoriteColor(profileModel.getPreferences().getFavoriteColor());
+            entity.getPreferences().setHairColor(Optional.ofNullable(profileModel.getPreferences().getHairColor()).map(HairColor::getValue).orElse(""));
+            entity.getPreferences().setMusicGenres(Optional.ofNullable(profileModel.getPreferences().getMusicGenres()).map(g -> g.stream().map(String::valueOf).collect(Collectors.joining(","))).orElse(""));
+        }
 
-        entity.getDislikes().setPets(profileModel.getDislikes().getPets());
-        entity.getDislikes().setGender(Optional.ofNullable(profileModel.getDislikes().getGender()).map(Gender::getValue).orElse(""));
-        entity.getDislikes().setSports(profileModel.getDislikes().getSports());
-        entity.getDislikes().setTattoos(profileModel.getDislikes().getTattoos());
-        entity.getDislikes().setFavoriteColor(profileModel.getDislikes().getFavoriteColor());
-        entity.getDislikes().setHairColor(Optional.ofNullable(profileModel.getDislikes().getHairColor()).map(HairColor::getValue).orElse(""));
-        entity.getDislikes().setMusicGenres(Optional.ofNullable(profileModel.getDislikes().getMusicGenres()).map(g -> g.stream().map(String::valueOf).collect(Collectors.joining(","))).orElse(""));
+        if (profileModel.getDislikes() != null) {
+            entity.getDislikes().setPets(profileModel.getDislikes().getPets());
+            entity.getDislikes().setGender(Optional.ofNullable(profileModel.getDislikes().getGender()).map(Gender::getValue).orElse(""));
+            entity.getDislikes().setSports(profileModel.getDislikes().getSports());
+            entity.getDislikes().setTattoos(profileModel.getDislikes().getTattoos());
+            entity.getDislikes().setFavoriteColor(profileModel.getDislikes().getFavoriteColor());
+            entity.getDislikes().setHairColor(Optional.ofNullable(profileModel.getDislikes().getHairColor()).map(HairColor::getValue).orElse(""));
+            entity.getDislikes().setMusicGenres(Optional.ofNullable(profileModel.getDislikes().getMusicGenres()).map(g -> g.stream().map(String::valueOf).collect(Collectors.joining(","))).orElse(""));
+        }
     }
 
     private boolean hasAddressChanged(AddressEntity oldAddress, Address newAddress) {
