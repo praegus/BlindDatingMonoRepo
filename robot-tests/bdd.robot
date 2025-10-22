@@ -1,6 +1,5 @@
 *** Settings ***
-Library    OperatingSystem
-Library    SeleniumLibrary
+Library    Browser
 Library    Collections
 
 *** Variables ***
@@ -15,16 +14,15 @@ Search For A Term
 
 *** Keywords ***
 Google is open
-    Open Browser    ${URL}    chrome
-    Maximize Browser Window
-    Wait Until Element Is Visible    xpath=//button[.='Accept all']    timeout=10s
-    Click Button    xpath=//button[.='Accept all']
-    Title Should Be    Google
+    New Browser     chromium    headless=${False}
+    New Page    ${URL}
+    Click    text="Accept all"    # Cookie-popup
+    Get Title   Should Be   Google
 
 I search for "${term}"
-    Input Text    name=q    ${term}
-    Press Keys    name=q    RETURN
-    Wait Until Page Contains    ${term}
+    Fill Text    xpath=//textarea[@name="q"]    ${term}
+    Press Keys    xpath=//textarea[@name="q"]    Enter
+    Wait For Elements State    text=${term}    visible
 
 The results should contain "${expected}"
-    Page Should Contain    ${expected}
+    Get Text    //body    Should Contain    ${expected}
