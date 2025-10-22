@@ -40,7 +40,7 @@ public class ApiPostCodeClient {
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
-        map.add("zipcode", zipCode);
+        map.add("zipcode", zipCode.replaceAll(" ", ""));
         map.add("housenumber", houseNumber);
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
