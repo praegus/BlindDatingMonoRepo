@@ -1,6 +1,8 @@
 package io.praegus.bda.locationservice.adapter.apipostcode;
 
 import org.openapitools.model.Address;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -19,9 +21,12 @@ import java.util.Collections;
 @Repository
 public class ApiPostCodeClient {
 
+    Logger logger = LoggerFactory.getLogger(ApiPostCodeClient.class);
+
     RestTemplate restTemplate = new RestTemplate();
 
     public Address retrieveLocation(Address address) {
+        logger.info("attempting to retrieve location with postalcode {} and street number {}", address.getPostalCode(), address.getStreetNumber());
         var response = getAddressResponse(address.getPostalCode(), address.getStreetNumber());
 
         if (response.getStatusCode().value() != 200) {
@@ -47,6 +52,7 @@ public class ApiPostCodeClient {
         try {
             return restTemplate.postForEntity("https://api-postcode.nl/api/postcode", request, AddressResponse.class);
         } catch (Exception e) {
+            logger.error("Error retrieving postcode details", e);
             return ResponseEntity.notFound().build();
         }
     }
