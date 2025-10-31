@@ -41,6 +41,10 @@ public class ApiPostCodeClient {
     }
 
     private ResponseEntity<AddressResponse> getAddressResponse(String zipCode, String houseNumber) {
+        if (zipCode == null || houseNumber == null) {
+            return ResponseEntity.notFound().build();
+        }
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
