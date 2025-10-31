@@ -88,6 +88,8 @@ public class ProfileService {
             entity.setAdditionalInfo(profileModel.getAdditionalInfo());
 
             if (hasAddressChanged(entity.getAddress(), profileModel.getAddress())) {
+                entity.getAddress().setPostalCode(profileModel.getAddress().getPostalCode());
+                entity.getAddress().setStreetNumber(profileModel.getAddress().getStreetNumber());
                 verifyAddress(entity);
             }
 
