@@ -13,9 +13,9 @@ Documentation    In dit bestand gaan we jimmy invullen als nieuw profiel
 ${USERNAME}           jim
 
 *** Test Cases ***
-inloggen en profiel aanvullen
+account aanmaken
     Open Browser Blinddatingapp
-    Login Met Gebruiker     ${USERNAME}
+    Gebruiker aanmaken    ${USERNAME}
     Aanvullen Profiel
     Click    role=button[name="Save"]
     Sleep    7

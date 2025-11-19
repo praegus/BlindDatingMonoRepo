@@ -7,11 +7,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="profileservice" />
+        <module name="location-service" />
+        <module name="websocketservice" />
+        <module name="matching-service" />
         <module name="profile-service" />
         <module name="date-service" />
         <module name="websocket-service" />
-        <module name="location-service" />
-        <module name="matching-service" />
       </profile>
     </annotationProcessing>
   </component>
@@ -21,7 +23,9 @@
       <module name="location-service" options="-parameters" />
       <module name="matching-service" options="-parameters" />
       <module name="profile-service" options="-parameters" />
+      <module name="profileservice" options="-parameters" />
       <module name="websocket-service" options="-parameters" />
+      <module name="websocketservice" options="-parameters" />
     </option>
   </component>
 </project>

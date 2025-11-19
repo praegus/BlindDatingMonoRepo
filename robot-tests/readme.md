@@ -21,13 +21,13 @@ If not installed, start download.
 
 
 
-III - Install the selenium browser library
+III - Install the library requests
 
-	pip install robotframework-seleniumlibrary
+	pip install robotframework-requests
 
 
 
-IV - For BDD: install the playwright browser
+IV - install the library browser
 
 	pip install robotframework-browser
 	rfbrowser init 
@@ -35,4 +35,4 @@ IV - For BDD: install the playwright browser
 
 V - Run example.robot with:
 
-	robot example.robot
+	robot inloggen.robot
