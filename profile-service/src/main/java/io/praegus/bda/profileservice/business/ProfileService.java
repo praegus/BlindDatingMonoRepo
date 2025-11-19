@@ -8,6 +8,8 @@ import io.praegus.bda.profileservice.adapter.data.*;
 import io.praegus.bda.profileservice.adapter.location.LocationServiceAdapter;
 import org.openapitools.model.*;
 import org.openapitools.model.Address;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProfileService {
+
+    Logger logger = LoggerFactory.getLogger(ProfileService.class);
 
     @Autowired
     private ProfileRepository profileRepository;
@@ -84,6 +88,8 @@ public class ProfileService {
             entity.setAdditionalInfo(profileModel.getAdditionalInfo());
 
             if (hasAddressChanged(entity.getAddress(), profileModel.getAddress())) {
+                entity.getAddress().setPostalCode(profileModel.getAddress().getPostalCode());
+                entity.getAddress().setStreetNumber(profileModel.getAddress().getStreetNumber());
                 verifyAddress(entity);
             }
 
@@ -97,6 +103,8 @@ public class ProfileService {
     }
 
     private void verifyAddress(ProfileEntity entity) {
+        logger.info("Verifying address");
+
         var locationAddress = new org.openapitools.client.model.Address();
         locationAddress.setCity(entity.getAddress().getCity());
         locationAddress.setStreet(entity.getAddress().getStreet());
@@ -104,7 +112,10 @@ public class ProfileService {
         locationAddress.setPostalCode(entity.getAddress().getPostalCode());
 
         var retrievedAddress = locationServiceAdapter.retrieveLocation(locationAddress);
+        logger.info("Retrieved address {}", retrievedAddress);
         entity.getAddress().setValid(retrievedAddress.getValid());
+        entity.getAddress().setCity(retrievedAddress.getCity());
+        entity.getAddress().setStreet(retrievedAddress.getStreet());
         entity.getAddress().setLongitude(retrievedAddress.getLongitude());
         entity.getAddress().setLatitude(retrievedAddress.getLatitude());
     }
