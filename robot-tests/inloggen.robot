@@ -1,6 +1,4 @@
 *** Settings ***
-Suite Setup    Clean Test Data
-
 Resource    ./resources/blinddating.resource
 
 Documentation    In dit bestand gaan we jimmy invullen als nieuw profiel
@@ -19,3 +17,4 @@ inloggen en profiel aanvullen
     Aanvullen Profiel
     Click    role=button[name="Save"]
     Sleep    7
+    Clean Test Data
