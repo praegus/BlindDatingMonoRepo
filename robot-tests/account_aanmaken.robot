@@ -1,5 +1,6 @@
 *** Settings ***
-Suite Setup    Clean Test Data
+Suite Setup           Clean Test Data
+Suite Teardown        Clean Test Data
 
 Resource    ./resources/blinddating.resource
 

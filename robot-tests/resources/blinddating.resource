@@ -15,7 +15,7 @@ Open Browser Blinddatingapp
 
 Clean Test Data
     Create Session    api    ${BASE_URL}
-    ${response}=    Delete Request    api    /profiles
+    ${response}=    DELETE On Session    api    /profiles
     Should Be Equal As Integers    ${response.status_code}    204
 
 Gebruiker aanmaken
@@ -54,12 +54,20 @@ Aanvullen Personal Information
     Type Text    css=input[formcontrolname="favoriteColor"] >> nth=0    ${favorite_color}
 
     # Pets radio – visible mat-radio-button
-    ${pet_id}=    Run Keyword If    '${pets}'=='Yes'    Set Variable    mat-radio-21    ELSE    Set Variable    mat-radio-22
-    Click    css=#${pet_id}
+    IF    '${pets}'=='Yes'
+        # Pet – second input field
+        Click    //input[@id='mat-radio-0-input']
+
+    ELSE
+        # No Pet – second input field
+        Click    //input[@id='mat-radio-1-input']
+
+    END
 
     # Hair Color dropdown
-    Click    css=mat-select[formcontrolname="hairColor"]
-    Click    text="${hair_color}"
+    Click      //mat-select[@id='mat-select-0']
+    Click      //mat-option//span[normalize-space(.)="${hair_color}"]
+    # Click    text="${hair_color}"
 
     # Tattoos radio – visible mat-radio-button
     ${tattoo_id}=    Run Keyword If    '${tattoos}'=='Yes'    Set Variable    mat-radio-23    ELSE    Set Variable    mat-radio-24
