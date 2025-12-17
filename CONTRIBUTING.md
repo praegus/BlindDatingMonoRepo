@@ -1,6 +1,11 @@
 Contributing Guide
 Thank you for your interest in contributing to this project. Whether you're fixing a typo, proposing a major feature, bash or scrutinize the developer, or simply exploring the codebase, your involvement helps shape the future of this repository. This document outlines the expectations, workflows, and conventions that keep everything running smoothly.
 
+Summary
+This guide explains how to contribute effectively and respectfully to the project. Contributors are expected to follow a respectful code of conduct, set up a proper development environment, and adhere to project conventions. Changes should be proposed through well-documented issues and pull requests, using clear branching strategies, meaningful commit messages, and small logical commits.
+
+The project enforces coding standards, linting, and comprehensive testing (unit, integration, and end-to-end) to maintain quality and reliability. Documentation should be updated alongside code changes to keep the project accessible. Releases follow semantic versioning and clearly document breaking changes. Contributions are welcomed not only in code, but also in documentation, design, tutorials, and translations, with guidance available for new contributors.
+
 1. Code of Conduct
    We follow a simple principle: Contributors come from different backgrounds, skill levels, and time zones. Be patient, be kind, and assume good intent. If you see behavior that violates these expectations, please report it through the community conduct process or announce there execution date at the town square.
 
@@ -51,6 +56,66 @@ Links to random issues
 Notes on your grandma baking recipes
 
 Screenshots, demos or interpreted dance for UI changes
+
+Suggested “Good First Issue” Ideas
+
+A. Documentation Improvements
+
+Fix typos or unclear wording in the README or Contributing Guide
+
+Add missing examples for an existing feature
+
+Improve formatting or consistency across documentation files
+
+B. Code Cleanup / Refactoring
+
+Simplify a small function without changing behavior
+
+Remove unused variables, imports, or dead code
+
+Improve naming for clarity in a limited area of the codebase
+
+C. Test Enhancements
+
+Add missing unit tests for existing functionality
+
+Convert an untested bug fix into a regression test
+
+Improve test descriptions or organization
+
+D. Linting and Style Fixes
+
+Fix lint warnings or formatting issues in a specific file
+
+Align code with established naming or indentation rules
+
+E. Small Bug Fixes
+
+Fix an easy-to-reproduce bug with clear steps
+
+Handle a missing edge case (e.g., null/empty input)
+
+Improve error messages or logging
+
+F. Developer Experience Improvements
+
+Improve setup instructions for local development
+
+Add comments explaining non-obvious logic
+
+Clarify configuration options or defaults
+
+What Makes These “Good First Issues”
+
+Limited scope and clear acceptance criteria
+
+Minimal architectural impact
+
+Easy to review and test
+
+Teaches contributors the repo structure, tooling, and workflow
+
+Labeling issues like these as good first issue and including brief guidance (e.g., where to look in the code, how to test the change) will make onboarding new contributors much smoother.
 
 4. Development Workflow
    We use a weight workflow designed for clarity and collaboration.
