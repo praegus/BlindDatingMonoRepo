@@ -5,7 +5,7 @@ import lombok.*;
 
 @EqualsAndHashCode
 @Entity
-@Table(name = "personalInformation")
+@Table(name = "personal_information")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,30 +13,31 @@ import lombok.*;
 public class PersonalInformationEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
 
     @Column(name = "username")
     private String username;
 
-    @Column (name = "gender")
+    @Column(name = "gender")
     private String gender;
 
-    @Column (name = "favoriteColor")
+    @Column(name = "favorite_color")
     private String favoriteColor;
 
-    @Column (name = "pets")
+    @Column(name = "pets")
     private boolean pets;
 
-    @Column (name = "hairColor")
+    @Column(name = "hair_color")
     private String hairColor;
 
-    @Column (name = "tattoos")
+    @Column(name = "tattoos")
     private boolean tattoos;
 
-    @Column (name = "sports")
+    @Column(name = "sports")
     private String sports;
 
-    @Column (name = "musicGenres")
+    @Column(name = "music_genres")
     private String musicGenres;
 }

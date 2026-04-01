@@ -18,7 +18,7 @@ Rules:
 
 ### 1. Introduce Flyway in profile-service
 
-Status: pending
+Status: in_progress
 
 Tasks:
 - add Flyway to `profile-service`
