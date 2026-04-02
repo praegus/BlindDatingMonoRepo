@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>io.praegus.bda</groupId>
-    <artifactId>profileservice</artifactId>
+    <artifactId>profile-service</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <name>profile-service</name>
