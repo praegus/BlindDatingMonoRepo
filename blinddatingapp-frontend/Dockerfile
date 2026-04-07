@@ -22,7 +22,8 @@ COPY --from=builder /app/dist/blinddatingapp/browser /usr/share/nginx/html
 
 # Copy custom Nginx config (optional)
 COPY blinddatingapp-frontend/nginx.conf /etc/nginx/conf.d/default.conf
+COPY blinddatingapp-frontend/public/runtime-config.js /usr/share/nginx/html/runtime-config.template.js
 
 # Expose port 80 and start Nginx
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["/bin/sh", "-c", "envsubst '${PROFILE_API_URL} ${WEBSOCKET_URL}' < /usr/share/nginx/html/runtime-config.template.js > /usr/share/nginx/html/runtime-config.js && exec nginx -g 'daemon off;'"]

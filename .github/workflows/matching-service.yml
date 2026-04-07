@@ -27,3 +27,11 @@ jobs:
       - name: Build and containerize with Jib
         working-directory: ./matching-service
         run: mvn clean compile jib:build
+
+      - name: Deploy matching to CapRover
+        uses: caprover/deploy-from-github@v1.1.2
+        with:
+          server: ${{ secrets.CAPROVER_SERVER }}
+          app: matching-service
+          token: ${{ secrets.CAPROVER_MATCHING_TOKEN }}
+          image: docker.io/finkingma/matching-service:latest

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
 import { Subject } from 'rxjs';
+import { getRuntimeConfig } from '../runtime-config';
 
 @Injectable({ providedIn: 'root' })
 export class WebsocketService {
@@ -12,7 +13,7 @@ export class WebsocketService {
   public message$ = this.messageSubject.asObservable();
 
   connect(username: string): void {
-    const socket = new SockJS('http://localhost:9082/ws');
+    const socket = new SockJS(getRuntimeConfig().websocketUrl);
     this.stompClient = new Client({
       webSocketFactory: () => socket,
       reconnectDelay: 5000,
