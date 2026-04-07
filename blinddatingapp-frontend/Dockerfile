@@ -26,4 +26,4 @@ COPY blinddatingapp-frontend/public/runtime-config.js /usr/share/nginx/html/runt
 
 # Expose port 80 and start Nginx
 EXPOSE 80
-CMD ["/bin/sh", "-c", "envsubst '${PROFILE_API_URL} ${WEBSOCKET_URL}' < /usr/share/nginx/html/runtime-config.template.js > /usr/share/nginx/html/runtime-config.js && exec nginx -g 'daemon off;'"]
+CMD ["/bin/sh", "-c", "export PROFILE_API_URL=\"${PROFILE_API_URL:-http://localhost:9080}\" WEBSOCKET_URL=\"${WEBSOCKET_URL:-http://localhost:9082/ws}\"; envsubst '${PROFILE_API_URL} ${WEBSOCKET_URL}' < /usr/share/nginx/html/runtime-config.template.js > /usr/share/nginx/html/runtime-config.js && exec nginx -g 'daemon off;'"]

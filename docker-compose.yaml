@@ -6,7 +6,7 @@ services:
     ports:
       - "8080:80"
     environment:
-      PROFILE_API_URL: http://localhost:9081
+      PROFILE_API_URL: http://localhost:9080
       WEBSOCKET_URL: http://localhost:9082
     restart: always
 
