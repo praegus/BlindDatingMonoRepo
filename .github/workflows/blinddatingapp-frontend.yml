@@ -33,6 +33,6 @@ jobs:
         uses: caprover/deploy-from-github@v1.1.2
         with:
           server: ${{ secrets.CAPROVER_SERVER }}
-          app: blinddatingapp-frontend
+          app: frontend
           token: ${{ secrets.CAPROVER_FRONTEND_TOKEN }}
           image: docker.io/finkingma/blinddatingapp-frontend
