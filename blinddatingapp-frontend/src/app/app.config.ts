@@ -3,6 +3,7 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
 import { BASE_PATH } from './generated-sources/openapi';
+import { getRuntimeConfig } from './runtime-config';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -12,7 +13,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     {
       provide: BASE_PATH,
-      useValue: 'http://localhost:9080'
+      useValue: getRuntimeConfig().profileApiUrl
     }
   ]
 };

@@ -5,6 +5,9 @@ services:
     container_name: blinddatingapp-frontend
     ports:
       - "8080:80"
+    environment:
+      PROFILE_API_URL: http://localhost:9080
+      WEBSOCKET_URL: http://localhost:9082
     restart: always
 
   date:

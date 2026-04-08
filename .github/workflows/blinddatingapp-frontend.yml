@@ -28,3 +28,11 @@ jobs:
         run: |
           docker build -f blinddatingapp-frontend/Dockerfile -t docker.io/finkingma/blinddatingapp-frontend:latest .
           docker push docker.io/finkingma/blinddatingapp-frontend:latest
+
+      - name: Deploy frontend to CapRover
+        uses: caprover/deploy-from-github@v1.1.2
+        with:
+          server: ${{ secrets.CAPROVER_SERVER }}
+          app: blinddatingapp-frontend
+          token: ${{ secrets.CAPROVER_FRONTEND_TOKEN }}
+          image: docker.io/finkingma/blinddatingapp-frontend

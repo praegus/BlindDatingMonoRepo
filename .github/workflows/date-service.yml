@@ -27,3 +27,11 @@ jobs:
       - name: Build and containerize with Jib
         working-directory: ./date-service
         run: mvn clean compile jib:build
+
+      - name: Deploy date to CapRover
+        uses: caprover/deploy-from-github@v1.1.2
+        with:
+          server: ${{ secrets.CAPROVER_SERVER }}
+          app: date-service
+          token: ${{ secrets.CAPROVER_DATE_TOKEN }}
+          image: docker.io/finkingma/date-service:latest
