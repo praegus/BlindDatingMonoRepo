@@ -92,7 +92,7 @@ jobs:
 #            core.setOutput('should-run', 'true');
 
   run-e2e:
-    needs: evaluate-upstream-runs
+#    needs: evaluate-upstream-runs
     if: needs.evaluate-upstream-runs.outputs.should-run == 'true'
     runs-on: ubuntu-latest
     permissions:
