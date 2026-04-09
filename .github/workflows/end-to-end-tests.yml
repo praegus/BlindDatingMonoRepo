@@ -63,7 +63,10 @@ jobs:
               (response) => response.data.workflow_runs
             );
 
-            const relevantRuns = runs.filter((run) => relevantWorkflows.has(run.name));
+            const safeRuns = runs.filter((run) => run && typeof run.name === 'string');
+            core.info(`Found ${safeRuns.length} workflow run entries for ${headSha} on branch ${branch}.`);
+
+            const relevantRuns = safeRuns.filter((run) => relevantWorkflows.has(run.name));
 
             if (relevantRuns.length === 0) {
               core.info(`No relevant workflow runs found for ${headSha}. Skipping E2E.`);
