@@ -50,7 +50,7 @@ export class Login implements OnDestroy {
         },
         error: (err) => {
           // because we currently get a strange string from the backend, we receive an error here when the post call goes well
-          if (err.status === 200) {
+          if (err.status === 200 || err.status === 201) {
             this.router.navigate(['/profiles', this.profileForm.value.name]);
             return
           }

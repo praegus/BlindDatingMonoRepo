@@ -5,6 +5,9 @@ services:
     container_name: blinddatingapp-frontend
     ports:
       - "8080:80"
+    environment:
+      PROFILE_API_URL: http://localhost:9080
+      WEBSOCKET_URL: http://localhost:9082
     restart: always
 
   date:
@@ -75,7 +78,7 @@ services:
 
 # SUPPORTIVE TOOLS BELOW
   kafka:
-    image: bitnami/kafka:latest
+    image: bitnamilegacy/kafka:latest
     container_name: kafka
     ports:
       - "9092:9092"

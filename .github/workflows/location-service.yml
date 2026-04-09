@@ -27,3 +27,11 @@ jobs:
       - name: Build and containerize with Jib
         working-directory: ./location-service
         run: mvn clean compile jib:build
+
+      - name: Deploy location to CapRover
+        uses: caprover/deploy-from-github@v1.1.2
+        with:
+          server: ${{ secrets.CAPROVER_SERVER }}
+          app: location-service
+          token: ${{ secrets.CAPROVER_LOCATION_TOKEN }}
+          image: docker.io/finkingma/location-service
