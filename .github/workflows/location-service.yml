@@ -3,7 +3,6 @@ name: location service CI
 on:
   push:
     branches: [ "open-url-test" ]
-
 #
 #on:
 #  push:
