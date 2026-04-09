@@ -45,50 +45,29 @@ jobs:
               'websocket service CI',
             ]);
 
-            const owner = context.repo.owner;
-            const repo = context.repo.repo;
-            const headSha = context.payload.workflow_run.head_sha;
-            const branch = context.payload.workflow_run.head_branch;
+            const triggerRun = context.payload.workflow_run;
+            const workflowName = triggerRun?.name;
+            const headSha = triggerRun?.head_sha;
 
-            const runs = await github.paginate(
-              github.rest.actions.listWorkflowRunsForRepo,
-              {
-                owner,
-                repo,
-                event: 'push',
-                branch,
-                per_page: 100,
-              },
-              (response) => response.data.workflow_runs
-            );
-
-            const safeRuns = runs.filter((run) => run && typeof run.name === 'string');
-            const sameCommitRuns = safeRuns.filter((run) => run.head_sha === headSha);
-            core.info(`Found ${sameCommitRuns.length} workflow run entries for ${headSha} on branch ${branch}.`);
-
-            const relevantRuns = sameCommitRuns.filter((run) => relevantWorkflows.has(run.name));
-
-            if (relevantRuns.length === 0) {
-              core.info(`No relevant workflow runs found for ${headSha}. Skipping E2E.`);
+            if (!workflowName || !relevantWorkflows.has(workflowName)) {
+              core.info(`Triggered by an unsupported workflow: ${workflowName ?? 'unknown'}. Skipping E2E.`);
               core.setOutput('should-run', 'false');
               return;
             }
 
-            const activeRuns = relevantRuns.filter((run) => run.status !== 'completed');
-            if (activeRuns.length > 0) {
-              core.info(`Still waiting on workflows: ${activeRuns.map((run) => `${run.name} (${run.status})`).join(', ')}`);
+            if (triggerRun.status !== 'completed') {
+              core.info(`Trigger workflow ${workflowName} is still ${triggerRun.status}. Skipping E2E.`);
               core.setOutput('should-run', 'false');
               return;
             }
 
-            const failedRuns = relevantRuns.filter((run) => run.conclusion !== 'success');
-            if (failedRuns.length > 0) {
-              core.info(`Not running E2E because upstream workflows did not succeed: ${failedRuns.map((run) => `${run.name} (${run.conclusion})`).join(', ')}`);
+            if (triggerRun.conclusion !== 'success') {
+              core.info(`Not running E2E because ${workflowName} finished with ${triggerRun.conclusion}.`);
               core.setOutput('should-run', 'false');
               return;
             }
 
-            core.info(`All ${relevantRuns.length} relevant workflow runs for ${headSha} completed successfully.`);
+            core.info(`Running E2E after successful completion of ${workflowName} for ${headSha}.`);
             core.setOutput('should-run', 'true');
 
   run-e2e:
