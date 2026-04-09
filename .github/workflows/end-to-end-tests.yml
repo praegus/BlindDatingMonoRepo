@@ -1,0 +1,119 @@
+name: end to end tests
+
+on:
+  workflow_run:
+    workflows:
+      - blinddatingapp frontend CI
+      - date service CI
+      - location service CI
+      - matching service CI
+      - profile service CI
+      - websocket service CI
+    types:
+      - completed
+
+concurrency:
+  group: end-to-end-${{ github.event.workflow_run.head_sha }}
+  cancel-in-progress: true
+
+jobs:
+  evaluate-upstream-runs:
+    if: >
+      github.event.workflow_run.event == 'push' &&
+      (
+        github.event.workflow_run.head_branch == 'main' ||
+        github.event.workflow_run.head_branch == 'open-url-test'
+      )
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    outputs:
+      should-run: ${{ steps.evaluate.outputs.should-run }}
+    steps:
+      - name: Evaluate relevant workflow runs for this commit
+        id: evaluate
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const relevantWorkflows = new Set([
+              'blinddatingapp frontend CI',
+              'date service CI',
+              'location service CI',
+              'matching service CI',
+              'profile service CI',
+              'websocket service CI',
+            ]);
+
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const headSha = context.payload.workflow_run.head_sha;
+            const branch = context.payload.workflow_run.head_branch;
+
+            const runs = await github.paginate(
+              github.rest.actions.listWorkflowRunsForRepo,
+              {
+                owner,
+                repo,
+                event: 'push',
+                branch,
+                head_sha: headSha,
+                per_page: 100,
+              },
+              (response) => response.data.workflow_runs
+            );
+
+            const relevantRuns = runs.filter((run) => relevantWorkflows.has(run.name));
+
+            if (relevantRuns.length === 0) {
+              core.info(`No relevant workflow runs found for ${headSha}. Skipping E2E.`);
+              core.setOutput('should-run', 'false');
+              return;
+            }
+
+            const activeRuns = relevantRuns.filter((run) => run.status !== 'completed');
+            if (activeRuns.length > 0) {
+              core.info(`Still waiting on workflows: ${activeRuns.map((run) => `${run.name} (${run.status})`).join(', ')}`);
+              core.setOutput('should-run', 'false');
+              return;
+            }
+
+            const failedRuns = relevantRuns.filter((run) => run.conclusion !== 'success');
+            if (failedRuns.length > 0) {
+              core.info(`Not running E2E because upstream workflows did not succeed: ${failedRuns.map((run) => `${run.name} (${run.conclusion})`).join(', ')}`);
+              core.setOutput('should-run', 'false');
+              return;
+            }
+
+            core.info(`All ${relevantRuns.length} relevant workflow runs for ${headSha} completed successfully.`);
+            core.setOutput('should-run', 'true');
+
+  run-e2e:
+    needs: evaluate-upstream-runs
+    if: needs.evaluate-upstream-runs.outputs.should-run == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: playwright.ts/package-lock.json
+
+      - name: Install dependencies
+        working-directory: playwright.ts
+        run: npm ci
+
+      - name: Install Playwright browsers
+        working-directory: playwright.ts
+        run: npx playwright install --with-deps
+
+      - name: Run E2E tests
+        working-directory: playwright.ts
+        run: npx playwright test
