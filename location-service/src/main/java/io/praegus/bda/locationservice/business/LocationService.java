@@ -1,7 +1,7 @@
 package io.praegus.bda.locationservice.business;
 
 import io.praegus.bda.locationservice.adapter.apipostcode.ApiPostCodeClient;
-import io.praegus.bda.locationservice.adapter.overpass.OverPassClient;
+import io.praegus.bda.locationservice.adapter.GeoApifyClient;
 import lombok.RequiredArgsConstructor;
 import org.openapitools.model.Address;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import java.util.Optional;
 public class LocationService {
 
     private final ApiPostCodeClient apiPostCodeClient;
-    private final OverPassClient overPassClient;
+    private final GeoApifyClient geoApifyClient;
 
     public Address retrieveLocation(Address address) {
         return apiPostCodeClient.retrieveLocation(address);
@@ -33,6 +33,6 @@ public class LocationService {
 
         var centerLocation = GeoUtils.calculateCenter(addresses);
 
-        return overPassClient.getRestaurants(centerLocation.getLongitude(), centerLocation.getLatitude());
+        return geoApifyClient.getRestaurants(centerLocation.getLongitude(), centerLocation.getLatitude());
     }
 }

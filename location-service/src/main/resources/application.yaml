@@ -12,3 +12,7 @@ server:
 logging:
   pattern:
     console: '%d{dd-MM-yyyy HH:mm:ss} %magenta([%thread]) %highlight(%-5level) %logger.%M - %msg%n'
+
+external:
+  geoapify:
+    api-key: 9b3f15e663b0401fa36c9dba1a59d84d
