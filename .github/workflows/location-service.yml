@@ -2,14 +2,10 @@ name: location service CI
 
 on:
   push:
-    branches: [ "open-url-test" ]
-#
-#on:
-#  push:
-#    paths:
-#      - 'location-service/**'
-#      - '.github/workflows/location-service.yml'
-#    branches: [ "main" ]
+    paths:
+      - 'location-service/**'
+      - '.github/workflows/location-service.yml'
+    branches: [ "main" ]
 
 jobs:
   build:
