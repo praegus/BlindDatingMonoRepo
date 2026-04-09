@@ -12,7 +12,7 @@ export class ProfileClient {
     }
 
     async deleteAllProfiles() {
-        const response = await this.page.request.delete('http://localhost:9080/profiles');
+        const response = await this.page.request.delete('http://profile-service.blinddatingapp.finkingma.com/profiles');
         expect(response.status()).toBe(204);
     }
 
@@ -58,7 +58,7 @@ export class ProfileClient {
         };
 
 
-        const response = await this.page.request.post('http://localhost:9080/profiles', {
+        const response = await this.page.request.post('http://profile-service.blinddatingapp.finkingma.com/profiles', {
             data: requestBody
         }
         );

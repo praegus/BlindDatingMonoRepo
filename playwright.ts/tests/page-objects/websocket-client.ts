@@ -12,7 +12,7 @@ export class WebSocket {
     }
 
     async clearMatchStatueses() {
-        const response = await this.page.request.delete('http://localhost:9082/clear-match-statuses');
+        const response = await this.page.request.delete('http://websocket-service.blinddatingapp.finkingma.com/clear-match-statuses');
         expect(response.status()).toBe(200);
     }
         }

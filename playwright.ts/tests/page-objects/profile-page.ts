@@ -11,7 +11,7 @@ export class ProfilePage {
 
     }
     async goto() {
-        await this.page.goto('http://localhost:8080');
+        await this.page.goto('http://frontend.blinddatingapp.finkingma.com/');
     }
 
     async createNewProfile(profileName: string) {
