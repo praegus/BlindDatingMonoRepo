@@ -93,7 +93,7 @@ jobs:
 
   run-e2e:
 #    needs: evaluate-upstream-runs
-    if: needs.evaluate-upstream-runs.outputs.should-run == 'true'
+#    if: needs.evaluate-upstream-runs.outputs.should-run == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
