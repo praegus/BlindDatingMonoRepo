@@ -24,8 +24,12 @@ Once you are satisfied with the changes of an application, you can update the do
 - Finally you need to start the service again with the pulled docker file, using `docker compose up -d --force-recreate date` (for the date service)
 
 ## Configure AI skills
-I use https://skills.sh to configure the AI skills for this project.
+We use https://skills.sh to configure the AI skills for this project.
 To install new skills, see https://skills.sh/docs/cli
+
+## OpenSpec AI
+We use OpenSpec to work according to work spec driven. This to keep our documentation in sync with our code.
+https://openspec.dev/#
 
 ## Git workflow traceability
 See [GIT_TRACEABILITY.md](GIT_TRACEABILITY.md) for the required branch naming, commit message, and pull request rules that link work back to GitHub issues and the GitHub Project.
