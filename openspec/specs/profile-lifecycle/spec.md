@@ -4,8 +4,12 @@
 The system SHALL allow a user to create a profile with a unique username and SHALL allow an existing profile to be loaded by that username for editing in the frontend.
 
 #### Scenario: Create a new profile
+<!-- openspec-id: profile-lifecycle.create-new-profile -->
 - **WHEN** a client submits a new username that does not already exist
 - **THEN** the profile service creates a persisted profile record with that username and default profile substructures
+
+**Verification**
+- [ProfileServiceCreateProfileTest.shouldCreateAndPersistNewProfileWithInitializedSubstructures](../../../profile-service/src/test/java/io/praegus/bda/profileservice/business/ProfileServiceCreateProfileTest.java)
 
 #### Scenario: Frontend treats successful creation as navigation to the profile page
 - **WHEN** the frontend submits a profile creation request and the backend responds with success semantics for creation
