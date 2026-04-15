@@ -26,3 +26,6 @@ Once you are satisfied with the changes of an application, you can update the do
 ## Configure AI skills
 I use https://skills.sh to configure the AI skills for this project.
 To install new skills, see https://skills.sh/docs/cli
+
+## Git workflow traceability
+See [GIT_TRACEABILITY.md](GIT_TRACEABILITY.md) for the required branch naming, commit message, and pull request rules that link work back to GitHub issues and the GitHub Project.

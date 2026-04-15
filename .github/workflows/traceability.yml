@@ -1,0 +1,114 @@
+name: traceability
+
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  validate-traceability:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate branch, PR, and commits
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const branchName = context.payload.pull_request.head.ref;
+            const prBody = context.payload.pull_request.body || "";
+            const prTitle = context.payload.pull_request.title || "";
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const pullNumber = context.payload.pull_request.number;
+
+            const branchPattern = /^(feature|fix|chore|docs|refactor|test|ci)\/(\d+)-([a-z0-9]+(?:-[a-z0-9]+)*)$/;
+            const titlePattern = /^(feat|fix|docs|style|refactor|test|chore|ci)(\([a-z0-9-]+\))?!?: [A-Za-z0-9].+$/;
+
+            const branchMatch = branchName.match(branchPattern);
+            if (!branchMatch) {
+              core.setFailed(
+                [
+                  `Branch "${branchName}" does not match the required pattern.`,
+                  "Use <type>/<issue-number>-<short-kebab-title>.",
+                  "Example: feature/123-user-can-like-profile",
+                ].join("\n")
+              );
+              return;
+            }
+
+            if (!titlePattern.test(prTitle)) {
+              core.setFailed(
+                [
+                  `PR title "${prTitle}" is not a valid Conventional Commit header.`,
+                  "Use <type>(<scope>): <summary> or <type>: <summary>.",
+                  "Example: feat(matching): add age-range filter",
+                ].join("\n")
+              );
+              return;
+            }
+
+            const issueNumber = branchMatch[2];
+            const closePattern = new RegExp(`\\b(?:close[sd]?|fix(?:e[sd])?|resolve[sd]?)\\s+#${issueNumber}\\b`, "i");
+
+            if (!closePattern.test(prBody)) {
+              core.setFailed(
+                [
+                  `PR body must include a closing reference for issue #${issueNumber}.`,
+                  `Add a line like: Closes #${issueNumber}`,
+                ].join("\n")
+              );
+              return;
+            }
+
+            const commits = await github.paginate(
+              github.rest.pulls.listCommits,
+              {
+                owner,
+                repo,
+                pull_number: pullNumber,
+                per_page: 100,
+              }
+            );
+
+            const badCommits = [];
+            const refPattern = new RegExp(`\\bRefs\\s+#${issueNumber}\\b`, "i");
+            const commitHeaderPattern = /^(feat|fix|docs|style|refactor|test|chore|ci)(\([a-z0-9-]+\))?!?: [A-Za-z0-9].+$/;
+
+            for (const commit of commits) {
+              const message = commit.commit.message;
+              const [header] = message.split("\n");
+
+              if (!commitHeaderPattern.test(header)) {
+                badCommits.push(
+                  [
+                    `${commit.sha.slice(0, 7)}: invalid commit header "${header}"`,
+                    "Expected Conventional Commits format.",
+                  ].join(" ")
+                );
+                continue;
+              }
+
+              if (!refPattern.test(message)) {
+                badCommits.push(
+                  [
+                    `${commit.sha.slice(0, 7)}: missing issue reference.`,
+                    `Add "Refs #${issueNumber}" to the commit message body or footer.`,
+                  ].join(" ")
+                );
+              }
+            }
+
+            if (badCommits.length > 0) {
+              core.setFailed(
+                [
+                  `Found ${badCommits.length} commit message issue(s):`,
+                  ...badCommits,
+                ].join("\n")
+              );
+            }
