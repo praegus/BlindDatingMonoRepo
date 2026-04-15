@@ -22,3 +22,7 @@ Once you are satisfied with the changes of an application, you can update the do
 - `mvn compile jib:build` from within the module (frontend is a bit different, check createDockerImages.bat for commands)
 - After that, you can update the docker image in the compose setup using `docker compose pull`
 - Finally you need to start the service again with the pulled docker file, using `docker compose up -d --force-recreate date` (for the date service)
+
+## Configure AI skills
+I use https://skills.sh to configure the AI skills for this project.
+To install new skills, see https://skills.sh/docs/cli

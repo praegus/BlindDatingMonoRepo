@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "skills": {
+    "angular-developer": {
+      "source": "angular/skills",
+      "sourceType": "github",
+      "computedHash": "13f864392379685bb8935f93989ac3c08c74e36391499d2748e8e0657ef0ee90"
+    },
+    "angular-testing": {
+      "source": "analogjs/angular-skills",
+      "sourceType": "github",
+      "computedHash": "f0afa362dccf84f959eaec0572324a1a212765c0e90c1c2bf9c05b6f87a0d165"
+    },
+    "api-contract-testing": {
+      "source": "secondsky/claude-skills",
+      "sourceType": "github",
+      "computedHash": "08fd5855432b3d79dab9b08c4e91208249c8b76513ebb55d4f486a21ac1c1e2c"
+    },
+    "find-skills": {
+      "source": "evgyur/find-skills",
+      "sourceType": "github",
+      "computedHash": "25872a21881a950edc3db1f3329664d60405d539660ce05b3265db2de06a7dfd"
+    },
+    "github-actions-expert": {
+      "source": "cin12211/orca-q",
+      "ref": "main",
+      "sourceType": "github",
+      "computedHash": "2023a067603d63f58f78f8a4828af82162127989661522405ff80f5feb3269f9"
+    },
+    "java-spring-development": {
+      "source": "mindrally/skills",
+      "sourceType": "github",
+      "computedHash": "129defa42a0872ab49d1e5f93ecfa2dd8f55056595f3d1e5d9490e12291173b7"
+    },
+    "java-springboot": {
+      "source": "github/awesome-copilot",
+      "sourceType": "github",
+      "computedHash": "f1b9c6b1277178fc33e5a612761c1cd1cf6ab5f946d05d69d52026d142c0a0c1"
+    },
+    "joke-engineering": {
+      "source": "jwynia/agent-skills",
+      "sourceType": "github",
+      "computedHash": "6ae4ce4728409ad3b34a9af774ac7862227a6f1691699992d55d9faeab5b0b3d"
+    },
+    "microservices-architect": {
+      "source": "jeffallan/claude-skills",
+      "sourceType": "github",
+      "computedHash": "cde138470adaa161e6cb36fc29c468862d77a1d9c6e4943e5a13265d2138184c"
+    },
+    "playwright": {
+      "source": "openai/skills",
+      "sourceType": "github",
+      "computedHash": "844a180ab348b8d13044a320b8306e6263e1cda75e158e479a463225e43a5eb1"
+    },
+    "skill-creator": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "computedHash": "57f470f512f45bdac598e302bc72fd62bf2b649fc7fad032efe97720149cde4d"
+    },
+    "spring-boot-testing": {
+      "source": "marcelorodrigo/agent-skills",
+      "sourceType": "github",
+      "computedHash": "83e00eda305530773a574a7d134fa1188a3625538ed575a8cc16444a98064497"
+    }
+  }
+}
