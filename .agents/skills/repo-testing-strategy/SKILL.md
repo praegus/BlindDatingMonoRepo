@@ -1,6 +1,6 @@
 ---
 name: repo-testing-strategy
-description: Apply the BlindDatingMonoRepo testing guidelines when adding, reviewing, or restructuring tests across the frontend, Spring services, Kafka, database, WebSockets, CI, or end-to-end flows. Use this whenever the task is about choosing the right test level, reducing flakiness, enforcing realistic test data, aligning contracts, or making tests follow the repository's cross-cutting testing conventions. Use it together with framework-specific testing skills when implementation details are needed.
+description: Apply the BlindDatingMonoRepo testing guidelines when adding, reviewing, or restructuring tests across the frontend, Spring services, Kafka, database, WebSockets, CI, or end-to-end flows. Use this whenever the task is about choosing the right test level, deciding between real Spring context collaborators versus Mockito or WireMock, reducing flakiness, enforcing realistic test data, aligning contracts, or making tests follow the repository's cross-cutting testing conventions. Use it together with framework-specific testing skills when implementation details are needed.
 ---
 
 # Repo Testing Strategy
@@ -13,6 +13,8 @@ Do not duplicate framework-specific mechanics that are already covered by existi
 - Use `spring-boot-testing` for Spring Boot slice, integration, and assertion patterns.
 - Use `api-contract-testing` for HTTP contract tooling and provider/consumer verification details.
 - Use `playwright` only when the task needs real browser automation from the terminal.
+
+If generic framework guidance conflicts with this repository's testing conventions, follow this skill for policy and use the framework-specific skill only for implementation mechanics.
 
 Your job here is to decide **what should be tested, at which level, with which real vs mocked dependencies, and with which anti-flakiness rules** for this monorepo.
 
@@ -118,6 +120,8 @@ Cover these mainly in unit or component tests:
 Avoid mocking your own code when a real internal collaboration can be tested cheaply and reliably.
 Avoid relying on controller-only tests when the real risk is deeper in service or persistence behavior.
 
+For this repository, prefer real in-context Spring collaborators when testing behavior inside one deployable unit. If the subject under test is a Spring-managed service and the risk includes wiring, persistence, transactions, mapping, or configuration, keep the application context real and avoid replacing in-process beans with Mockito unless there is a specific isolation reason.
+
 Implementation details should be delegated to `spring-boot-testing`.
 
 ### Component or slice tests
@@ -132,6 +136,7 @@ Default setup when the risk sits inside one service boundary:
 - include Flyway migrations during test startup
 
 Favor realistic out-of-process setups when they increase confidence without losing control.
+Treat `@MockBean` or similar bean replacement inside `@SpringBootTest` as an exception, not the default.
 
 ### Contract protection
 
