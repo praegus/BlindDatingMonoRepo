@@ -22,3 +22,14 @@ Once you are satisfied with the changes of an application, you can update the do
 - `mvn compile jib:build` from within the module (frontend is a bit different, check createDockerImages.bat for commands)
 - After that, you can update the docker image in the compose setup using `docker compose pull`
 - Finally you need to start the service again with the pulled docker file, using `docker compose up -d --force-recreate date` (for the date service)
+
+## Configure AI skills
+We use https://skills.sh to configure the AI skills for this project.
+To install new skills, see https://skills.sh/docs/cli
+
+## OpenSpec AI
+We use OpenSpec to work according to work spec driven. This to keep our documentation in sync with our code.
+https://openspec.dev/#
+
+## Git workflow traceability
+See [GIT_TRACEABILITY.md](GIT_TRACEABILITY.md) for the required branch naming, commit message, and pull request rules that link work back to GitHub issues and the GitHub Project.
