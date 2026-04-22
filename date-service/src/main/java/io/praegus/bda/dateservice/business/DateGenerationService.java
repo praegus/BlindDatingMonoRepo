@@ -1,11 +1,11 @@
-package io.praegus.bda.locationservice.business;
+package io.praegus.bda.dateservice.business;
 
 import com.example.Match;
 import com.example.matching.Address;
 import com.example.matching.ScheduledDate;
-import io.praegus.bda.locationservice.adapter.kafka.KafkaProducer;
-import io.praegus.bda.locationservice.adapter.location.LocationServiceAdapter;
-import io.praegus.bda.locationservice.adapter.profile.ProfileServiceAdapter;
+import io.praegus.bda.dateservice.adapter.kafka.KafkaProducer;
+import io.praegus.bda.dateservice.adapter.location.LocationServiceAdapter;
+import io.praegus.bda.dateservice.adapter.profile.ProfileServiceAdapter;
 import lombok.RequiredArgsConstructor;
 import org.openapitools.client.model.Profile;
 import org.slf4j.Logger;

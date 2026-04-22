@@ -1,4 +1,4 @@
-package io.praegus.bda.locationservice.adapter.kafka;
+package io.praegus.bda.dateservice.adapter.kafka;
 
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.context.annotation.Bean;

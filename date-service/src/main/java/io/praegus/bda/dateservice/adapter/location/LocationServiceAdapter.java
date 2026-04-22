@@ -1,4 +1,4 @@
-package io.praegus.bda.locationservice.adapter.location;
+package io.praegus.bda.dateservice.adapter.location;
 
 import org.openapitools.client.ApiClient;
 import org.openapitools.client.api.DateLocationsApi;
