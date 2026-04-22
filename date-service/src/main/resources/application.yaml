@@ -24,6 +24,13 @@ spring:
       include-message: always
 server:
   port: 9083
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    url: /date.yaml
+    supportedSubmitMethods: []
 
 endpoints:
   profileservice: http://localhost:9080

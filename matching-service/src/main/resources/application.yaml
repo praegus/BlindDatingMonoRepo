@@ -22,10 +22,10 @@ server:
   port: 9081
 springdoc:
   api-docs:
-    enabled: false
+    enabled: true
   swagger-ui:
-    path: /
-    url: /profiles.yaml
+    path: /swagger-ui.html
+    url: /matching.yaml
     supportedSubmitMethods: []
 
 endpoints:

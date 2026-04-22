@@ -9,6 +9,13 @@ spring:
       include-message: always
 server:
   port: 9084
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    url: /location.yaml
+    supportedSubmitMethods: []
 
 logging:
   pattern:
