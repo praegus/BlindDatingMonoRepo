@@ -1,4 +1,8 @@
 spring:
+  docker:
+    compose:
+      file: ./matching-service/compose.yaml
+      lifecycle-management: start_and_stop
   kafka:
     bootstrap-servers: localhost:9092
     properties:

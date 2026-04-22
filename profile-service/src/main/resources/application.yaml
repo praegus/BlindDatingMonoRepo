@@ -36,9 +36,9 @@ server:
     include-message: always
 springdoc:
   api-docs:
-    enabled: false
+    enabled: true
   swagger-ui:
-    path: /
+    path: /swagger-ui.html
     url: /profiles.yaml
     supportedSubmitMethods: []
 

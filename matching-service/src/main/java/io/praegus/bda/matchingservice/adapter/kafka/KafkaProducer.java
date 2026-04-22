@@ -1,15 +1,15 @@
 package io.praegus.bda.matchingservice.adapter.kafka;
 
 import com.example.Match;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@RequiredArgsConstructor
 public class KafkaProducer {
 
-    @Autowired
-    private KafkaTemplate<String, Match> kafkaTemplate;
+    private final KafkaTemplate<String, Match> kafkaTemplate;
 
     public void sendMessage(Match match) {
         kafkaTemplate.send("matchings", match)
