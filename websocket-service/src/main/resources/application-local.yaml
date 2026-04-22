@@ -1,0 +1,5 @@
+spring:
+  docker:
+    compose:
+      file: ./websocket-service/compose.yaml
+      lifecycle-management: start_and_stop
