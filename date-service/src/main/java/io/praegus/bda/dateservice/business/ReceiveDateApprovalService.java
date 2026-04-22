@@ -1,9 +1,6 @@
-package io.praegus.bda.locationservice.business;
+package io.praegus.bda.dateservice.business;
 
 import com.example.Match;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

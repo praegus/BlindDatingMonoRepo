@@ -1,15 +1,16 @@
-package io.praegus.bda.locationservice.adapter.kafka;
+package io.praegus.bda.dateservice.adapter.kafka;
 
 import com.example.matching.ScheduledDate;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@RequiredArgsConstructor
 public class KafkaProducer {
 
-    @Autowired
-    private KafkaTemplate<String, ScheduledDate> kafkaTemplate;
+    private final KafkaTemplate<String, ScheduledDate> kafkaTemplate;
 
     public void produceDate(ScheduledDate message) {
         kafkaTemplate.send("dates", message)

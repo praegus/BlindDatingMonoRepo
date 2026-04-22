@@ -1,18 +1,15 @@
 package io.praegus.bda.websocketservice.adapter.kafka;
 
 import com.example.Match;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Repository;
 
-import java.util.concurrent.CompletableFuture;
-
 @Repository
+@RequiredArgsConstructor
 public class KafkaProducer {
 
-    @Autowired
-    private KafkaTemplate<String, Match> kafkaTemplate;
+    private final KafkaTemplate<String, Match> kafkaTemplate;
 
     public void produceDateApproval(Match match) {
         kafkaTemplate.send("date-approvals", match)

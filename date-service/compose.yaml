@@ -1,7 +1,7 @@
 services:
-  profile-service-kafka:
+  date-service-kafka:
     image: bitnamilegacy/kafka:latest
-    container_name: profile-service-kafka
+    container_name: date-service-kafka
     hostname: kafka
     ports:
       - "9092:9092"
@@ -26,9 +26,9 @@ services:
       timeout: 5s
       retries: 5
 
-  profile-service-schema-registry:
+  date-service-schema-registry:
     image: apicurio/apicurio-registry:latest
-    container_name: profile-service-schema-registry
+    container_name: date-service-schema-registry
     hostname: schema-registry
     ports:
       - "8081:8081"
@@ -44,15 +44,5 @@ services:
         aliases:
           - schema-registry
     depends_on:
-      profile-service-kafka:
+      date-service-kafka:
         condition: service_healthy
-
-  profile-service-postgres:
-    image: postgres
-    ports:
-      - 5432:5432
-    restart: always
-    shm_size: 128mb
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: example

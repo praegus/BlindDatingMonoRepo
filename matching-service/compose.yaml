@@ -1,7 +1,24 @@
 services:
-  profile-service-kafka:
+  matching-service-profile:
+    image: docker.io/finkingma/profile-service
+    container_name: matching-service-profile-service
+    ports:
+      - "9080:9080"
+    environment:
+      spring.kafka.bootstrap-servers: kafka:29092
+      spring.kafka.properties.schema.registry.url: http://schema-registry:8081/apis/ccompat/v7
+      spring.datasource.url: jdbc:postgresql://postgres:5432/postgres?useSSL=false
+      endpoints.locationservice: http://location:9084
+    restart: always
+    depends_on:
+      matching-service-postgres:
+        condition: service_started
+      matching-service-kafka:
+        condition: service_healthy
+
+  matching-service-kafka:
     image: bitnamilegacy/kafka:latest
-    container_name: profile-service-kafka
+    container_name: matching-service-kafka
     hostname: kafka
     ports:
       - "9092:9092"
@@ -26,9 +43,9 @@ services:
       timeout: 5s
       retries: 5
 
-  profile-service-schema-registry:
+  matching-service-schema-registry:
     image: apicurio/apicurio-registry:latest
-    container_name: profile-service-schema-registry
+    container_name: matching-service-schema-registry
     hostname: schema-registry
     ports:
       - "8081:8081"
@@ -44,11 +61,12 @@ services:
         aliases:
           - schema-registry
     depends_on:
-      profile-service-kafka:
+      matching-service-kafka:
         condition: service_healthy
 
-  profile-service-postgres:
+  matching-service-postgres:
     image: postgres
+    hostname: postgres
     ports:
       - 5432:5432
     restart: always
@@ -56,3 +74,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: example
+    networks:
+      default:
+        aliases:
+          - postgres

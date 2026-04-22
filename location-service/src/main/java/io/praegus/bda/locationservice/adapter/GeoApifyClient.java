@@ -28,7 +28,7 @@ public class GeoApifyClient {
 
     public Optional<Address> getRestaurants(BigDecimal longitude, BigDecimal lattitude) {
         String geoapifyUrl = UriComponentsBuilder
-                .fromHttpUrl("https://api.geoapify.com/v2/places")
+                .fromUriString("https://api.geoapify.com/v2/places")
                 .queryParam("categories", "catering.restaurant")
                 .queryParam("filter", "circle:" + longitude + "," + lattitude + ",5000")
                 .queryParam("limit", 20)

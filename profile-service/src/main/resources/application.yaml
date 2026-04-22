@@ -26,19 +26,21 @@ spring:
     locations: classpath:db/migration
   jackson:
     default-property-inclusion: non_null
-    serialization.FAIL_ON_EMPTY_BEANS: false
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
   h2:
     console:
       enabled: true
+  web:
+    error:
+      include-message: always
 server:
   port: 9080
-  error:
-    include-message: always
 springdoc:
   api-docs:
-    enabled: false
+    enabled: true
   swagger-ui:
-    path: /
+    path: /swagger-ui.html
     url: /profiles.yaml
     supportedSubmitMethods: []
 

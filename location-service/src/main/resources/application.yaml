@@ -3,11 +3,18 @@ spring:
     default-property-inclusion: non_null
     serialization:
       FAIL_ON_EMPTY_BEANS: false
-      WRITE_DATES_AS_TIMESTAMPS: false
+  web:
+    error:
+      include-message: always
 server:
   port: 9084
-  error:
-    include-message: always
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    url: /location.yaml
+    supportedSubmitMethods: []
 
 logging:
   pattern:

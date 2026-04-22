@@ -1,4 +1,8 @@
 spring:
+  docker:
+    compose:
+      file: ./matching-service/compose.yaml
+      lifecycle-management: start_and_stop
   kafka:
     bootstrap-servers: localhost:9092
     properties:
@@ -9,17 +13,19 @@ spring:
       value.subject.name.strategy: io.confluent.kafka.serializers.subject.RecordNameStrategy
   jackson:
     default-property-inclusion: non_null
-    serialization.FAIL_ON_EMPTY_BEANS: false
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
+  web:
+    error:
+      include-message: always
 server:
   port: 9081
-  error:
-    include-message: always
 springdoc:
   api-docs:
-    enabled: false
+    enabled: true
   swagger-ui:
-    path: /
-    url: /profiles.yaml
+    path: /swagger-ui.html
+    url: /matching.yaml
     supportedSubmitMethods: []
 
 endpoints:
