@@ -1,5 +1,6 @@
 spring:
   docker:
     compose:
+      enabled: true
       file: ./websocket-service/compose.yaml
       lifecycle-management: start_and_stop

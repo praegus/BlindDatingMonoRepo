@@ -1,5 +1,6 @@
 spring:
   docker:
     compose:
+      enabled: true
       file: ./profile-service/compose.yaml
       lifecycle-management: start_and_stop
