@@ -12,7 +12,8 @@ spring:
       value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
   jackson:
     default-property-inclusion: non_null
-    serialization.FAIL_ON_EMPTY_BEANS: false
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
 server:
   port: 9082
 

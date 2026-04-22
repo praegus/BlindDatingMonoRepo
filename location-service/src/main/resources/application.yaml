@@ -4,10 +4,11 @@ spring:
     serialization:
       FAIL_ON_EMPTY_BEANS: false
       WRITE_DATES_AS_TIMESTAMPS: false
+  web:
+    error:
+      include-message: always
 server:
   port: 9084
-  error:
-    include-message: always
 
 logging:
   pattern:

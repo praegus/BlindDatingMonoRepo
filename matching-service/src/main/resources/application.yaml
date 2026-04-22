@@ -13,11 +13,13 @@ spring:
       value.subject.name.strategy: io.confluent.kafka.serializers.subject.RecordNameStrategy
   jackson:
     default-property-inclusion: non_null
-    serialization.FAIL_ON_EMPTY_BEANS: false
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
+  web:
+    error:
+      include-message: always
 server:
   port: 9081
-  error:
-    include-message: always
 springdoc:
   api-docs:
     enabled: false
