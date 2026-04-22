@@ -1,13 +1,16 @@
 spring:
+  docker:
+    compose:
+      enabled: false
   kafka:
     bootstrap-servers: localhost:9092
-    group-id: date
     properties:
       schema.registry.url: http://localhost:8081
       specific.avro.reader: true
     producer:
       value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
-      value.subject.name.strategy: io.confluent.kafka.serializers.subject.RecordNameStrategy
+      properties:
+        value.subject.name.strategy: io.confluent.kafka.serializers.subject.RecordNameStrategy
     consumer:
       value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
   jackson:
