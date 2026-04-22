@@ -1,4 +1,8 @@
 spring:
+  docker:
+    compose:
+      file: ./profile-service/compose.yaml
+      lifecycle-management: start_and_stop
   kafka:
     bootstrap-servers: localhost:9092
     group-id: profile
