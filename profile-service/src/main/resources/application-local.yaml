@@ -1,0 +1,5 @@
+spring:
+  docker:
+    compose:
+      file: ./profile-service/compose.yaml
+      lifecycle-management: start_and_stop
