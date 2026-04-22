@@ -6,7 +6,8 @@ spring:
       specific.avro.reader: true
     producer:
       value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
-      value.subject.name.strategy: io.confluent.kafka.serializers.subject.RecordNameStrategy
+      properties:
+        value.subject.name.strategy: io.confluent.kafka.serializers.subject.RecordNameStrategy
   jackson:
     default-property-inclusion: non_null
     serialization:
