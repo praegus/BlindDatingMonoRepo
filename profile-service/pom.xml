@@ -23,7 +23,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <testcontainers.version>1.21.4</testcontainers.version>
         <cucumber.version>7.34.6</cucumber.version>
-        <rest-assured.version>5.5.0</rest-assured.version>
+        <rest-assured.version>6.0.1</rest-assured.version>
     </properties>
 
     <dependencyManagement>
@@ -138,6 +138,17 @@
         <!-- end::openapi[] -->
 
         <!-- tag::tests[] -->
+        <!--
+            Keep REST Assured before the Spring/JUnit test dependencies. Maven resolves
+            equally distant transitive dependencies by declaration order; this ensures
+            that the Hamcrest version tested with REST Assured 6 is selected.
+        -->
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>${rest-assured.version}</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -187,12 +198,6 @@
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-suite</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <version>${rest-assured.version}</version>
             <scope>test</scope>
         </dependency>
         <!-- end::tests[] -->
@@ -345,6 +350,10 @@
     </build>
 
     <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </repository>
         <repository>
             <id>confluent</id>
             <url>https://packages.confluent.io/maven/</url>
