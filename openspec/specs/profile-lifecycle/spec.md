@@ -38,6 +38,14 @@ The system SHALL persist submitted profile details and SHALL revalidate the addr
 - **WHEN** a client changes the street, street number, postal code, or city of a profile
 - **THEN** the profile service calls the location service and stores the returned validity, normalized address data, and coordinates on the profile
 
+#### Scenario: Update a profile with a long street address
+<!-- openspec-id: profile-lifecycle.update-long-address -->
+- **WHEN** a client creates a profile with a username and then updates its street address to 300 characters
+- **THEN** the profile service persists the update and responds successfully
+
+**Verification**
+- [ProfileComponentCucumberTest](../../../profile-service/src/test/java/io/praegus/bda/profileservice/component/ProfileComponentCucumberTest.java)
+
 #### Scenario: Preserve address validation when the address did not change
 - **WHEN** a client updates a profile without changing the stored address fields
 - **THEN** the profile service persists the profile update without re-running address validation
