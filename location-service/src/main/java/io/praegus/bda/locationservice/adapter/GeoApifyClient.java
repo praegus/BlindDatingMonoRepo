@@ -1,12 +1,13 @@
 package io.praegus.bda.locationservice.adapter;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import io.praegus.bda.locationservice.business.GeoUtils;
 import org.openapitools.model.Address;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.ObjectNode;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
@@ -35,7 +36,7 @@ public class GeoApifyClient {
                 .queryParam("apiKey", geoapifyApiKey)
                 .toUriString();
 
-        JsonNode response = restTemplate.getForObject(geoapifyUrl, JsonNode.class);
+        ObjectNode response = restTemplate.getForObject(geoapifyUrl, ObjectNode.class);
         if (response == null || !response.has("features")) {
             return Optional.empty();
         }
