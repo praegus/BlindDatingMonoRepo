@@ -73,3 +73,11 @@ npx ng test --watch=false --browsers=ChromeHeadless --include=src/app/auth/*.spe
 ```
 
 The focused frontend tests cover hosted-form buttons, protected navigation, token destination, and refresh failure. A real-browser smoke check covers registration, profile provisioning, saving, logout, and subsequent password login against local Keycloak and the profile service. Matching/date/WebSocket workflows are separate from this authentication check.
+
+
+# Deploy to docker hub
+```
+docker build -t docker.io/finkingma/blinddatingapp-keycloak:latest .
+docker push docker.io/finkingma/blinddatingapp-keycloak:latest
+```
+that way the docker image can be used by caprover as well
