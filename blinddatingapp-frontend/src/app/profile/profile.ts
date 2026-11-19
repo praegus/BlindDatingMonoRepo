@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { AuthService } from '../auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProfilesService, Profile as ProfileModel, Gender, HairColor, MusicGenre } from '../generated-sources/openapi';
 import { FormGroup, FormControl, ReactiveFormsModule, FormArray } from '@angular/forms';
@@ -24,6 +25,7 @@ import { DateList } from '../dates/date-list';
   styleUrl: './profile.css'
 })
 export class Profile implements OnInit, OnDestroy {
+  readonly auth = inject(AuthService);
   profileData: ProfileModel | undefined;
 
   constructor(private profilesService: ProfilesService, private snackBar: MatSnackBar, private route: ActivatedRoute, private router: Router) { }
@@ -35,37 +37,37 @@ export class Profile implements OnInit, OnDestroy {
     lastname: new FormControl(''),
     additionalInfo: new FormControl(''),
     address: new FormGroup({
-      city: new FormControl(''),
-      street: new FormControl(''),
-      streetNumber: new FormControl(''),
-      postalCode: new FormControl(''),
+      city: new FormControl<string | null>(null),
+      street: new FormControl<string | null>(null),
+      streetNumber: new FormControl<string | null>(null),
+      postalCode: new FormControl<string | null>(null),
     }),
     personalInformation: new FormGroup({
-      gender: new FormControl(''),
+      gender: new FormControl<Gender | null>(null),
       favoriteColor: new FormControl(''),
       pets: new FormControl(false),
-      hairColor: new FormControl(''),
+      hairColor: new FormControl<HairColor | null>(null),
       tattoos: new FormControl(false),
       sports: new FormControl(''),
-      musicGenres: new FormControl(['']),
+      musicGenres: new FormControl<MusicGenre[]>([], { nonNullable: true }),
     }),
     preferences: new FormGroup({
-      gender: new FormControl(''),
+      gender: new FormControl<Gender | null>(null),
       favoriteColor: new FormControl(''),
       pets: new FormControl(false),
-      hairColor: new FormControl(''),
+      hairColor: new FormControl<HairColor | null>(null),
       tattoos: new FormControl(false),
       sports: new FormControl(''),
-      musicGenres: new FormControl(['']),
+      musicGenres: new FormControl<MusicGenre[]>([], { nonNullable: true }),
     }),
     dislikes: new FormGroup({
-      gender: new FormControl(''),
+      gender: new FormControl<Gender | null>(null),
       favoriteColor: new FormControl(''),
       pets: new FormControl(false),
-      hairColor: new FormControl(''),
+      hairColor: new FormControl<HairColor | null>(null),
       tattoos: new FormControl(false),
       sports: new FormControl(''),
-      musicGenres: new FormControl(['']),
+      musicGenres: new FormControl<MusicGenre[]>([], { nonNullable: true }),
     }),
   });
 

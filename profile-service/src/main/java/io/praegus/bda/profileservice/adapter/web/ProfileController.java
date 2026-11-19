@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -22,6 +23,7 @@ public class ProfileController implements ProfilesApi {
     private ProfileService profileService;
 
     @Override
+    @PreAuthorize("denyAll()")
     public ResponseEntity<String> createProfile(Profile profile) {
         profileService.createProfile(profile);
 
@@ -35,6 +37,7 @@ public class ProfileController implements ProfilesApi {
     }
 
     @Override
+    @PreAuthorize("@profileOwnership.owns(authentication, #username)")
     public ResponseEntity<Void> deleteProfile(String username) {
         profileService.deleteProfile(username);
         logger.info("profile {} deleted", username);
@@ -61,6 +64,7 @@ public class ProfileController implements ProfilesApi {
     }
 
     @Override
+    @PreAuthorize("@profileOwnership.owns(authentication, #username) and #username == #profile.username")
     public ResponseEntity<String> updateProfile(String username, Profile profile) {
         profileService.updateProfile(username, profile);
         logger.info("profile {} updated", username);

@@ -1,7 +1,7 @@
 ## ADDED Requirements
 
 ### Requirement: User profiles can be created and loaded by username
-The system SHALL allow a user to create a profile with a unique username and SHALL allow an existing profile to be loaded by that username for editing in the frontend.
+The system SHALL provision a profile with a unique username from the authenticated Keycloak identity and SHALL allow its owner to load it for editing in the frontend. Authentication and the explicit public service-read exceptions are specified in [authentication](../authentication/spec.md).
 
 #### Scenario: Create a new profile
 <!-- openspec-id: profile-lifecycle.create-new-profile -->
@@ -24,8 +24,8 @@ The system SHALL allow a user to create a profile with a unique username and SHA
 - **THEN** the system returns the profile and the frontend can route the user to the profile page for that username
 
 #### Scenario: Handle a missing profile on login
-- **WHEN** the frontend requests a profile by username that does not exist
-- **THEN** the system reports the profile as not found and the user is not routed to the profile page
+- **WHEN** an authenticated account opens its profile for the first time
+- **THEN** the system creates a profile bound to the JWT subject and username and routes the user to their profile page
 
 ### Requirement: Profile updates persist personal data and validate address changes
 The system SHALL persist submitted profile details and SHALL revalidate the address through the location service whenever the stored address fields change.

@@ -8,6 +8,9 @@ services:
     environment:
       PROFILE_API_URL: http://localhost:9080
       WEBSOCKET_URL: http://localhost:9082
+      KEYCLOAK_URL: http://localhost:8180
+      KEYCLOAK_REALM: blinddating
+      KEYCLOAK_CLIENT_ID: blinddating-frontend
     restart: always
 
   date:
@@ -58,6 +61,8 @@ services:
     ports:
       - "9080:9080"
     environment:
+      KEYCLOAK_ISSUER_URI: http://localhost:8180/realms/blinddating
+      KEYCLOAK_JWK_SET_URI: http://keycloak:8080/realms/blinddating/protocol/openid-connect/certs
       spring.kafka.bootstrap-servers: kafka:29092
       spring.kafka.properties.schema.registry.url: http://schema-registry:8081/apis/ccompat/v7
       spring.datasource.url: jdbc:postgresql://postgres:5432/postgres?useSSL=false
@@ -77,6 +82,20 @@ services:
     restart: always
 
 # SUPPORTIVE TOOLS BELOW
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.2.5
+    command: ["start-dev", "--import-realm"]
+    ports:
+      - "8180:8080"
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:?Set KEYCLOAK_ADMIN_PASSWORD in .env}
+      KC_HOSTNAME: http://localhost:8180
+      KC_HTTP_ENABLED: "true"
+    volumes:
+      - ./keycloak/blinddating-realm.json:/opt/keycloak/data/import/blinddating-realm.json:ro
+      - keycloak-data:/opt/keycloak/data
+
   kafka:
     image: bitnamilegacy/kafka:latest
     container_name: kafka
@@ -154,3 +173,6 @@ services:
       PGADMIN_DEFAULT_PASSWORD: strong-password
     volumes:
       - C:\pgadmin-data:/var/lib/pgadmin
+
+volumes:
+  keycloak-data:
