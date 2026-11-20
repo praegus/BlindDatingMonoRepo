@@ -5,7 +5,7 @@ on:
     paths:
       - 'blinddatingapp-frontend/**'
       - '.github/workflows/blinddatingapp-frontend.yml'
-    branches: [ "main" ]
+    branches: [ "main","add-authentication" ]
 
 jobs:
   build:

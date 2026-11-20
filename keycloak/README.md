@@ -75,9 +75,37 @@ npx ng test --watch=false --browsers=ChromeHeadless --include=src/app/auth/*.spe
 The focused frontend tests cover hosted-form buttons, protected navigation, token destination, and refresh failure. A real-browser smoke check covers registration, profile provisioning, saving, logout, and subsequent password login against local Keycloak and the profile service. Matching/date/WebSocket workflows are separate from this authentication check.
 
 
-# Deploy to docker hub
+# Deploy
+
+## Deploy to docker hub
 ```
 docker build -t docker.io/finkingma/blinddatingapp-keycloak:latest .
 docker push docker.io/finkingma/blinddatingapp-keycloak:latest
 ```
 that way the docker image can be used by caprover as well
+
+## Setup in Caprover
+the tabs do not seem to save by themselves, its best to first configure the app configs, then the deployment, and finish with http settings
+
+### Http Settings
+- Container Http Port: 8080
+- Enable HTTPS: enabled
+
+### App Configs
+- Env vars
+KC_BOOTSTRAP_ADMIN_USERNAME=admin
+KC_BOOTSTRAP_ADMIN_PASSWORD=Pl2ygR0nd
+KC_DB=dev-file
+KC_HOSTNAME=https://keycloak.blinddatingapp.finkingma.com
+KC_HTTP_ENABLED=true
+KC_PROXY_HEADERS=xforwarded
+
+- persistent directories
+path: /opt/keycloak/data/
+label: keycloak-h2-v2
+
+### Deployment
+Imagename: docker.io/finkingma/blinddatingapp-keycloak:latest
+
+### Testing
+Afterwards you should be able to login using https://keycloak.blinddatingapp.finkingma.com/admin/
