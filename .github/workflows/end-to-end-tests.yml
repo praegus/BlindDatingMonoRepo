@@ -5,7 +5,7 @@ on:
     paths:
       - 'playwright/ts/**'
       - '.github/workflows/end-to-end-tests.yml'
-    branches: [ "main", "fix-e2e"" ]
+    branches: [ "main", "fix-e2e" ]
   workflow_run:
     workflows:
       - blinddatingapp frontend CI
