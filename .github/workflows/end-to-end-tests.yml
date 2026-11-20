@@ -6,16 +6,16 @@ on:
       - 'playwright/ts/**'
       - '.github/workflows/end-to-end-tests.yml'
     branches: [ "main", "fix-e2e" ]
-  workflow_run:
-    workflows:
-      - blinddatingapp frontend CI
-      - date service CI
-      - location service CI
-      - matching service CI
-      - profile service CI
-      - websocket service CI
-    types:
-      - completed
+#  workflow_run:
+#    workflows:
+#      - blinddatingapp frontend CI
+#      - date service CI
+#      - location service CI
+#      - matching service CI
+#      - profile service CI
+#      - websocket service CI
+#    types:
+#      - completed
 
 concurrency:
   group: end-to-end-${{ github.event.workflow_run.head_sha }}
