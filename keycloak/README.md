@@ -57,7 +57,19 @@ Startup imports do not overwrite an existing realm. After changing the JSON, app
 
 ## Access rules
 
-`GET /profiles` and `GET /profiles/{username}` are deliberately public for backend service reads. Matching and date services keep their existing direct calls without service credentials. Both endpoints are accessible to anyone who can reach the profile service, including callers outside the frontend. Angular still requires login before showing a profile. Profile writes require an authenticated owner; arbitrary profile creation and bulk deletion are disabled. WebSocket authentication is outside this change.
+### Playwright cleanup in an exclusive test environment
+
+The matching E2E test deletes all profiles and removes Keycloak users whose usernames start with `e2e`. Run only against an environment reserved for this test, with no overlapping CI runs. Playwright uses one worker and separate browser contexts for the two users. New profiles are provisioned through registration and filled through the UI; the legacy POST /profiles endpoint remains disabled.
+
+Deploy the updated profile service. `DELETE /profiles` accepts any authenticated caller with a valid JWT whose audience includes `profile-service`. No E2E-specific service configuration or client-ID restriction applies.
+
+In the `blinddating` realm, open Clients → playwright-cleanup → Client scopes → playwright-cleanup-dedicated → Mappers → Configure a new mapper → Audience. Set name `profile-service audience`, Included Custom Audience `profile-service`, Add to access token On, and Add to ID token Off. Keep the default `profile` client scope so the service account token includes `preferred_username`. Retain the service account's `realm-management` roles `query-users` and `manage-users` for Keycloak user cleanup.
+
+Playwright loads the repository root `.env`; see `.env.example` for the Keycloak cleanup credentials and frontend/profile/WebSocket URL variables. CI environment variables take precedence. Node 20.12+ is required for native `.env` loading. The service-account secret stays in the test runner, not the frontend or the profile service.
+
+Run `npx playwright test` from `playwright.ts` after deploying and configuring the services. A cleanup 401 indicates a missing/invalid token, including a missing audience.
+
+`GET /profiles` and `GET /profiles/{username}` are deliberately public for backend service reads. Matching and date services keep their existing direct calls without service credentials. Both endpoints are accessible to anyone who can reach the profile service, including callers outside the frontend. Angular still requires login before showing a profile. Individual profile writes require an authenticated owner; arbitrary profile creation is disabled. Bulk deletion is available to any authenticated caller with a valid profile-service token. WebSocket authentication is outside this change.
 
 Email-based password recovery is unavailable because registration does not collect email. An administrator can reset a forgotten password in Keycloak.
 

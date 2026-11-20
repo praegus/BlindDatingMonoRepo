@@ -1,5 +1,18 @@
 ## Requirements
 
+### Requirement: Allow authenticated bulk profile deletion
+
+Any authenticated caller with a valid profile-service access token SHALL be allowed to delete all profiles.
+
+#### Scenario: Delete all profiles as an authenticated caller
+<!-- openspec-id: authentication.authenticated-bulk-deletion -->
+- **WHEN** a caller requests DELETE /profiles with a valid token
+- **THEN** all profiles are deleted and HTTP 204 is returned, regardless of client ID or profile ownership.
+- **AND** missing or invalid tokens are rejected with HTTP 401.
+
+**Verification**
+- [ProfileAuthenticationTest](../../../profile-service/src/test/java/io/praegus/bda/profileservice/ProfileAuthenticationTest.java)
+
 ### Requirement: Use standard Keycloak authentication
 The frontend SHALL offer Login and Register using the standard Keycloak forms. Registration SHALL require only a username and password, without email verification, custom themes, or application password handling. Users SHALL be able to log out and later log in using their password.
 
@@ -10,6 +23,7 @@ The frontend SHALL offer Login and Register using the standard Keycloak forms. R
 
 **Verification**
 - [Login component test](../../../blinddatingapp-frontend/src/app/login/login.spec.ts)
+- [Authenticated matching E2E](../../../playwright.ts/tests/create-match.spec.ts)
 
 #### Scenario: Protect profile navigation
 <!-- openspec-id: authentication.protected-navigation -->
@@ -45,11 +59,12 @@ The profile service SHALL validate JWT signature, expiry, issuer, and audience. 
 
 **Verification**
 - [ProfileAuthenticationTest](../../../profile-service/src/test/java/io/praegus/bda/profileservice/ProfileAuthenticationTest.java)
+- [Authenticated matching E2E](../../../playwright.ts/tests/create-match.spec.ts)
 
 #### Scenario: Prevent editing another account's profile
 <!-- openspec-id: authentication.isolate-profiles -->
 - **WHEN** a user changes a path/body username or registers a new account with a previously used username
-- **THEN** the backend denies access to the protected profile operations unless the JWT subject owns the profile. Legacy arbitrary creation and bulk deletion are disabled.
+- **THEN** the backend denies access to the protected profile operations unless the JWT subject owns the profile. Legacy arbitrary creation is disabled. Bulk deletion is separately available to any authenticated caller.
 
 **Verification**
 - [ProfileAuthenticationTest](../../../profile-service/src/test/java/io/praegus/bda/profileservice/ProfileAuthenticationTest.java)

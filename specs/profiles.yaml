@@ -66,13 +66,12 @@ paths:
       tags:
         - profiles
       operationId: deleteProfiles
-      deprecated: true
-      description: Disabled. Bulk profile deletion is not exposed to application users.
+      description: Delete all profiles. Any authenticated caller with a valid profile-service-audience access token is permitted, regardless of profile ownership.
       responses:
-        "403":
-          description: Bulk deletion is disabled
-        "200":
-          description: OK
+        "401":
+          description: Missing or invalid access token
+        "204":
+          description: All profiles deleted
 
   /profiles/{username}:
     get:

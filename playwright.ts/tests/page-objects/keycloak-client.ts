@@ -21,7 +21,7 @@ export class KeycloakClient {
         return `${baseUrl}/admin/realms/${realm}/users`;
     }
 
-    private async authorization(): Promise<Record<string, string>> {
+    async authorization(): Promise<Record<string, string>> {
         const baseUrl = this.requiredEnv('KEYCLOAK_URL').replace(/\/+$/, '');
         const realm = encodeURIComponent(this.requiredEnv('KEYCLOAK_REALM'));
         const response = await this.request.post(

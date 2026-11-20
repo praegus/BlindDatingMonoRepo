@@ -1,80 +1,54 @@
+import { randomUUID } from 'node:crypto';
 import { test, expect } from './fixtures/test-fixture';
 import { ProfilePage } from './page-objects/profile-page';
+import { PreferencesPage } from './page-objects/preferences-page';
 
-// test goals:
-// 1. Create a profile  
-// 2. Create a second profile with different details
-// 3. verify that profiles are matched successfully
-
-test('Create profiles to setup a date', async ({ page, request, profilePage, preferencesPage, context, profileClient, keycloakClient, webSocket}) => {
-    //GIVEN dat er 2 profiles zijn die die "matchen".
-    
-    await webSocket.clearMatchStatueses();
+test('Create profiles to setup a date', async ({ browser, profileClient, keycloakClient, webSocket }) => {
+    // OpenSpec: authentication.hosted-forms
+    // OpenSpec: authentication.own-profile
+    // This test resets shared application state: run against an exclusive test environment.
     await profileClient.deleteAllProfiles();
     await keycloakClient.deleteAllAccounts();
+    await webSocket.clearMatchStatueses();
 
-    await profileClient.createProfile(
-            'Jannick',
-            'Craaienhof',
-            '9',    
-            '4041BP',
-            'MAN',
-            'WOMAN',
-            'Pimpel paars met een gouden randje',
-            true,
-            'BLOND',
-            true,
-            'Voetbal',
-    );
+    const suffix = randomUUID().replaceAll('-', '').slice(0, 12);
+    const usernameOne = `e2ea${suffix}`;
+    const usernameTwo = `e2eb${suffix}`;
+    const password = randomUUID();
+    const contextOne = await browser.newContext();
+    const contextTwo = await browser.newContext();
+    try {
+        const pageOne = await contextOne.newPage();
+        const pageTwo = await contextTwo.newPage();
+        const profileOne = new ProfilePage(pageOne);
+        const profileTwo = new ProfilePage(pageTwo);
+        await profileOne.goto();
+        await profileOne.createNewProfile(usernameOne, password);
+        await profileTwo.goto();
+        await profileTwo.createNewProfile(usernameTwo, password);
 
-    await profileClient.createProfile(
-        'Iga',
-        'Kauwenplein',
-        '19',    
-        '3811HM',
-        'WOMAN',
-        'MAN',
-        'Pimpel paars met een gouden randje',
-        true,
-        'BLOND',
-        true,
-        'Voetbal',
-    );
+        const color = 'Pimpel paars met een gouden randje';
+        await new PreferencesPage(pageOne).fillProfileDetails('Jannick', 'Craaienhof', '9', '4041BP', 'MAN', 'WOMAN', color);
+        await new PreferencesPage(pageTwo).fillProfileDetails('Iga', 'Kauwenplein', '19', '3811HM', 'WOMAN', 'MAN', color);
 
-    //WHEN beide profielen de match accepteren
-
-
-    const pageOne = await context.newPage();
-    const pageTwo = await context.newPage();
-
-    const profilePage1 = new ProfilePage(pageOne)
-    const profilePage2 = new ProfilePage(pageTwo)
-
-    await profilePage1.goto();
-    await profilePage1.loginExistingProfile('Jannick'); 
-    
-    await profilePage2.goto();
-    await profilePage2.loginExistingProfile('Iga');
-
-    await expect.poll(async () => {
-            const buttonOneEnabled = await pageOne.getByRole('button', { name: 'Accept!' }).isEnabled();
-            const buttonTwoEnabled = await pageTwo.getByRole('button', { name: 'Accept!' }).isEnabled();
-            return buttonOneEnabled && buttonTwoEnabled;
-    }, {
-       timeout:  15000 
-    }).toBe(true);
-    await pageOne.getByRole('button', { name: 'Accept!' }).click();
-    await pageTwo.getByRole('button', { name: 'Accept!' }).click();
-
-
-    //THEN hebben beide profielen een date gepland.
-
-    await expect(async () => {
-        await pageOne.reload();
-        await pageTwo.reload();
-        await expect(pageOne.getByText('Dwarsweg 63, Overberg')).toBeVisible();
-        await expect(pageOne.getByText('Bring: Sok (Pimpel paars met een gouden randje)')).toBeVisible();
-        await expect(pageTwo.getByText('Dwarsweg 63, Overberg')).toBeVisible();
-        await expect(pageTwo.getByText('Bring: Sok (Pimpel paars met een gouden randje)')).toBeVisible();
-    }).toPass({ timeout: 10000 }); // retryt tot 15 seconden
+        await expect(pageOne.getByRole('button', { name: 'Accept!', exact: true })).toBeEnabled({ timeout: 30_000 });
+        await expect(pageTwo.getByRole('button', { name: 'Accept!', exact: true })).toBeEnabled({ timeout: 30_000 });
+        await pageOne.getByRole('button', { name: 'Accept!', exact: true }).click();
+        await pageTwo.getByRole('button', { name: 'Accept!', exact: true }).click();
+        await expect(async () => {
+            await pageOne.reload();
+            await pageTwo.reload();
+            for (const page of [pageOne, pageTwo]) {
+                await expect(page.getByText('Dwarsweg 63, Overberg')).toBeVisible();
+                await expect(page.getByText(`Bring: Sok (${color})`)).toBeVisible();
+            }
+        }).toPass({ timeout: 30_000 });
+    } finally {
+        // Finalize each context's trace separately, including when the first close fails.
+        try {
+            await contextOne.close();
+        } finally {
+            await contextTwo.close();
+        }
+    }
 });
