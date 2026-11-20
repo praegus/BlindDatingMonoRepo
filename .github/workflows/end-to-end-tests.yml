@@ -1,6 +1,11 @@
 name: end to end tests
 
 on:
+  push:
+    paths:
+      - 'playwright.ts/**'
+      - '.github/workflows/end-to-end-tests.yml'
+    branches: [ "main", "fix-e2e" ]
   workflow_run:
     workflows:
       - blinddatingapp frontend CI
@@ -13,25 +18,29 @@ on:
       - completed
 
 concurrency:
-  group: end-to-end-${{ github.event.workflow_run.head_sha }}
+  group: end-to-end-${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
   cancel-in-progress: true
 
 jobs:
   run-e2e:
     if: >
-      github.event.workflow_run.event == 'push' &&
-      github.event.workflow_run.conclusion == 'success' &&
+      github.event_name == 'push' ||
       (
-        github.event.workflow_run.head_branch == 'main' ||
-        github.event.workflow_run.head_branch == 'open-url-test'
+        github.event_name == 'workflow_run' &&
+        github.event.workflow_run.event == 'push' &&
+        github.event.workflow_run.conclusion == 'success' &&
+        (
+          github.event.workflow_run.head_branch == 'main' ||
+          github.event.workflow_run.head_branch == 'fix-e2e'
+        )
       )
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.workflow_run.head_sha }}
+          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -46,8 +55,17 @@ jobs:
 
       - name: Install Playwright browsers
         working-directory: playwright.ts
-        run: npx playwright install --with-deps
+        run: npx playwright install --with-deps chromium
+
+      - name: Wait for CapRover deployment
+        run: sleep 120
 
       - name: Run E2E tests
         working-directory: playwright.ts
+        env:
+          CI: true
+          KEYCLOAK_URL: ${{ secrets.KEYCLOAK_URL || 'https://keycloak.blinddatingapp.finkingma.com' }}
+          KEYCLOAK_REALM: ${{ secrets.KEYCLOAK_REALM || 'blinddating' }}
+          KEYCLOAK_CLEANUP_CLIENT_ID: ${{ secrets.KEYCLOAK_CLEANUP_CLIENT_ID }}
+          KEYCLOAK_CLEANUP_CLIENT_SECRET: ${{ secrets.KEYCLOAK_CLEANUP_CLIENT_SECRET }}
         run: npx playwright test
