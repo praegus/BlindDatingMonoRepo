@@ -6,11 +6,12 @@ import { ProfilePage } from './page-objects/profile-page';
 // 2. Create a second profile with different details
 // 3. verify that profiles are matched successfully
 
-test('Create profiles to setup a date', async ({ page, request, profilePage, preferencesPage, context, profileClient, webSocket}) => {
+test('Create profiles to setup a date', async ({ page, request, profilePage, preferencesPage, context, profileClient, keycloakClient, webSocket}) => {
     //GIVEN dat er 2 profiles zijn die die "matchen".
     
     await webSocket.clearMatchStatueses();
     await profileClient.deleteAllProfiles();
+    await keycloakClient.deleteAllAccounts();
 
     await profileClient.createProfile(
             'Jannick',

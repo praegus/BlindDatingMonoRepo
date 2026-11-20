@@ -6,7 +6,7 @@ on:
       - 'profile-service/**'
       - '.github/workflows/profile-service.yml'
   push:
-    branches: [ "main" ]
+    branches: [ "main", "add-authentication" ]
     paths:
       - 'profile-service/**'
       - '.github/workflows/profile-service.yml'
