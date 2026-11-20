@@ -23,6 +23,7 @@ public class SecurityConfiguration {
                                 "/swagger-ui.html", "/v3/api-docs/**", "/profiles.yaml").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/account/profile").authenticated()
                         .requestMatchers(HttpMethod.GET, "/profiles", "/profiles/*").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/profiles").authenticated()
                         .requestMatchers("/profiles/*").authenticated()
                         .anyRequest().denyAll())
                 .oauth2ResourceServer(oauth -> oauth.jwt(Customizer.withDefaults()))
