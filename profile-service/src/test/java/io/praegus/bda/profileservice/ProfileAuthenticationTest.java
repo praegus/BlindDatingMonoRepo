@@ -45,6 +45,24 @@ class ProfileAuthenticationTest extends SupportsPostgresIntegrationTests {
 
     @Autowired MockMvc mvc;
 
+    @Test
+    void anyAuthenticatedCallerCanDeleteAllProfiles() throws Exception {
+        // OpenSpec: authentication.authenticated-bulk-deletion
+        for (String client : new String[] {"blinddating-frontend", "another-client"}) {
+            String username = username();
+            mvc.perform(put("/account/profile").header("Authorization", user(username, UUID.randomUUID().toString())))
+                    .andExpect(status().isOk());
+            mvc.perform(delete("/profiles")).andExpect(status().isUnauthorized());
+            mvc.perform(delete("/profiles").header("Authorization", "Bearer malformed"))
+                    .andExpect(status().isUnauthorized());
+            mvc.perform(get("/profiles/" + username)).andExpect(status().isOk());
+            String caller = "Bearer " + token("unrelated-user", "unrelated-subject", client, "", ISSUER,
+                    "profile-service", Instant.now().plusSeconds(300), SIGNING_KEY);
+            mvc.perform(delete("/profiles").header("Authorization", caller)).andExpect(status().isNoContent());
+            mvc.perform(get("/profiles/" + username)).andExpect(status().isNotFound());
+        }
+    }
+
     @org.junit.jupiter.api.BeforeEach
     void publicKeys() {
         IDENTITY.stubFor(com.github.tomakehurst.wiremock.client.WireMock.get(urlEqualTo("/certs")).willReturn(okJson(
@@ -64,6 +82,8 @@ class ProfileAuthenticationTest extends SupportsPostgresIntegrationTests {
                 token("alice", "subject", "blinddating-frontend", "", ISSUER, "profile-service", Instant.now().plusSeconds(300), signingKey())
         }) {
             mvc.perform(put("/account/profile").header("Authorization", "Bearer " + token))
+                    .andExpect(status().isUnauthorized());
+            mvc.perform(delete("/profiles").header("Authorization", "Bearer " + token))
                     .andExpect(status().isUnauthorized());
         }
     }
@@ -100,7 +120,6 @@ class ProfileAuthenticationTest extends SupportsPostgresIntegrationTests {
                 .contentType("application/json").content("{\"username\":\"someoneelse\"}"))
                 .andExpect(status().isForbidden());
         mvc.perform(get("/profiles").header("Authorization", owner)).andExpect(status().isOk());
-        mvc.perform(delete("/profiles").header("Authorization", owner)).andExpect(status().isForbidden());
         mvc.perform(post("/profiles").header("Authorization", owner)
                 .contentType("application/json").content("{\"username\":\"someoneelse\"}"))
                 .andExpect(status().isForbidden());
