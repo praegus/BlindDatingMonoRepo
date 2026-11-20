@@ -64,8 +64,8 @@ jobs:
         working-directory: playwright.ts
         env:
           CI: true
-          KEYCLOAK_URL: ${{ vars.KEYCLOAK_URL || 'https://keycloak.blinddatingapp.finkingma.com' }}
-          KEYCLOAK_REALM: ${{ vars.KEYCLOAK_REALM || 'blinddating' }}
-          KEYCLOAK_CLEANUP_CLIENT_ID: ${{ vars.KEYCLOAK_CLEANUP_CLIENT_ID }}
+          KEYCLOAK_URL: ${{ secrets.KEYCLOAK_URL || 'https://keycloak.blinddatingapp.finkingma.com' }}
+          KEYCLOAK_REALM: ${{ secrets.KEYCLOAK_REALM || 'blinddating' }}
+          KEYCLOAK_CLEANUP_CLIENT_ID: ${{ secrets.KEYCLOAK_CLEANUP_CLIENT_ID }}
           KEYCLOAK_CLEANUP_CLIENT_SECRET: ${{ secrets.KEYCLOAK_CLEANUP_CLIENT_SECRET }}
         run: npx playwright test
