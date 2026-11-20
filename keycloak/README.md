@@ -79,7 +79,7 @@ The focused frontend tests cover hosted-form buttons, protected navigation, toke
 
 ## Deploy to docker hub
 ```
-docker build -t docker.io/finkingma/blinddatingapp-keycloak:latest .
+docker build --no-cache -t docker.io/finkingma/blinddatingapp-keycloak:latest .
 docker push docker.io/finkingma/blinddatingapp-keycloak:latest
 ```
 that way the docker image can be used by caprover as well

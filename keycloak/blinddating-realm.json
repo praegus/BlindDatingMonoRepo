@@ -30,16 +30,18 @@
       "redirectUris": [
         "http://localhost:4200/*",
         "http://localhost:8080/*",
-        "http://frontend.blinddatingapp.finkingma.com/*"
+        "http://frontend.blinddatingapp.finkingma.com/*",
+        "https://frontend.blinddatingapp.finkingma.com/*"
       ],
       "webOrigins": [
         "http://localhost:4200",
         "http://localhost:8080",
-        "http://frontend.blinddatingapp.finkingma.com"
+        "http://frontend.blinddatingapp.finkingma.com",
+        "https://frontend.blinddatingapp.finkingma.com"
       ],
       "attributes": {
         "pkce.code.challenge.method": "S256",
-        "post.logout.redirect.uris": "http://localhost:4200/*##http://localhost:8080/*##http://frontend.blinddatingapp.finkingma.com"
+        "post.logout.redirect.uris": "http://localhost:4200/*##http://localhost:8080/*##https://frontend.blinddatingapp.finkingma.com/*##https://frontend.blinddatingapp.finkingma.com/*"
       },
       "defaultClientScopes": [],
       "protocolMappers": [
