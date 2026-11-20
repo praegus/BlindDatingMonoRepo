@@ -1,4 +1,7 @@
 window.__blindDatingConfig = window.__blindDatingConfig || {
   profileApiUrl: "${PROFILE_API_URL}",
-  websocketUrl: "${WEBSOCKET_URL}"
+  websocketUrl: "${WEBSOCKET_URL}",
+  keycloakUrl: "${KEYCLOAK_URL}",
+  keycloakRealm: "${KEYCLOAK_REALM}",
+  keycloakClientId: "${KEYCLOAK_CLIENT_ID}"
 };

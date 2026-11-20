@@ -1,32 +1,27 @@
-import type { Page, Locator } from '@playwright/test';
+import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 
 export class ProfilePage {
+    constructor(readonly page: Page) {}
 
-    readonly page: Page;
-
-
-    constructor(page: Page) {
-        this.page = page;
-
-    }
     async goto() {
-        await this.page.goto('http://frontend.blinddatingapp.finkingma.com/');
+        await this.page.goto(process.env.FRONTEND_URL ?? 'https://frontend.blinddatingapp.finkingma.com/');
     }
 
-    async createNewProfile(profileName: string) {
-        await expect(this.page.getByRole('button', { name: 'Create' })).toBeDisabled();
-        await this.page.getByRole('textbox').fill(profileName);
-        await this.page.getByRole('button', { name: 'Create' }).click();
-        expect(this.page.getByText(`Welcome ${profileName}`)).toBeVisible();
-
+    async createNewProfile(username: string, password: string) {
+        await this.page.getByRole('button', { name: 'Register', exact: true }).click();
+        await this.page.locator('#username').fill(username);
+        await this.page.locator('#password').fill(password);
+        await this.page.locator('#password-confirm').fill(password);
+        await this.page.getByRole('button', { name: 'Register', exact: true }).click();
+        await expect(this.page.getByText(`Welcome ${username}`, { exact: true })).toBeVisible();
     }
 
-    async loginExistingProfile(profileName: string) {
-        await expect(this.page.getByRole('button', { name: 'Create' })).toBeDisabled();
-        await this.page.getByRole('textbox').fill(profileName);
-        await this.page.getByRole('button', { name: 'Login' }).click();
-        expect(this.page.getByText(`Welcome ${profileName}`)).toBeVisible();
-
+    async loginExistingProfile(username: string, password: string) {
+        await this.page.getByRole('button', { name: 'Login', exact: true }).click();
+        await this.page.locator('#username').fill(username);
+        await this.page.locator('#password').fill(password);
+        await this.page.locator('#kc-login').click();
+        await expect(this.page.getByText(`Welcome ${username}`, { exact: true })).toBeVisible();
     }
 }

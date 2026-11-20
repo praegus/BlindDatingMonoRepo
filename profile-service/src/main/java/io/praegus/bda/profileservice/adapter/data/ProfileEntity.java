@@ -20,6 +20,9 @@ public class ProfileEntity {
     @Column(name = "username")
     private String username;
 
+    @Column(name = "keycloak_subject", unique = true)
+    private String keycloakSubject;
+
     @Column(name = "firstname")
     private String firstname;
 
@@ -51,5 +54,6 @@ public class ProfileEntity {
             joinColumns = @JoinColumn(name = "profile_username"),
             inverseJoinColumns = @JoinColumn(name = "date_id")
     )
+    @Builder.Default
     private List<DateEntity> dates = new ArrayList<>();
 }

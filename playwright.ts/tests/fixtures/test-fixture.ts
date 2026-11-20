@@ -3,6 +3,7 @@ import { ProfilePage } from '../page-objects/profile-page';
 import { PreferencesPage } from '../page-objects/preferences-page';
 import { ProfileClient } from '../page-objects/profile-client';
 import { WebSocket } from '../page-objects/websocket-client';
+import { KeycloakClient } from '../page-objects/keycloak-client';
 
 
 
@@ -10,6 +11,7 @@ type TestFixtures = {
     profilePage: ProfilePage;
     preferencesPage: PreferencesPage;
     profileClient: ProfileClient;
+    keycloakClient: KeycloakClient;
     webSocket: WebSocket;
 }
 
@@ -25,6 +27,10 @@ export const test = base.extend<TestFixtures>({
     profileClient: async ({ page }, use) => {
         const profileClient = new ProfileClient(page);
         await use(profileClient);
+    },
+    keycloakClient: async ({ request }, use) => {
+        const keycloakClient = new KeycloakClient(request);
+        await use(keycloakClient);
     },
     webSocket: async ({ page }, use) => {
         const webSocket = new WebSocket(page);

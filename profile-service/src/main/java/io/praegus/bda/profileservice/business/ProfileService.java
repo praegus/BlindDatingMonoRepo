@@ -20,6 +20,28 @@ import java.util.stream.Collectors;
 @Service
 public class ProfileService {
 
+    @org.springframework.transaction.annotation.Transactional
+    public Profile ensureAccountProfile(String subject, String username) {
+        if (subject == null || subject.isBlank() || username == null || !username.matches("[a-zA-Z0-9]{1,20}")) {
+            throw new org.springframework.security.access.AccessDeniedException("Invalid account identity");
+        }
+        var existing = profileRepository.findById(username);
+        if (existing.isPresent()) {
+            if (!subject.equals(existing.get().getKeycloakSubject())) {
+                throw new org.springframework.security.access.AccessDeniedException("Profile belongs to another account");
+            }
+            return mapEntityToProfile(existing.get());
+        }
+        var profile = ProfileEntity.builder()
+                .username(username).keycloakSubject(subject)
+                .address(AddressEntity.builder().build())
+                .personalInformation(PersonalInformationEntity.builder().build())
+                .preferences(PreferencesEntity.builder().build())
+                .dislikes(DislikesEntity.builder().build())
+                .build();
+        return mapEntityToProfile(profileRepository.save(profile));
+    }
+
     Logger logger = LoggerFactory.getLogger(ProfileService.class);
 
     @Autowired
@@ -160,6 +182,9 @@ public class ProfileService {
     }
 
     private boolean hasAddressChanged(AddressEntity oldAddress, Address newAddress) {
+        if (newAddress == null) {
+            return false;
+        }
         if (oldAddress == null && newAddress != null) {
             return true;
         }

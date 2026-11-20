@@ -3,13 +3,32 @@ info:
   title: Profile Service API
   description: 'Profile Service api definitie'
   version: 1.0.0
+security:
+  - bearerAuth: []
 paths:
+  /account/profile:
+    put:
+      tags: [account]
+      operationId: ensureAccountProfile
+      description: Create or load the current account's profile using the validated JWT subject and username.
+      responses:
+        "200":
+          description: The current account's profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        "401":
+          description: Missing or invalid access token
+        "403":
+          description: Invalid account identity or profile owned by another account
   /profiles:
     get:
+      security: []
       tags:
         - profiles
       operationId: getAllProfiles
-      description: Haal alle bestaande profielen op
+      description: Public profile listing for unauthenticated backend service calls.
       responses:
         "200":
           description: OK
@@ -23,7 +42,8 @@ paths:
       tags:
         - profiles
       operationId: createProfile
-      description: Maak een nieuw profiel
+      deprecated: true
+      description: Disabled. Use PUT /account/profile to provision the authenticated user's profile.
       requestBody:
         required: true
         content:
@@ -39,22 +59,27 @@ paths:
                 type: string
         409:
           $ref: '#/components/responses/ConflictResponse'
+        "403":
+          description: Legacy arbitrary profile creation is disabled
 
     delete:
       tags:
         - profiles
       operationId: deleteProfiles
-      description: Verwijder alle profielen
+      description: Delete all profiles. Any authenticated caller with a valid profile-service-audience access token is permitted, regardless of profile ownership.
       responses:
-        "200":
-          description: OK
+        "401":
+          description: Missing or invalid access token
+        "204":
+          description: All profiles deleted
 
   /profiles/{username}:
     get:
+      security: []
       tags:
         - profiles
       operationId: getSingleProfile
-      description: Haal een enkel profiel op
+      description: Public single-profile lookup for unauthenticated backend service calls.
       parameters:
         - name: username
           in: path
@@ -74,7 +99,7 @@ paths:
       tags:
         - profiles
       operationId: updateProfile
-      description: pas een bestaand profiel aan
+      description: Update the authenticated user's own profile. The path and body usernames must match the JWT identity.
       parameters:
         - name: username
           in: path
@@ -98,7 +123,7 @@ paths:
       tags:
         - profiles
       operationId: deleteProfile
-      description: verwijder een profiel
+      description: Delete only the profile owned by the authenticated JWT subject and username.
       parameters:
         - name: username
           in: path
@@ -110,6 +135,11 @@ paths:
           description: OK
 
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   responses:
     NotFoundResponse:
       description: Resource not found

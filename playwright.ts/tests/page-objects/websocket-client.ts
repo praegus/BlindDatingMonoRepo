@@ -12,7 +12,8 @@ export class WebSocket {
     }
 
     async clearMatchStatueses() {
-        const response = await this.page.request.delete('http://websocket-service.blinddatingapp.finkingma.com/clear-match-statuses');
+        const baseUrl = (process.env.WEBSOCKET_API_URL ?? 'https://websocket-service.blinddatingapp.finkingma.com').replace(/\/+$/, '');
+        const response = await this.page.request.delete(`${baseUrl}/clear-match-statuses`);
         expect(response.status()).toBe(200);
     }
         }
