@@ -23,9 +23,9 @@ jobs:
       github.event.workflow_run.conclusion == 'success' &&
       (
         github.event.workflow_run.head_branch == 'main' ||
-        github.event.workflow_run.head_branch == 'open-url-test'
+        github.event.workflow_run.head_branch == 'fix-e2e'
       )
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     steps:
@@ -46,8 +46,14 @@ jobs:
 
       - name: Install Playwright browsers
         working-directory: playwright.ts
-        run: npx playwright install --with-deps
+        run: npx playwright install --with-deps chromium
 
       - name: Run E2E tests
         working-directory: playwright.ts
+        env:
+          CI: true
+          KEYCLOAK_URL: ${{ vars.KEYCLOAK_URL || 'https://keycloak.blinddatingapp.finkingma.com' }}
+          KEYCLOAK_REALM: ${{ vars.KEYCLOAK_REALM || 'blinddating' }}
+          KEYCLOAK_CLEANUP_CLIENT_ID: ${{ vars.KEYCLOAK_CLEANUP_CLIENT_ID }}
+          KEYCLOAK_CLEANUP_CLIENT_SECRET: ${{ secrets.KEYCLOAK_CLEANUP_CLIENT_SECRET }}
         run: npx playwright test
