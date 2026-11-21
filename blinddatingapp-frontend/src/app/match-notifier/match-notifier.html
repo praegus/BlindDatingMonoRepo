@@ -1,0 +1,13 @@
+<ng-template #invitation>
+  <section class="match-invitation">
+    <div class="invitation-top"><span class="live-label"><span class="live-dot"></span> A live connection</span><span class="countdown" aria-hidden="true">{{ secondsLeft() }}s</span></div>
+    <div class="match-symbol" aria-hidden="true">&#9825;</div>
+    <p class="eyebrow">Right person. Right now.</p>
+    <h2 id="match-invitation-title">You have a <em>match.</em></h2>
+    <p class="match-name">{{ matchWith() }}</p>
+    <p id="match-invitation-description" class="description">Someone caught your spark. You have five seconds to accept this invitation before it disappears.</p>
+    <button class="accept-match" type="button" (click)="acceptMatch()">Accept!</button>
+    <p class="time-note" aria-hidden="true">Accept within {{ secondsLeft() }} seconds</p>
+    <div class="timer-track" aria-hidden="true"><div class="timer-fill"></div></div>
+  </section>
+</ng-template>
