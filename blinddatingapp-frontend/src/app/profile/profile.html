@@ -1,37 +1,39 @@
-<mat-card class="profile-card">
-  <mat-card-title>Welcome {{ profileData?.username }}</mat-card-title>
-  <button mat-button type="button" (click)="auth.logout()">Log out</button>
-  <mat-card-content>
-    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+<main class="profile-page">
+  <nav class="profile-nav" aria-label="Main navigation">
+    <a class="brand" routerLink="/">BlindDating</a>
+    <button mat-stroked-button type="button" (click)="auth.logout()">Log out</button>
+  </nav>
+  <header class="page-header">
+    <div><p class="eyebrow">Your invitation starts here</p><h1>@if (profileData?.dates?.length) { You have a <em>date.</em> } @else { Tell us about <em>you.</em> }</h1><p>@if (profileData?.dates?.length) { Welcome {{ profileData?.username }}. Here is where to go and what to bring. } @else { Welcome {{ profileData?.username }}. Tell us what makes you, you — and who makes you smile. }</p></div>
+  </header>
+  <app-date-list [dates]="profileData?.dates ?? []"></app-date-list>
+  <details class="profile-details" [open]="!profileData?.dates?.length">
+    <summary>Your profile <span>Edit your details and preferences</span></summary>
+  <mat-card class="profile-card">
+    <mat-card-content>
+      <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+        <section class="basics" aria-labelledby="basics-title">
+          <div class="section-heading"><span class="step">01</span><div><h2 id="basics-title">The introduction</h2><p>Start with the everyday essentials.</p></div></div>
+          <div class="identity-fields">
+            <mat-form-field appearance="outline" subscriptSizing="dynamic"><mat-label>First name</mat-label><input matInput formControlName="firstname" autocomplete="given-name"></mat-form-field>
+            <mat-form-field appearance="outline" subscriptSizing="dynamic"><mat-label>Last name</mat-label><input matInput formControlName="lastname" autocomplete="family-name"></mat-form-field>
+            <mat-form-field appearance="outline" subscriptSizing="dynamic"><mat-label>A little about you</mat-label><input matInput formControlName="additionalInfo"></mat-form-field>
+          </div>
+          <app-address [formGroup]="profileForm.controls.address" [valid]="profileData?.address?.valid!"></app-address>
+        </section>
+        <section class="connection" aria-labelledby="connection-title">
+          <div class="section-heading"><span class="step">02</span><div><h2 id="connection-title">Find your kind of connection</h2><p>You, your preferences, and your dislikes — side by side.</p></div></div>
+          <div class="comparison-grid">
+            <section class="trait-column personal" aria-label="Your personal information"><p class="column-note">This is me</p><app-characteristics [formGroup]="profileForm.controls.personalInformation" [title]="'Personal Information'"></app-characteristics></section>
+            <section class="trait-column preferences" aria-label="Your preferences"><p class="column-note">I'm drawn to</p><app-characteristics [formGroup]="profileForm.controls.preferences" [title]="'Preferences'"></app-characteristics></section>
+            <section class="trait-column dislikes" aria-label="Your dislikes"><p class="column-note">Not quite my thing</p><app-characteristics [formGroup]="profileForm.controls.dislikes" [title]="'Dislikes'"></app-characteristics></section>
+          </div>
+        </section>
+        <div class="save-bar"><p>Your details help us find your next date.</p><button mat-raised-button class="save-button" type="submit" [disabled]="!profileForm.valid">Save profile <span aria-hidden="true">↗</span></button></div>
+        <app-match-notifier [username]="profileData!.username"></app-match-notifier>
+      </form>
+    </mat-card-content>
+  </mat-card>
+  </details>
 
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>First name</mat-label>
-        <input matInput formControlName="firstname">
-      </mat-form-field>
-
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Last name</mat-label>
-        <input matInput formControlName="lastname">
-      </mat-form-field>
-
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Additional info</mat-label>
-        <input matInput formControlName="additionalInfo">
-      </mat-form-field>
-
-      <app-address [formGroup]="profileForm.controls.address" [valid]="profileData?.address?.valid!"></app-address>
-
-      <mat-divider></mat-divider>
-      <app-characteristics [formGroup]="profileForm.controls.personalInformation" [title]="'Personal Information'"></app-characteristics>
-      <app-characteristics [formGroup]="profileForm.controls.preferences" [title]="'Preferences'"></app-characteristics>
-      <app-characteristics [formGroup]="profileForm.controls.dislikes" [title]="'Dislikes'"></app-characteristics>
-
-      <mat-divider></mat-divider>
-      <button mat-raised-button color="primary" type="submit" [disabled]="!profileForm.valid">Save</button>
-
-      <app-match-notifier [username]="profileData!.username"></app-match-notifier>
-    </form>
-  </mat-card-content>
-</mat-card>
-
-<app-date-list [dates]="profileData?.dates!"></app-date-list>
+</main>

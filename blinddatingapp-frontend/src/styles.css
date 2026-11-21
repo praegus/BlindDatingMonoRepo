@@ -1,4 +1,47 @@
-/* You can add global styles to this file, and also import other style files */
+html, body {
+  min-height: 100%;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+  margin: 0;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background: #f8f5ef;
+  color: #302e29;
+}
+
+:root {
+  --ink: #302e29;
+  --muted: #706a61;
+  --wine: #7b3546;
+  --olive: #67745b;
+  --line: #e5dfd5;
+  --mat-sys-primary: #7b3546;
+  --mat-sys-on-primary: #ffffff;
+  --mat-sys-surface: #fffdfa;
+  --mat-sys-on-surface: #302e29;
+  --mat-sys-on-surface-variant: #706a61;
+  --mat-sys-outline: #93877e;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+button, a, input, mat-select {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a:focus-visible, button:focus-visible {
+  outline: 3px solid #7b3546;
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+  scroll-behavior: auto !important;
+  animation-duration: .01ms !important;
+  transition-duration: .01ms !important;
+}
+
+
+}

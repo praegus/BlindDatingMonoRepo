@@ -29,8 +29,8 @@ describe('Login', () => {
   it('opens the hosted login and registration forms', async () => {
     // OpenSpec: authentication.hosted-forms
     const buttons = fixture.nativeElement.querySelectorAll('button') as NodeListOf<HTMLButtonElement>;
-    expect(buttons[0].textContent).toContain('Login');
-    expect(buttons[1].textContent).toContain('Register');
+    expect(buttons[0].textContent).toContain('Log in');
+    expect(buttons[1].textContent).toContain('Create account');
     buttons[0].click();
     buttons[1].click();
     await fixture.whenStable();

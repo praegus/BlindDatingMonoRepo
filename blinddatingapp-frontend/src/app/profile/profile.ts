@@ -1,6 +1,6 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ProfilesService, Profile as ProfileModel, Gender, HairColor, MusicGenre } from '../generated-sources/openapi';
 import { FormGroup, FormControl, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -20,7 +20,7 @@ import { DateList } from '../dates/date-list';
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, Characteristics, Address, DateList, MatchNotifier, MatFormFieldModule, MatInputModule, MatButtonModule, MatCardModule, MatDividerModule, MatListModule],
+  imports: [RouterLink, ReactiveFormsModule, CommonModule, Characteristics, Address, DateList, MatchNotifier, MatFormFieldModule, MatInputModule, MatButtonModule, MatCardModule, MatDividerModule, MatListModule],
   templateUrl: './profile.html',
   styleUrl: './profile.css'
 })
