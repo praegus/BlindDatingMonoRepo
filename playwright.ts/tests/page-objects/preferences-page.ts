@@ -7,7 +7,7 @@ export class PreferencesPage {
     async fillProfileDetails(firstName: string, street: string, streetNumber: string, postalCode: string, gender: string, preferredGender: string, color = '') {
         await this.page.getByRole('textbox', { name: 'First name', exact: true }).fill(firstName);
         await this.page.getByRole('textbox', { name: 'Last name', exact: true }).fill('');
-        await this.page.getByRole('textbox', { name: 'Additional info' }).fill('Power by Playwright');
+        await this.page.getByRole('textbox', { name: 'A little about you', exact: true }).fill('Power by Playwright');
         // Street and city are read-only and populated by the location service.
         await this.page.getByRole('textbox', { name: 'Street Number', exact: true }).fill(streetNumber);
         await this.page.getByRole('textbox', { name: 'Postal Code', exact: true }).fill(postalCode);
@@ -25,7 +25,7 @@ export class PreferencesPage {
         const saved = this.page.waitForResponse(response =>
             response.request().method() === 'PUT' && new URL(response.url()).pathname.startsWith('/profiles/'),
         );
-        await this.page.getByRole('button', { name: 'Save', exact: true }).click();
+        await this.page.getByRole('button', { name: 'Save profile', exact: true }).click();
         expect((await saved).status()).toBe(200);
         await expect(this.page.getByText('Address is verified', { exact: true })).toBeVisible();
     }

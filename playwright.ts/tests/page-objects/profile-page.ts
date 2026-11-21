@@ -9,19 +9,19 @@ export class ProfilePage {
     }
 
     async createNewProfile(username: string, password: string) {
-        await this.page.getByRole('button', { name: 'Register', exact: true }).click();
+        await this.page.getByRole('button', { name: 'Create account', exact: true }).click();
         await this.page.locator('#username').fill(username);
         await this.page.locator('#password').fill(password);
         await this.page.locator('#password-confirm').fill(password);
         await this.page.getByRole('button', { name: 'Register', exact: true }).click();
-        await expect(this.page.getByText(`Welcome ${username}`, { exact: true })).toBeVisible();
+        await expect(this.page.locator('.page-header').getByText(`Welcome ${username}.`)).toBeVisible();
     }
 
     async loginExistingProfile(username: string, password: string) {
-        await this.page.getByRole('button', { name: 'Login', exact: true }).click();
+        await this.page.getByRole('navigation', { name: 'Main navigation' }).getByRole('button', { name: 'Log in', exact: true }).click();
         await this.page.locator('#username').fill(username);
         await this.page.locator('#password').fill(password);
         await this.page.locator('#kc-login').click();
-        await expect(this.page.getByText(`Welcome ${username}`, { exact: true })).toBeVisible();
+        await expect(this.page.locator('.page-header').getByText(`Welcome ${username}.`)).toBeVisible();
     }
 }
