@@ -8,8 +8,12 @@ The system SHALL attempt to create matches from persisted profiles on a recurrin
 - **THEN** the system produces no match events
 
 #### Scenario: Emit a match for compatible profiles
+<!-- openspec-id: matching-workflow.emit-compatible-match -->
 - **WHEN** the matching process evaluates two profiles whose computed matching score is at least 70
 - **THEN** the system publishes a match event for that pair
+
+**Verification**
+- [Cucumber matching scenario](../../../matching-service/src/test/resources/features/matches.feature)
 
 #### Scenario: Scheduled matching remains the primary trigger
 - **WHEN** the system is running with persisted profiles
