@@ -1,15 +1,57 @@
-<div class="login-container">
-  <h1>Welcome to the BlindDatingApp</h1>
-  <div class="button-group">
-    @if (auth.authenticated()) {
-      <a mat-raised-button routerLink="/profile">My profile</a>
-      <button mat-button (click)="auth.logout()">Log out</button>
-    } @else {
-      <button mat-raised-button color="primary" (click)="signIn()" [disabled]="!!auth.error()">Login</button>
-      <button mat-raised-button (click)="signIn(true)" [disabled]="!!auth.error()">Register</button>
-    }
-  </div>
-  @if (error() || auth.error()) {
-    <p role="alert">{{ error() || auth.error() }}</p>
-  }
-</div>
+<main class="invitation-page">
+  <header class="site-header">
+    <a class="brand" routerLink="/">BlindDating</a>
+    <nav aria-label="Main navigation">
+      <a href="#how-it-works">How it works</a>
+      @if (auth.authenticated()) {
+        <button type="button" class="text-button" (click)="auth.logout()">Log out</button>
+      } @else {
+        <button type="button" class="text-button" (click)="signIn()" [disabled]="!!auth.error()">Log in</button>
+      }
+    </nav>
+  </header>
+
+  <section class="hero" aria-labelledby="welcome-title">
+    <div class="hero-copy">
+      <p class="eyebrow">An invitation to meet someone new</p>
+      <h1 id="welcome-title">Your next date<br>starts here.</h1>
+      <p class="intro">Create your profile. When we find a match, you’ll get an invitation with a time, a place, and something to bring. They’ll be there to meet you.</p>
+      <div class="actions">
+        @if (auth.authenticated()) {
+          <a class="primary-action" routerLink="/profile">View my dates</a>
+        } @else {
+          <button type="button" class="primary-action" (click)="signIn(true)" [disabled]="!!auth.error()">Create account</button>
+          <button type="button" class="text-button" (click)="signIn()" [disabled]="!!auth.error()">Log in</button>
+        }
+      </div>
+      @if (error() || auth.error()) {
+        <p class="auth-error" role="alert">{{ error() || auth.error() }}</p>
+      }
+    </div>
+
+    <figure class="invitation-scene" aria-labelledby="invitation-caption">
+      <img class="scene-photo" src="images/invitation-still-life.png" alt="A yellow sock and a printed photograph of a canal-side bench with two coffees." width="1536" height="1024" fetchpriority="high">
+      <figcaption id="invitation-caption">A preview of your invitation <span aria-hidden="true">↘</span></figcaption>
+      <div class="invitation-card">
+        <p class="card-brand">BlindDating</p>
+        <h2>You have a date.</h2>
+        <dl>
+          <div><dt>When</dt><dd>Your meeting time</dd></div>
+          <div><dt>Where</dt><dd>Your meeting place</dd></div>
+          <div><dt>Bring</dt><dd>Your little clue</dd></div>
+        </dl>
+      </div>
+    </figure>
+  </section>
+
+  <section id="how-it-works" class="how-it-works" aria-labelledby="steps-title" tabindex="-1">
+    <div class="steps-inner">
+      <h2 id="steps-title">A profile. An invitation. A real hello.</h2>
+      <ol>
+        <li><span class="step-number" aria-hidden="true">1</span><div><h3>Tell us about you</h3><p>Add your details and what you’re looking for.</p></div></li>
+        <li><span class="step-number" aria-hidden="true">2</span><div><h3>Receive your invitation</h3><p>When you’re matched, find your date details in your profile.</p></div></li>
+        <li><span class="step-number" aria-hidden="true">3</span><div><h3>Meet your date</h3><p>Bring your little clue. Say your first hello.</p></div></li>
+      </ol>
+    </div>
+  </section>
+</main>

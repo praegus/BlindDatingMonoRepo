@@ -1,6 +1,6 @@
-<mat-card class="dates-card" appearance="outlined">
+<mat-card class="dates-card" [class.has-dates]="dates.length > 0" appearance="outlined">
   <mat-card-header>
-    <mat-card-title>💘 Your Dates</mat-card-title>
+    <mat-card-title>Your dates</mat-card-title>
   </mat-card-header>
 
   <mat-divider></mat-divider>
@@ -10,9 +10,9 @@
       <div class="date-card-list">
         <mat-card *ngFor="let date of dates" class="date-card">
           <mat-card-content>
-            <p><strong>📍</strong> {{ date.address?.street }} {{ date.address?.streetNumber }}, {{ date.address?.city }}</p>
-            <p><strong>🕒</strong> {{ dateTimeMs(date.time) | date:'fullDate' }} at {{ dateTimeMs(date.time) | date:'shortTime' }}</p>
-            <p><strong>🎁</strong> Bring: {{ date.itemToBring || 'something special' }}</p>
+            <p><strong>Where:</strong> {{ date.address?.street }} {{ date.address?.streetNumber }}, {{ date.address?.city }}</p>
+            <p><strong>When:</strong> {{ dateTimeMs(date.time) | date:'fullDate' }} at {{ dateTimeMs(date.time) | date:'shortTime' }}</p>
+            <p class="bring-item"><strong>Bring:</strong> {{ date.itemToBring || 'something special' }}</p>
           </mat-card-content>
         </mat-card>
       </div>
